@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/global";
+import { Navbar, Footer } from "@/components/global";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Playzone",
-  description: "Next-generation gadgets and electronics store",
+  title: "PLAYZONE | Cricket Equipment & Gear Store",
+  description:
+    "Gear up for every innings. New and pre-owned cricket equipment for every player in Bangladesh.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900">
         <Navbar />
         <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

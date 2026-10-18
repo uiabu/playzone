@@ -1,0 +1,9 @@
+export { default as HeroSection } from "./HeroSection";
+export { default as FeatureCategoiesSection } from "./FeatureCategoiesSection";
+export { default as ExclusiveProductsSection } from "./ExclusiveProductsSection";
+export { default as BattingEssentialsSection } from "./BattingEssentialsSection";
+export { default as CtaBannerSection } from "./CtaBannerSection";
+export { default as BowlingFieldingSection } from "./BowlingFieldingSection";
+export { default as ShoesKitBagsSection } from "./ShoesKitBagsSection";
+export { default as FeaturedCricketGearSection } from "./FeaturedCricketGearSection";
+export { default as VideoReviewSection } from "./VideoReviewSection";
