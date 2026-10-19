@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
@@ -14,76 +14,121 @@ interface BatProduct {
   price: string;
   badge: "NEW" | "PRE-OWNED - GRADE A";
   category: "top-picks" | "english-willow" | "kashmir-willow" | "pre-owned";
+  isTopPick?: boolean;
 }
 
 const BATS_DATA: BatProduct[] = [
   {
-    id: "sg-player-edition",
-    name: "SG English Willow Player Edition Cricket Bat",
-    imageSrc: "/images/products/bats/sg_english_willow.png",
+    id: "sg-savage-english-willow",
+    name: "SG Savage Edition English Willow Bat",
+    imageSrc: "/images/products/bats/sg_bat.png",
     rating: 4.8,
-    reviewsCount: 120,
+    reviewsCount: 124,
     price: "৳ 8,500",
     badge: "NEW",
     category: "english-willow",
+    isTopPick: true,
   },
   {
-    id: "kookaburra-shadow",
-    name: "Kookaburra Shadow English Willow Bat",
-    imageSrc: "/images/products/bats/kookaburra_shadow.png",
-    rating: 4.5,
+    id: "kookaburra-aura-pro",
+    name: "Kookaburra Aura Pro English Willow Bat",
+    imageSrc: "/images/products/bats/kookaburra_bat.png",
+    rating: 4.7,
     reviewsCount: 189,
     price: "৳ 7,200",
     badge: "NEW",
     category: "english-willow",
+    isTopPick: true,
   },
   {
-    id: "mrf-genius-elite",
-    name: "MRF Genius Elite Cricket Bat",
-    imageSrc: "/images/products/bats/mrf_genius_elite.png",
-    rating: 4.7,
-    reviewsCount: 65,
-    price: "৳ 6,800",
+    id: "mrf-genius-grand-edition",
+    name: "MRF Genius Grand Edition Cricket Bat",
+    imageSrc: "/images/products/bats/mrf.png",
+    rating: 4.9,
+    reviewsCount: 215,
+    price: "৳ 9,800",
+    badge: "NEW",
+    category: "english-willow",
+    isTopPick: true,
+  },
+  {
+    id: "ss-ton-reserve-edition",
+    name: "SS TON Reserve Edition Cricket Bat",
+    imageSrc: "/images/products/bats/ss_ton.png",
+    rating: 4.6,
+    reviewsCount: 98,
+    price: "৳ 4,800",
+    badge: "PRE-OWNED - GRADE A",
+    category: "pre-owned",
+    isTopPick: true,
+  },
+  {
+    id: "gm-diamond-limited-edition",
+    name: "GM Diamond Limited Edition Cricket Bat",
+    imageSrc: "/images/products/bats/gm_bat.png",
+    rating: 4.6,
+    reviewsCount: 76,
+    price: "৳ 7,900",
+    badge: "NEW",
+    category: "english-willow",
+    isTopPick: true,
+  },
+  {
+    id: "gray-nicolls-nova-players",
+    name: "Gray-Nicolls Nova Players Cricket Bat",
+    imageSrc: "/images/products/bats/gr_bat.png",
+    rating: 4.6,
+    reviewsCount: 64,
+    price: "৳ 6,500",
     badge: "NEW",
     category: "english-willow",
   },
   {
-    id: "ss-ton-reserve",
-    name: "SS TON Reserve Edition Cricket Bat",
-    imageSrc: "/images/products/bats/ss_ton_reserve.png",
+    id: "ceat-special-master",
+    name: "CEAT Special Master English Willow Bat",
+    imageSrc: "/images/products/bats/ceat_ton.png",
     rating: 4.5,
-    reviewsCount: 98,
-    price: "৳ 4,200",
-    badge: "PRE-OWNED - GRADE A",
-    category: "pre-owned",
+    reviewsCount: 88,
+    price: "৳ 6,200",
+    badge: "NEW",
+    category: "english-willow",
   },
   {
-    id: "gm-icon-dxm",
-    name: "GM Icon DXM Cricket Bat",
-    imageSrc: "/images/products/bats/gm_icon_dxm.png",
-    rating: 4.6,
+    id: "sf-stanford-players-edition",
+    name: "SF Stanford Players Edition Cricket Bat",
+    imageSrc: "/images/products/bats/sf_bat.png",
+    rating: 4.5,
     reviewsCount: 52,
-    price: "৳ 2,900",
+    price: "৳ 3,600",
     badge: "PRE-OWNED - GRADE A",
     category: "pre-owned",
   },
-  // Additional items for Kashmir Willow filter
   {
-    id: "dsc-krunch-kashmir",
-    name: "DSC Krunch The Bull Kashmir Willow Bat",
-    imageSrc: "/images/products/bats/sg_english_willow.png",
+    id: "dsc-split-44-kashmir",
+    name: "DSC Split 44 Kashmir Willow Bat",
+    imageSrc: "/images/products/bats/dsc_bat.png",
     rating: 4.4,
-    reviewsCount: 76,
-    price: "৳ 2,450",
+    reviewsCount: 86,
+    price: "৳ 2,650",
     badge: "NEW",
     category: "kashmir-willow",
   },
   {
-    id: "sg-scorer-kashmir",
-    name: "SG Scorer Classic Kashmir Willow Bat",
-    imageSrc: "/images/products/bats/mrf_genius_elite.png",
+    id: "mb-malik-boom-kashmir",
+    name: "MB Malik Boom Kashmir Willow Bat",
+    imageSrc: "/images/products/bats/mb_bat.png",
     rating: 4.3,
-    reviewsCount: 84,
+    reviewsCount: 72,
+    price: "৳ 2,200",
+    badge: "NEW",
+    category: "kashmir-willow",
+  },
+  {
+    id: "mks-limited-edition-kashmir",
+    name: "MKS Limited Edition Kashmir Willow Bat",
+    imageSrc: "/images/products/bats/mks.png",
+    rating: 4.2,
+    reviewsCount: 49,
     price: "৳ 1,950",
     badge: "NEW",
     category: "kashmir-willow",
@@ -102,21 +147,71 @@ const FILTER_TABS: { id: FilterCategory; label: string }[] = [
 export default function ExclusiveProductsSection() {
   const [activeFilter, setActiveFilter] = useState<FilterCategory>("top-picks");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   // Filter products based on active tab
+  // In 'top-picks', we show all bats starting with top picks so the user can slide through all products
   const displayedProducts =
     activeFilter === "top-picks"
-      ? BATS_DATA.slice(0, 5) // Exactly matches the 5 cards in reference screenshot
+      ? BATS_DATA
+      : activeFilter === "pre-owned"
+      ? BATS_DATA.filter(
+          (item) => item.category === "pre-owned" || item.badge === "PRE-OWNED - GRADE A"
+        )
       : BATS_DATA.filter((item) => item.category === activeFilter);
 
-  // Horizontal scroll controls
+  // Update left/right scrollability buttons
+  const updateScrollState = useCallback(() => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 5);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
+  }, []);
+
+  useEffect(() => {
+    updateScrollState();
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener("scroll", updateScrollState, { passive: true });
+      window.addEventListener("resize", updateScrollState);
+      return () => {
+        container.removeEventListener("scroll", updateScrollState);
+        window.removeEventListener("resize", updateScrollState);
+      };
+    }
+  }, [displayedProducts, updateScrollState]);
+
+  // Horizontal scroll controls: precisely 1 product card in/out per click
   const handleScroll = (direction: "left" | "right") => {
     if (!scrollContainerRef.current) return;
-    const scrollAmount = 300;
-    scrollContainerRef.current.scrollBy({
+    const container = scrollContainerRef.current;
+
+    let scrollAmount = 280; // fallback
+    const firstCard = container.firstElementChild as HTMLElement | null;
+    const secondCard = firstCard?.nextElementSibling as HTMLElement | null;
+
+    if (firstCard && secondCard) {
+      scrollAmount = Math.round(
+        secondCard.getBoundingClientRect().left - firstCard.getBoundingClientRect().left
+      );
+    } else if (firstCard) {
+      scrollAmount = Math.round(firstCard.getBoundingClientRect().width + 18);
+    }
+
+    container.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behavior: "smooth",
     });
+    setTimeout(updateScrollState, 350);
+  };
+
+  // Tab switch handler: reset scroll position
+  const handleFilterChange = (tabId: FilterCategory) => {
+    setActiveFilter(tabId);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -135,8 +230,13 @@ export default function ExclusiveProductsSection() {
           <button
             type="button"
             onClick={() => handleScroll("left")}
+            disabled={!canScrollLeft}
             aria-label="Previous Bats"
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-zinc-200 bg-white text-zinc-600 hover:text-black hover:border-zinc-300 flex items-center justify-center transition-all shadow-xs active:scale-95"
+            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 ${
+              canScrollLeft
+                ? "bg-zinc-950 text-white hover:bg-zinc-800 cursor-pointer"
+                : "border border-zinc-200 bg-white text-zinc-400 cursor-not-allowed"
+            }`}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -145,8 +245,13 @@ export default function ExclusiveProductsSection() {
           <button
             type="button"
             onClick={() => handleScroll("right")}
+            disabled={!canScrollRight}
             aria-label="Next Bats"
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-zinc-950 text-white hover:bg-zinc-800 flex items-center justify-center transition-all shadow-xs active:scale-95"
+            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 ${
+              canScrollRight
+                ? "bg-zinc-950 text-white hover:bg-zinc-800 cursor-pointer"
+                : "border border-zinc-200 bg-white text-zinc-400 cursor-not-allowed"
+            }`}
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -161,7 +266,7 @@ export default function ExclusiveProductsSection() {
             <button
               key={tab.id}
               type="button"
-              onClick={() => setActiveFilter(tab.id)}
+              onClick={() => handleFilterChange(tab.id)}
               className={`px-5 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                 isActive
                   ? "bg-zinc-950 text-white shadow-xs"
@@ -174,16 +279,16 @@ export default function ExclusiveProductsSection() {
         })}
       </div>
 
-      {/* 3. PRODUCT CARDS GRID (5 Cards Row) */}
+      {/* 3. PRODUCT CARDS SLIDER (5 Cards Visible Row on Desktop) */}
       <div
         ref={scrollContainerRef}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4.5 overflow-x-auto scrollbar-none pb-2"
+        className="flex gap-3.5 sm:gap-4.5 overflow-x-auto scroll-smooth scrollbar-none pb-2 snap-x snap-mandatory"
       >
         {displayedProducts.map((bat) => (
           <Link
             key={bat.id}
             href={`/product/${bat.id}`}
-            className="group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
+            className="flex-shrink-0 w-[calc((100%-14px)/2)] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
           >
             {/* Bat Image Display Area */}
             <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/60 to-white">

@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 export default function CtaBannerSection() {
   return (
@@ -11,15 +10,16 @@ export default function CtaBannerSection() {
       <Link
         href="/category/pre-owned-gear"
         aria-label="Great Gear. Smarter Prices. Shop Pre-owned Cricket Gear"
-        className="group relative block w-full aspect-[4.9/1] min-h-[160px] sm:min-h-[190px] md:min-h-[210px] rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-800/40 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 select-none bg-black"
+        className="group relative block w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-800/40 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 select-none bg-black"
       >
-        {/* Banner Graphic Image */}
+        {/* Banner Graphic Image with auto height adjustment */}
         <Image
           src="/images/banners/pre_owned_cta_banner.png"
           alt="Great Gear. Smarter Prices. Quality pre-owned cricket gear at unbeatable value."
-          fill
+          width={2170}
+          height={725}
           sizes="(max-width: 1440px) 100vw, 1440px"
-          className="object-cover object-center group-hover:scale-[1.01] transition-transform duration-500"
+          className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-500"
           priority
         />
 
