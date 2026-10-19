@@ -192,7 +192,7 @@ export default function HeroSection() {
         <div className="lg:col-span-4 flex flex-col gap-3.5 sm:gap-4 justify-between">
           {/* TOP CARD: HIRE EXPERTS */}
           <Link
-            href="/category/shop-cricket"
+            href="/hire-experts"
             className="group relative flex-1 min-h-[160px] sm:min-h-[175px] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-zinc-800/40 bg-zinc-900"
           >
             <Image

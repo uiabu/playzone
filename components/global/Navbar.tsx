@@ -7,7 +7,6 @@ import AuthModal from "./AuthModal";
 import { useCart } from "@/context/CartContext";
 import {
   Search,
-  ArrowLeftRight,
   ShoppingCart,
   User,
   ChevronDown,
@@ -30,34 +29,6 @@ interface CategoryItem {
 
 const CATEGORIES: CategoryItem[] = [
   {
-    name: "Shop Cricket",
-    href: "/category/shop-cricket",
-    hasDropdown: true,
-    subcategories: [
-      {
-        title: "Popular Categories",
-        items: [
-          "English Willow Bats",
-          "Batting Pads & Gloves",
-          "Cricket Helmets",
-          "Leather Match Balls",
-          "Wicket Keeping Gear",
-          "Spikes & Cricket Shoes",
-          "Wheelie & Duffle Bags",
-        ],
-      },
-      {
-        title: "Featured Collections",
-        items: [
-          "International Match Kit",
-          "Tournament Ready Combos",
-          "Club & Academy Packs",
-          "Custom Knocked-In Bats",
-        ],
-      },
-    ],
-  },
-  {
     name: "New Gear",
     href: "/category/new-gear",
     hasDropdown: false,
@@ -65,6 +36,11 @@ const CATEGORIES: CategoryItem[] = [
   {
     name: "Pre-owned Gear",
     href: "/category/pre-owned-gear",
+    hasDropdown: false,
+  },
+  {
+    name: "Hire Experts",
+    href: "/hire-experts",
     hasDropdown: false,
   },
   {
@@ -207,14 +183,14 @@ const CATEGORIES: CategoryItem[] = [
     ],
   },
   {
-    name: "Deals",
-    href: "/deals",
+    name: "Offers",
+    href: "/offers",
     hasDropdown: true,
     subcategories: [
       {
         title: "Special Offers",
         items: [
-          "Clearance Bats (Up to 40% Off)",
+          "Clearance Bats (Up to 45% Off)",
           "Combo Bundle Discounts",
           "Seasonal Gear Blowout",
           "Free Shipping Deals",
@@ -296,21 +272,23 @@ export default function Navbar() {
                 Pre-order
               </Link>
 
+              {/* Hire Experts */}
+              <Link
+                href="/hire-experts"
+                className="text-white hover:text-[#a3e635] font-semibold text-sm transition-colors hidden sm:inline-flex items-center gap-1.5 whitespace-nowrap"
+              >
+                <span>Hire Experts</span>
+                <span className="bg-[#84cc16] text-black text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none uppercase tracking-wider">
+                  New
+                </span>
+              </Link>
+
               {/* Offers (Vibrant Yellow / Gold) */}
               <Link
                 href="/offers"
                 className="text-[#facc15] hover:text-[#fde047] font-bold text-sm transition-colors"
               >
                 Offers
-              </Link>
-
-              {/* Compare */}
-              <Link
-                href="/compare"
-                className="flex items-center gap-1.5 text-white hover:text-yellow-400 font-medium text-sm transition-colors hidden md:flex"
-              >
-                <ArrowLeftRight className="w-4 h-4 text-zinc-300" />
-                <span>Compare</span>
               </Link>
 
               {/* Shopping Cart Button (Bordered Circle with Neon Green Badge) */}
@@ -452,12 +430,11 @@ export default function Navbar() {
               <span>Offers</span>
             </Link>
             <Link
-              href="/compare"
+              href="/hire-experts"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 rounded bg-white border border-zinc-200 text-center text-zinc-800 hover:text-yellow-600 flex items-center justify-center gap-1.5"
+              className="p-2 rounded bg-lime-50 border border-lime-300 text-center text-lime-800 font-bold flex items-center justify-center gap-1.5"
             >
-              <ArrowLeftRight className="w-4 h-4" />
-              <span>Compare</span>
+              <span>🏏 Hire Experts</span>
             </Link>
             <button
               type="button"
