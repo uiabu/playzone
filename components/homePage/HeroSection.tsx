@@ -25,44 +25,54 @@ interface HeroSlide {
 
 const CRICKET_SLIDES: HeroSlide[] = [
   {
-    id: "play-your-best",
-    imageSrc: "/images/hero/hero_cricket_main.png",
-    alt: "Play Your Best - Premium Cricket Gear",
+    id: "build-your-kit",
+    imageSrc: "/images/hero/build_your_kits.png",
+    alt: "Build Your Kit - Complete Cricket Sets & Equipment",
     link: "/category/shop-cricket",
-    titleWhite: "PLAY YOUR",
-    titleAccent: "BEST",
-    subtitle: "Premium Cricket Gear. New & Pre-owned.",
-    ctaText: "SHOP CRICKET GEAR →",
+    titleWhite: "BUILD YOUR",
+    titleAccent: "KIT",
+    subtitle: "Everything You Need for the Cricket Season.",
+    ctaText: "BUILD YOUR KIT →",
   },
   {
-    id: "english-willow-bats",
-    imageSrc: "/images/hero/hero_cricket_main.png",
-    alt: "Handcrafted English Willow Bats",
+    id: "cricket-bats",
+    imageSrc: "/images/hero/hero_cricket_bats.png",
+    alt: "Cricket Bats - Handcrafted English Willow & Kashmir Willow",
     link: "/category/cricket-bats",
-    titleWhite: "GRADE 1",
-    titleAccent: "WILLOW",
-    subtitle: "Hand-selected Bats for Power & Precision.",
-    ctaText: "EXPLORE BATS →",
+    titleWhite: "CRICKET",
+    titleAccent: "BATS",
+    subtitle: "Premium English & Kashmir Willow Bats.",
+    ctaText: "SHOP BATS →",
   },
   {
-    id: "pro-protection",
-    imageSrc: "/images/hero/hero_cricket_main.png",
-    alt: "Pro Batting Protection Gear",
+    id: "cricket-helmets",
+    imageSrc: "/images/hero/hero_cricket_bats_helmets.png",
+    alt: "Cricket Helmets - Elite Protection Trusted by Pros",
     link: "/category/batting",
-    titleWhite: "ELITE",
-    titleAccent: "PROTECTION",
-    subtitle: "Pads, Gloves & Helmets Trusted by Pros.",
-    ctaText: "VIEW GEAR →",
+    titleWhite: "CRICKET",
+    titleAccent: "HELMETS",
+    subtitle: "Titanium & Carbon Composite Protection.",
+    ctaText: "VIEW HELMETS →",
   },
   {
-    id: "pre-owned-super-deals",
-    imageSrc: "/images/hero/hero_cricket_main.png",
-    alt: "Certified Pre-Owned Cricket Gear",
-    link: "/category/pre-owned-gear",
-    titleWhite: "VERIFIED",
-    titleAccent: "VALUE",
-    subtitle: "100% Inspected Pre-owned Kits at Big Savings.",
-    ctaText: "SHOP PRE-OWNED →",
+    id: "cricket-pads",
+    imageSrc: "/images/hero/hero_cricket_bats_pads.png",
+    alt: "Cricket Pads - Lightweight High-Density Legguards",
+    link: "/category/batting",
+    titleWhite: "CRICKET",
+    titleAccent: "PADS",
+    subtitle: "High-Density Foam & Traditional Cane Pads.",
+    ctaText: "EXPLORE PADS →",
+  },
+  {
+    id: "cricket-shoes",
+    imageSrc: "/images/hero/hero_cricket_bats_shoes.png",
+    alt: "Cricket Shoes - Turf Spikes & Rubber Studs",
+    link: "/category/shoes",
+    titleWhite: "CRICKET",
+    titleAccent: "SHOES",
+    subtitle: "Engineered Grip for Bowlers & Batsmen.",
+    ctaText: "SHOP SHOES →",
   },
 ];
 
@@ -110,11 +120,10 @@ export default function HeroSection() {
               return (
                 <div
                   key={slide.id}
-                  className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
-                    isActive
-                      ? "opacity-100 z-10 pointer-events-auto"
-                      : "opacity-0 z-0 pointer-events-none"
-                  }`}
+                  className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${isActive
+                    ? "opacity-100 z-10 pointer-events-auto"
+                    : "opacity-0 z-0 pointer-events-none"
+                    }`}
                 >
                   {/* Hero Banner Image */}
                   <Image
@@ -167,11 +176,10 @@ export default function HeroSection() {
                   type="button"
                   onClick={() => setCurrentSlide(idx)}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`h-2 transition-all duration-300 rounded-full ${
-                    isActive
-                      ? "w-8 bg-[#a3e635] shadow-[0_0_8px_rgba(163,230,53,0.8)]"
-                      : "w-3 bg-white/70 hover:bg-white"
-                  }`}
+                  className={`h-2 transition-all duration-300 rounded-full ${isActive
+                    ? "w-8 bg-[#a3e635] shadow-[0_0_8px_rgba(163,230,53,0.8)]"
+                    : "w-3 bg-white/70 hover:bg-white"
+                    }`}
                 />
               );
             })}
@@ -182,14 +190,14 @@ export default function HeroSection() {
         {/* RIGHT COLUMN: 2 STACKED PROMO CARDS (lg:col-span-4) */}
         {/* --------------------------------------------------------- */}
         <div className="lg:col-span-4 flex flex-col gap-3.5 sm:gap-4 justify-between">
-          {/* TOP CARD: PRE-OWNED PICKS */}
+          {/* TOP CARD: HIRE EXPERTS */}
           <Link
-            href="/category/pre-owned-gear"
+            href="/category/shop-cricket"
             className="group relative flex-1 min-h-[160px] sm:min-h-[175px] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-zinc-800/40 bg-zinc-900"
           >
             <Image
-              src="/images/hero/pre_owned_picks.png"
-              alt="Pre-Owned Picks - Quality Gear. Bigger Value."
+              src="/images/hero/experts.png"
+              alt="Hire Experts - For Training, Matches & Events"
               fill
               sizes="(max-width: 1024px) 100vw, 32vw"
               className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
@@ -198,14 +206,14 @@ export default function HeroSection() {
             <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors pointer-events-none" />
           </Link>
 
-          {/* BOTTOM CARD: BUILD YOUR KIT */}
+          {/* BOTTOM CARD: PRE-OWNED PICKS */}
           <Link
-            href="/category/shop-cricket"
+            href="/category/pre-owned-gear"
             className="group relative flex-1 min-h-[160px] sm:min-h-[175px] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-zinc-800/40 bg-zinc-900"
           >
             <Image
-              src="/images/hero/build_your_kit.png"
-              alt="Build Your Kit - Everything You Need."
+              src="/images/hero/pre_owned_pick.png"
+              alt="Pre-Owned Picks - Quality Gear. Bigger Value."
               fill
               sizes="(max-width: 1024px) 100vw, 32vw"
               className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
@@ -220,9 +228,9 @@ export default function HeroSection() {
       {/* 2. BOTTOM HORIZONTAL TRUST BAR (4 CRICKET SERVICE HIGHLIGHTS) */}
       {/* ========================================================= */}
       <div className="mt-3.5 sm:mt-4 bg-white rounded-2xl border border-zinc-200/90 shadow-xs px-4 sm:px-6 py-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 gap-3 sm:gap-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 gap-3 sm:gap-0 ">
           {/* Feature 1: Inspected Pre-owned Gear */}
-          <div className="flex items-center gap-3.5 sm:px-4 first:sm:pl-0 group">
+          <div className="flex items-center gap-3.5 justify-center sm:px-4 first:sm:pl-0 group">
             {/* Icon: Magnifier with Lime Checkmark */}
             <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
               <svg
@@ -268,7 +276,7 @@ export default function HeroSection() {
           </div>
 
           {/* Feature 2: Fast Bangladesh Delivery */}
-          <div className="flex items-center gap-3.5 sm:px-4 pt-3 sm:pt-0 group">
+          <div className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group">
             {/* Icon: Delivery Truck with Lime Cargo Box */}
             <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
               <svg
@@ -320,7 +328,7 @@ export default function HeroSection() {
           </div>
 
           {/* Feature 3: Secure Payments */}
-          <div className="flex items-center gap-3.5 sm:px-4 pt-3 sm:pt-0 group">
+          <div className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group">
             {/* Icon: Shield with Lime Checkmark */}
             <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
               <svg
@@ -363,7 +371,7 @@ export default function HeroSection() {
           </div>
 
           {/* Feature 4: Easy Support */}
-          <div className="flex items-center gap-3.5 sm:px-4 pt-3 sm:pt-0 group">
+          <div className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group">
             {/* Icon: Headphone with Lime Earcups */}
             <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
               <svg

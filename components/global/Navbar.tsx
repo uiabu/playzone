@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import AuthModal from "./AuthModal";
+import { useCart } from "@/context/CartContext";
 import {
   Search,
   ArrowLeftRight,
@@ -226,9 +228,8 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
-  // Cart item count (defaults to 0 matching screenshot)
-  const cartCount = 0;
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const { openCart, itemCount } = useCart();
 
   const toggleCategoryDropdown = (catName: string) => {
     setActiveCategory(activeCategory === catName ? null : catName);
@@ -313,26 +314,28 @@ export default function Navbar() {
               </Link>
 
               {/* Shopping Cart Button (Bordered Circle with Neon Green Badge) */}
-              <Link
-                href="/cart"
-                aria-label="Shopping Cart"
-                className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white flex items-center justify-center transition-all bg-black hover:bg-zinc-800"
+              <button
+                type="button"
+                onClick={openCart}
+                aria-label={`Shopping Cart (${itemCount} items)`}
+                className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white flex items-center justify-center transition-all bg-black hover:bg-zinc-800 text-white cursor-pointer"
               >
                 <ShoppingCart className="w-4 h-4 text-white" />
-                {/* Neon Lime Green Badge with '0' */}
+                {/* Neon Lime Green Badge with item count */}
                 <span className="absolute -top-1.5 -right-1.5 bg-[#84cc16] text-black text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
-                  {cartCount}
+                  {itemCount}
                 </span>
-              </Link>
+              </button>
 
-              {/* User Account Button (Bordered Circle with User Icon) */}
-              <Link
-                href="/account"
-                aria-label="User Account"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white flex items-center justify-center transition-all bg-black hover:bg-zinc-800"
+              {/* User Account / Sign In Button (Bordered Circle with User Icon) */}
+              <button
+                type="button"
+                onClick={() => setAuthModalOpen(true)}
+                aria-label="Sign In or User Account"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white flex items-center justify-center transition-all bg-black hover:bg-zinc-800 text-white cursor-pointer"
               >
                 <User className="w-4 h-4 text-white" />
-              </Link>
+              </button>
 
               {/* Mobile Menu Toggle Button */}
               <button
@@ -456,6 +459,28 @@ export default function Navbar() {
               <ArrowLeftRight className="w-4 h-4" />
               <span>Compare</span>
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openCart();
+              }}
+              className="p-2 rounded bg-zinc-900 border border-zinc-800 text-center text-white hover:text-[#74d600] flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              <span>Cart ({itemCount})</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setAuthModalOpen(true);
+              }}
+              className="p-2.5 rounded-xl bg-[#74d600] text-zinc-950 font-bold text-center hover:bg-[#65c200] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+            >
+              <User className="w-4 h-4" />
+              <span>Sign In</span>
+            </button>
           </div>
 
           {/* Categories Accordion */}
@@ -517,6 +542,12 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Sign In / Auth Modal */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+      />
     </header>
   );
 }
