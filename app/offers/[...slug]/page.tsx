@@ -1,0 +1,12 @@
+"use client";
+
+import React, { Suspense } from "react";
+import OffersPageContent from "@/components/offers/OffersPageContent";
+
+export default function OffersSubcategoryPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-zinc-50" />}>
+      <OffersPageContent />
+    </Suspense>
+  );
+}

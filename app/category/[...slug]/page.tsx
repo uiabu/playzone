@@ -2,7 +2,9 @@
 
 import React, { Suspense } from "react";
 import { useParams } from "next/navigation";
-import ProductCatalogView from "@/components/products/ProductCatalogView";
+import ShopPageContent from "@/components/shop/ShopPageContent";
+import CategoryDetailsContent from "@/components/category/CategoryDetailsContent";
+import PreOwnedPageContent from "@/components/preOwned/PreOwnedPageContent";
 
 function CategoryPageContent() {
   const params = useParams();
@@ -17,46 +19,25 @@ function CategoryPageContent() {
   const mainCategory = slugSegments[0] || "shop-cricket";
   const subCategory = slugSegments[1] || "";
 
-  let initialCategory = "all";
-  let initialCondition: "all" | "new" | "pre-owned" = "all";
-  let pageTitle: string | undefined = undefined;
-
-  if (mainCategory === "pre-owned-gear") {
-    initialCondition = "pre-owned";
-    pageTitle = "Certified Pre-Owned Cricket Gear";
-  } else if (mainCategory === "new-gear") {
-    initialCondition = "new";
-    pageTitle = "New Arrival Cricket Gear";
-  } else if (mainCategory === "cricket-bats" || mainCategory === "bats") {
-    initialCategory = "cricket-bats";
-    pageTitle = subCategory
-      ? `${subCategory.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")} Bats`
-      : "Cricket Bats (English & Kashmir Willow)";
-  } else if (mainCategory === "batting") {
-    initialCategory = "batting";
-    pageTitle = "Batting Equipment & Protective Gear";
-  } else if (mainCategory === "bowling") {
-    initialCategory = "bowling";
-    pageTitle = "Bowling Equipment & Match Balls";
-  } else if (mainCategory === "wicketkeeping") {
-    initialCategory = "batting";
-    pageTitle = "Wicketkeeping Gear & Accessories";
-  } else if (mainCategory === "shoes") {
-    initialCategory = "shoes";
-    pageTitle = "Cricket Shoes, Spikes & Footwear";
-  } else if (mainCategory === "accessories") {
-    initialCategory = "accessories";
-    pageTitle = "Kit Bags, Training Gear & Accessories";
-  } else {
-    initialCategory = "all";
-    pageTitle = "Shop Cricket Equipment & Gear";
+  // 1. General Cricket Superstore / Shop View
+  if (
+    mainCategory === "shop-cricket" ||
+    mainCategory === "shop" ||
+    mainCategory === "all"
+  ) {
+    return <ShopPageContent />;
   }
 
+  // 2. Certified Pre-Owned Gear Dedicated Page
+  if (mainCategory === "pre-owned-gear") {
+    return <PreOwnedPageContent />;
+  }
+
+  // 3. Category Details Page for specific cricket disciplines and subcategories
   return (
-    <ProductCatalogView
-      initialCategory={initialCategory}
-      initialCondition={initialCondition}
-      pageTitle={pageTitle}
+    <CategoryDetailsContent
+      categorySlug={mainCategory}
+      subCategorySlug={subCategory}
     />
   );
 }

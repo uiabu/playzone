@@ -182,22 +182,6 @@ const CATEGORIES: CategoryItem[] = [
       },
     ],
   },
-  {
-    name: "Offers",
-    href: "/offers",
-    hasDropdown: true,
-    subcategories: [
-      {
-        title: "Special Offers",
-        items: [
-          "Clearance Bats (Up to 45% Off)",
-          "Combo Bundle Discounts",
-          "Seasonal Gear Blowout",
-          "Free Shipping Deals",
-        ],
-      },
-    ],
-  },
 ];
 
 export default function Navbar() {

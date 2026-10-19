@@ -1,12 +1,5 @@
-"use client";
-
-import React, { Suspense } from "react";
-import OffersPageContent from "@/components/offers/OffersPageContent";
+import { redirect } from "next/navigation";
 
 export default function DealsPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-zinc-50" />}>
-      <OffersPageContent />
-    </Suspense>
-  );
+  redirect("/offers");
 }

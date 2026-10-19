@@ -309,8 +309,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/deals" className="hover:text-white transition-colors block py-0.5">
-                  Deals & Offers
+                <Link href="/offers" className="hover:text-white transition-colors block py-0.5">
+                  Special Offers
                 </Link>
               </li>
               <li>
