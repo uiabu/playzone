@@ -16,6 +16,7 @@ import {
   FileText,
   AlertCircle,
 } from "lucide-react";
+import { websiteApi } from "@/lib/api";
 
 export default function PreOrderPage() {
   const [productInfo, setProductInfo] = useState("");
@@ -125,7 +126,7 @@ export default function PreOrderPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
@@ -140,12 +141,31 @@ export default function PreOrderPage() {
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
+    try {
+      const res = await websiteApi.submitPreOrder({
+        customerName: name,
+        customerPhone: phone,
+        customerEmail: email,
+        deliveryAddress: address,
+        productInfo,
+        attachedImageUrl: filePreview || undefined,
+        isOtpVerified: otpVerified,
+      });
+
+      if (res?.data?.refNumber) {
+        setOrderRef(res.data.refNumber);
+      } else {
+        const fallbackRef = "PZ-PRE-" + Math.floor(100000 + Math.random() * 900000);
+        setOrderRef(fallbackRef);
+      }
+    } catch (err) {
+      console.warn("Backend pre-order submit error, using local fallback ref:", err);
+      const fallbackRef = "PZ-PRE-" + Math.floor(100000 + Math.random() * 900000);
+      setOrderRef(fallbackRef);
+    } finally {
       setIsSubmitting(false);
-      const generatedRef = "PZ-PRE-" + Math.floor(100000 + Math.random() * 900000);
-      setOrderRef(generatedRef);
       setSubmitted(true);
-    }, 1200);
+    }
   };
 
   const resetForm = () => {

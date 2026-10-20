@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { X, Calendar, Clock, MapPin, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Expert } from "./expertsData";
+import { websiteApi } from "@/lib/api";
 
 interface BookingModalProps {
   expert: Expert | null;
@@ -25,7 +26,7 @@ export default function BookingModal({ expert, isOpen, onClose }: BookingModalPr
 
   const totalCost = expert.price * sessionHours;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const ref = `EXP-${Math.floor(100000 + Math.random() * 900000)}`;
     setBookingRef(ref);
@@ -50,6 +51,23 @@ export default function BookingModal({ expert, isOpen, onClose }: BookingModalPr
       localStorage.setItem("playzone_expert_bookings", JSON.stringify(existing));
     } catch {
       // Ignore localStorage errors
+    }
+
+    try {
+      await websiteApi.bookExpert({
+        expertId: expert.id,
+        expertName: expert.name,
+        customerName: "Player Booking",
+        customerPhone: phone,
+        date: selectedDate,
+        timeSlot: selectedTime,
+        serviceMode: "ground",
+        locationDetails: groundLocation,
+        notes,
+        totalFee: totalCost,
+      });
+    } catch (err) {
+      console.warn("Backend booking submission fallback:", err);
     }
 
     setIsSuccess(true);

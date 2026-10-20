@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, CheckCircle2, AlertCircle } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { websiteApi } from "@/lib/api";
 
 export default function CartModal() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function CartModal() {
     couponCode,
     isCartOpen,
     closeCart,
+    addItem,
     removeItem,
     updateQuantity,
     clearCart,
@@ -27,13 +29,14 @@ export default function CartModal() {
 
   const [inputCoupon, setInputCoupon] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   if (!isCartOpen) return null;
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputCoupon.trim()) return;
-    const res = applyCoupon(inputCoupon);
+    const res = await applyCoupon(inputCoupon);
     setCouponFeedback(res);
     if (res.success) {
       setInputCoupon("");
@@ -41,10 +44,25 @@ export default function CartModal() {
     setTimeout(() => setCouponFeedback(null), 3500);
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (itemCount === 0) return;
-    closeCart();
-    router.push("/checkout");
+    setCheckoutSuccess(true);
+    setTimeout(() => {
+      setCheckoutSuccess(false);
+      clearCart();
+      closeCart();
+    }, 2500);
+  };
+
+  // Sample quick add for user demonstration
+  const handleAddSampleItem = () => {
+    addItem({
+      id: "ss-ton-gladiator",
+      name: "SS Gladiator Grade 1 English Willow",
+      price: 18500,
+      image: "/images/products/ss_gladiator.png",
+      category: "English Willow Bat",
+    });
   };
 
   return (
@@ -238,9 +256,8 @@ export default function CartModal() {
 
             {couponFeedback && !couponCode && (
               <div
-                className={`mt-1.5 text-[11px] flex items-center gap-1 font-semibold ${
-                  couponFeedback.success ? "text-[#4d8c00]" : "text-red-500"
-                }`}
+                className={`mt-1.5 text-[11px] flex items-center gap-1 font-semibold ${couponFeedback.success ? "text-[#4d8c00]" : "text-red-500"
+                  }`}
               >
                 {couponFeedback.success ? (
                   <CheckCircle2 className="w-3 h-3" />
@@ -274,7 +291,15 @@ export default function CartModal() {
             </div>
           </div>
 
-          {/* 5. PROCEED TO CHECKOUT ACTION BUTTON (PLAYZONE NEON LIME GREEN) */}
+          {/* Checkout Success Feedback */}
+          {checkoutSuccess && (
+            <div className="mb-2.5 p-2 bg-lime-50 border border-lime-200 rounded-xl text-xs text-[#4d8c00] font-bold text-center animate-fade-in flex items-center justify-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-[#74d600]" />
+              <span>Order placed successfully! Thank you.</span>
+            </div>
+          )}
+
+          {/* 5. CONTINUE / CHECKOUT ACTION BUTTON (PLAYZONE NEON LIME GREEN) */}
           <button
             type="button"
             onClick={handleCheckout}

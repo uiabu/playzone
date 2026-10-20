@@ -77,11 +77,11 @@ export default function OffersPageContent() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleCopyCoupon = (code: string) => {
+  const handleCopyCoupon = async (code: string) => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(code);
       setCopiedCode(code);
-      const res = applyCoupon(code);
+      const res = await applyCoupon(code);
       setToastMessage(res.message);
       setTimeout(() => {
         setCopiedCode(null);

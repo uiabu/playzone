@@ -16,11 +16,13 @@ import {
   Menu,
   X,
   Package,
+  Megaphone,
   ArrowRight,
   ShieldCheck,
   Truck,
   Zap,
 } from "lucide-react";
+import { websiteApi } from "@/lib/api";
 
 interface MegaMenuPromo {
   title: string;
@@ -336,7 +338,23 @@ export default function Navbar() {
   const isMegaOpen = Boolean(activeMegaCategory && activeCategoryData);
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [announcementText, setAnnouncementText] = useState(
+    "⚡ FREE Express Delivery across Dhaka on orders over ৳5,000! Pre-orders open for 2026 English Willow bats."
+  );
+  const [announcementActive, setAnnouncementActive] = useState(true);
   const { openCart, itemCount } = useCart();
+
+  useEffect(() => {
+    websiteApi
+      .getSettings()
+      .then((res) => {
+        if (res?.data) {
+          if (res.data.announcementText) setAnnouncementText(res.data.announcementText);
+          if (res.data.announcementActive !== undefined) setAnnouncementActive(res.data.announcementActive);
+        }
+      })
+      .catch(() => { });
+  }, []);
 
   const desktopSearchRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
@@ -378,13 +396,20 @@ export default function Navbar() {
     setIsSearchOpenDesktop(false);
     setIsSearchOpenMobile(false);
   };
-
   const toggleCategoryDropdown = (catName: string) => {
     setActiveCategory(activeCategory === catName ? null : catName);
   };
 
   return (
     <header className="sticky top-0 z-50 w-full shadow-md">
+      {/* 0. LIVE ANNOUNCEMENT BAR (From Admin Dashboard Settings) */}
+      {announcementActive && announcementText && (
+        <div className="bg-[#84cc16] text-black text-[11px] sm:text-xs font-black tracking-wide py-1.5 px-4 text-center flex items-center justify-center gap-2 select-none shadow-xs">
+          <Megaphone className="w-3.5 h-3.5 text-black shrink-0 hidden sm:inline" />
+          <span>{announcementText}</span>
+        </div>
+      )}
+
       {/* 1. TOP MAIN BAR (Deep Solid Black) */}
       <div className="bg-[#000000] text-white">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -622,22 +647,19 @@ export default function Navbar() {
                 >
                   <Link
                     href={cat.href}
-                    className={`group flex items-center gap-1.5 py-1.5 px-2.5 transition-colors duration-200 whitespace-nowrap cursor-pointer select-none bg-transparent ${
-                      isActive
-                        ? "text-[#65a30d] font-bold"
-                        : "text-zinc-800 hover:text-[#65a30d] font-semibold"
-                    }`}
+                    className={`group flex items-center gap-1.5 py-1.5 px-2.5 transition-colors duration-200 whitespace-nowrap cursor-pointer select-none bg-transparent ${isActive
+                      ? "text-[#65a30d] font-bold"
+                      : "text-zinc-800 hover:text-[#65a30d] font-semibold"
+                      }`}
                   >
                     <span>{cat.name}</span>
                     {cat.hasDropdown && (
                       <ChevronDown
-                        className={`w-3.5 h-3.5 transition-all duration-200 ${
-                          isHovered ? "rotate-180" : ""
-                        } ${
-                          isActive
+                        className={`w-3.5 h-3.5 transition-all duration-200 ${isHovered ? "rotate-180" : ""
+                          } ${isActive
                             ? "text-[#65a30d]"
                             : "text-zinc-400 group-hover:text-[#65a30d]"
-                        }`}
+                          }`}
                       />
                     )}
                   </Link>
@@ -649,11 +671,10 @@ export default function Navbar() {
           {/* DESKTOP MEGA MENU PANEL WITH IMAGES & SMOOTH TRANSITIONS */}
           {displayedCategoryData && displayedCategoryData.hasDropdown && (
             <div
-              className={`absolute left-4 right-4 top-full z-50 pt-2 select-none transition-all duration-300 ease-out ${
-                isMegaOpen
-                  ? "opacity-100 translate-y-0 visible pointer-events-auto"
-                  : "opacity-0 -translate-y-2 invisible pointer-events-none"
-              }`}
+              className={`absolute left-4 right-4 top-full z-50 pt-2 select-none transition-all duration-300 ease-out ${isMegaOpen
+                ? "opacity-100 translate-y-0 visible pointer-events-auto"
+                : "opacity-0 -translate-y-2 invisible pointer-events-none"
+                }`}
               onMouseEnter={() => {
                 if (closeMegaTimeoutRef.current) {
                   clearTimeout(closeMegaTimeoutRef.current);
@@ -855,9 +876,8 @@ export default function Navbar() {
                         className="p-1 text-zinc-500 hover:text-[#65a30d] transition-colors"
                       >
                         <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-200 ${
-                            isExpanded ? "rotate-180 text-[#65a30d]" : ""
-                          }`}
+                          className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? "rotate-180 text-[#65a30d]" : ""
+                            }`}
                         />
                       </button>
                     )}
