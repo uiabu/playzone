@@ -12,6 +12,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+import { api } from "@/lib/api";
+
 interface HeroSlide {
   id: string;
   imageSrc: string;
@@ -77,27 +79,60 @@ const CRICKET_SLIDES: HeroSlide[] = [
 ];
 
 export default function HeroSection() {
+  const [slides, setSlides] = useState<HeroSlide[]>(CRICKET_SLIDES);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const totalSlides = CRICKET_SLIDES.length;
+  useEffect(() => {
+    async function loadHeroBanners() {
+      try {
+        const res = await api.getBanners();
+        if (res?.data && Array.isArray(res.data)) {
+          const heroBanners = res.data.filter(
+            (b: any) => b.type === "hero" && b.active
+          );
+          if (heroBanners.length > 0) {
+            setSlides(
+              heroBanners.map((b: any) => ({
+                id: b.id,
+                imageSrc: b.imageSrc,
+                alt: b.title,
+                link: b.buttonLink || "/category/cricket-bats",
+                titleWhite: b.title,
+                titleAccent: "",
+                subtitle: b.subtitle || "",
+                ctaText: b.buttonText || "SHOP NOW →",
+              }))
+            );
+          }
+        }
+      } catch {
+        // Fallback to default
+      }
+    }
+    loadHeroBanners();
+  }, []);
+
+  const totalSlides = slides.length;
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    setCurrentSlide((prev) => (totalSlides > 0 ? (prev + 1) % totalSlides : 0));
   }, [totalSlides]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    setCurrentSlide((prev) =>
+      totalSlides > 0 ? (prev - 1 + totalSlides) % totalSlides : 0
+    );
   }, [totalSlides]);
 
   // Autoplay functionality (5.5 seconds)
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || totalSlides <= 1) return;
     const timer = setInterval(() => {
       nextSlide();
     }, 5500);
     return () => clearInterval(timer);
-  }, [nextSlide, isPaused]);
+  }, [nextSlide, isPaused, totalSlides]);
 
   return (
     <section className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 pb-4">
@@ -115,7 +150,7 @@ export default function HeroSection() {
         >
           {/* Slides */}
           <div className="relative w-full h-full">
-            {CRICKET_SLIDES.map((slide, idx) => {
+            {slides.map((slide, idx) => {
               const isActive = idx === currentSlide;
               return (
                 <div
@@ -168,7 +203,7 @@ export default function HeroSection() {
 
           {/* Bottom Indicator Pills (Centered) */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-            {CRICKET_SLIDES.map((_, idx) => {
+            {slides.map((_, idx) => {
               const isActive = idx === currentSlide;
               return (
                 <button

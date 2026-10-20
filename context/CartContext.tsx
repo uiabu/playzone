@@ -27,7 +27,7 @@ interface CartContextType {
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
-  applyCoupon: (code: string) => { success: boolean; message: string };
+  applyCoupon: (code: string) => Promise<{ success: boolean; message: string }>;
   removeCoupon: () => void;
 }
 
@@ -98,11 +98,37 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setCouponDiscount(0);
   };
 
-  const applyCoupon = (code: string) => {
+  const applyCoupon = async (code: string): Promise<{ success: boolean; message: string }> => {
     const trimmed = code.trim().toUpperCase();
     if (!trimmed) {
       return { success: false, message: "Please enter a coupon code." };
     }
+
+    const currentSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    // Try Express Backend API validation first
+    try {
+      const res = await fetch("http://localhost:5000/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: trimmed, subtotal: currentSubtotal }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success && data.data) {
+        setCouponCode(data.data.code);
+        if (data.data.discountType === "percent") {
+          setCouponDiscount(data.data.discountValue / 100);
+        } else {
+          setCouponDiscount(data.data.discountValue);
+        }
+        return { success: true, message: data.message };
+      } else if (!res.ok) {
+        return { success: false, message: data.message || "Invalid coupon code." };
+      }
+    } catch {
+      // Fallback local validation if server is unreachable
+    }
+
     if (trimmed === "PLAYZONE10" || trimmed === "CRICKET10") {
       setCouponCode(trimmed);
       setCouponDiscount(0.1); // 10% off

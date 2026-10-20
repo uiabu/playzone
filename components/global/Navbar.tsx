@@ -13,7 +13,9 @@ import {
   Menu,
   X,
   Package,
+  Megaphone,
 } from "lucide-react";
+import { websiteApi } from "@/lib/api";
 
 interface SubCategoryGroup {
   title: string;
@@ -189,7 +191,23 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [announcementText, setAnnouncementText] = useState(
+    "⚡ FREE Express Delivery across Dhaka on orders over ৳5,000! Pre-orders open for 2026 English Willow bats."
+  );
+  const [announcementActive, setAnnouncementActive] = useState(true);
   const { openCart, itemCount } = useCart();
+
+  React.useEffect(() => {
+    websiteApi
+      .getSettings()
+      .then((res) => {
+        if (res?.data) {
+          if (res.data.announcementText) setAnnouncementText(res.data.announcementText);
+          if (res.data.announcementActive !== undefined) setAnnouncementActive(res.data.announcementActive);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const toggleCategoryDropdown = (catName: string) => {
     setActiveCategory(activeCategory === catName ? null : catName);
@@ -197,6 +215,14 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full shadow-md">
+      {/* 0. LIVE ANNOUNCEMENT BAR (From Admin Dashboard Settings) */}
+      {announcementActive && announcementText && (
+        <div className="bg-[#84cc16] text-black text-[11px] sm:text-xs font-black tracking-wide py-1.5 px-4 text-center flex items-center justify-center gap-2 select-none shadow-xs">
+          <Megaphone className="w-3.5 h-3.5 text-black shrink-0 hidden sm:inline" />
+          <span>{announcementText}</span>
+        </div>
+      )}
+
       {/* 1. TOP MAIN BAR (Deep Solid Black) */}
       <div className="bg-[#000000] text-white">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">

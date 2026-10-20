@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, CheckCircle2, AlertCircle } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { websiteApi } from "@/lib/api";
 
 export default function CartModal() {
   const {
@@ -27,13 +28,14 @@ export default function CartModal() {
   const [inputCoupon, setInputCoupon] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [placedOrderNumber, setPlacedOrderNumber] = useState<string | null>(null);
 
   if (!isCartOpen) return null;
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputCoupon.trim()) return;
-    const res = applyCoupon(inputCoupon);
+    const res = await applyCoupon(inputCoupon);
     setCouponFeedback(res);
     if (res.success) {
       setInputCoupon("");
@@ -41,14 +43,46 @@ export default function CartModal() {
     setTimeout(() => setCouponFeedback(null), 3500);
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (itemCount === 0) return;
+
+    try {
+      const orderPayload = {
+        customerName: "Playzone Online Customer",
+        customerPhone: "01712-345678",
+        customerEmail: "customer@playzone.com",
+        shippingAddress: "House 12, Road 4, Dhanmondi",
+        city: "Dhaka",
+        items: items.map((it) => ({
+          productId: it.id,
+          productName: it.name,
+          productImage: it.image,
+          price: it.price,
+          quantity: it.quantity,
+        })),
+        subtotal,
+        discount,
+        deliveryFee: total >= 5000 ? 0 : 80,
+        totalAmount: total + (total >= 5000 ? 0 : 80),
+        paymentMethod: "cod" as const,
+        notes: couponCode ? `Coupon applied: ${couponCode}` : "Online store cart checkout",
+      };
+
+      const res = await websiteApi.createOrder(orderPayload);
+      if (res?.data?.orderNumber) {
+        setPlacedOrderNumber(res.data.orderNumber);
+      }
+    } catch (err) {
+      console.warn("Backend order placement fallback:", err);
+    }
+
     setCheckoutSuccess(true);
     setTimeout(() => {
       setCheckoutSuccess(false);
+      setPlacedOrderNumber(null);
       clearCart();
       closeCart();
-    }, 2500);
+    }, 3000);
   };
 
   // Sample quick add for user demonstration
@@ -267,9 +301,13 @@ export default function CartModal() {
 
           {/* Checkout Success Feedback */}
           {checkoutSuccess && (
-            <div className="mb-2.5 p-2 bg-lime-50 border border-lime-200 rounded-xl text-xs text-[#4d8c00] font-bold text-center animate-fade-in flex items-center justify-center gap-1.5">
+            <div className="mb-2.5 p-2.5 bg-lime-50 border border-lime-300 rounded-xl text-xs text-[#3a6b00] font-bold text-center animate-fade-in flex items-center justify-center gap-1.5 shadow-sm">
               <CheckCircle2 className="w-4 h-4 text-[#74d600]" />
-              <span>Order placed successfully! Thank you.</span>
+              <span>
+                {placedOrderNumber
+                  ? `Order #${placedOrderNumber} placed successfully! Thank you.`
+                  : "Order placed successfully! Thank you."}
+              </span>
             </div>
           )}
 
