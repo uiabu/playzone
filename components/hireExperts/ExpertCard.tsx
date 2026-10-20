@@ -19,7 +19,7 @@ export default function ExpertCard({
   const [isLiked, setIsLiked] = useState(false);
 
   return (
-    <div className="group relative flex flex-col bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-200 overflow-hidden">
+    <div className="group relative flex flex-col h-full bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-200 overflow-hidden">
       {/* Top Media Area */}
       <div className="relative w-full aspect-[16/11] bg-zinc-100 overflow-hidden">
         <Image
@@ -29,16 +29,6 @@ export default function ExpertCard({
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover group-hover:scale-102 transition-transform duration-300"
         />
-
-        {/* Verification Checkmark Badge (Bottom Left) */}
-        {expert.verified && (
-          <div
-            className="absolute bottom-2.5 left-2.5 w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full bg-[#84cc16] text-white flex items-center justify-center shadow-md ring-2 ring-white"
-            title="Verified Expert"
-          >
-            <Check className="w-3.5 h-3.5 stroke-[3]" />
-          </div>
-        )}
 
         {/* Wishlist / Favorite Button (Top Right) */}
         <button
@@ -65,9 +55,19 @@ export default function ExpertCard({
       {/* Card Content */}
       <div className="p-3.5 sm:p-4 flex flex-col flex-1">
         {/* Name and Role */}
-        <h3 className="font-semibold text-zinc-900 text-sm sm:text-[15px] leading-snug">
-          {expert.name}
-        </h3>
+        <div className="flex items-center gap-1.5">
+          <h3 className="font-semibold text-zinc-900 text-sm sm:text-[15px] leading-snug">
+            {expert.name}
+          </h3>
+          {expert.verified && (
+            <span
+              className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#84cc16] text-white shrink-0"
+              title="Verified Expert"
+            >
+              <Check className="w-2.5 h-2.5 stroke-[3]" />
+            </span>
+          )}
+        </div>
         <p className="text-zinc-600 text-xs sm:text-[13px] leading-tight mt-0.5 font-normal">
           {expert.role}
         </p>

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { X, Star, MapPin, Award, CheckCircle2, ShieldCheck, Calendar, Clock } from "lucide-react";
+import { X, Star, MapPin, Award, ShieldCheck, Calendar, Clock } from "lucide-react";
 import { Expert } from "./expertsData";
 
 interface ProfileModalProps {
@@ -46,11 +46,6 @@ export default function ProfileModal({ expert, isOpen, onClose, onBook }: Profil
                 fill
                 className="object-cover"
               />
-              {expert.verified && (
-                <div className="absolute bottom-1.5 left-1.5 w-5 h-5 rounded-full bg-[#a3e635] flex items-center justify-center text-black shadow-xs">
-                  <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.5]" />
-                </div>
-              )}
             </div>
           </div>
         </div>

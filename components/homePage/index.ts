@@ -1,5 +1,6 @@
 export { default as HeroSection } from "./HeroSection";
 export { default as FeatureCategoiesSection } from "./FeatureCategoiesSection";
+export { default as HireExpertsSection } from "./HireExpertsSection";
 export { default as ExclusiveProductsSection } from "./ExclusiveProductsSection";
 export { default as BattingEssentialsSection } from "./BattingEssentialsSection";
 export { default as CtaBannerSection } from "./CtaBannerSection";

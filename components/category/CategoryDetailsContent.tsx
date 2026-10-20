@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   ChevronRight,
   ChevronDown,
+  ChevronUp,
   Star,
   ShoppingCart,
   Check,
@@ -16,6 +17,8 @@ import {
   Info,
   SlidersHorizontal,
   Flame,
+  X,
+  RotateCcw,
 } from "lucide-react";
 import { ALL_PRODUCTS, Product } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
@@ -364,8 +367,67 @@ export default function CategoryDetailsContent({
   const config = CATEGORY_CONFIGS[normalizedCat] || CATEGORY_CONFIGS["cricket-bats"];
 
   const [activeSubmenu, setActiveSubmenu] = useState<string>(subCategorySlug || "all");
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [condition, setCondition] = useState<"all" | "new" | "pre-owned">("all");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(25000);
+  const [minRating, setMinRating] = useState<number | null>(null);
+  const [inStockOnly, setInStockOnly] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>("recommended");
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
   const [addedToast, setAddedToast] = useState<string | null>(null);
+
+  // Accordion open/close state
+  const [openSections, setOpenSections] = useState({
+    submenu: true,
+    brand: true,
+    condition: true,
+    price: true,
+    rating: true,
+  });
+
+  const toggleSection = (section: keyof typeof openSections) => {
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handleBrandToggle = (brand: string) => {
+    setSelectedBrands((prev) =>
+      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
+    );
+  };
+
+  const handleResetFilters = () => {
+    setActiveSubmenu("all");
+    setSelectedBrands([]);
+    setCondition("all");
+    setMinPrice(0);
+    setMaxPrice(25000);
+    setMinRating(null);
+    setInStockOnly(false);
+  };
+
+  const activeFilterCount =
+    (activeSubmenu !== "all" && activeSubmenu ? 1 : 0) +
+    selectedBrands.length +
+    (condition !== "all" ? 1 : 0) +
+    (minRating !== null ? 1 : 0) +
+    (minPrice > 0 || maxPrice < 25000 ? 1 : 0) +
+    (inStockOnly ? 1 : 0);
+
+  // Available brands in this specific department
+  const availableBrands = useMemo(() => {
+    const brandsSet = new Set<string>();
+    ALL_PRODUCTS.forEach((p) => {
+      if (normalizedCat === "cricket-bats" && p.categorySlug === "cricket-bats") brandsSet.add(p.brand);
+      else if (normalizedCat === "batting" && p.categorySlug === "batting") brandsSet.add(p.brand);
+      else if (normalizedCat === "bowling" && (p.categorySlug === "bowling" || p.categorySlug === "shoes")) brandsSet.add(p.brand);
+      else if (normalizedCat === "wicketkeeping" && (p.categorySlug === "wicketkeeping" || p.name.toLowerCase().includes("keeper"))) brandsSet.add(p.brand);
+      else if (normalizedCat === "shoes" && p.categorySlug === "shoes") brandsSet.add(p.brand);
+      else if (normalizedCat === "accessories" && p.categorySlug === "accessories") brandsSet.add(p.brand);
+      else if (p.categorySlug === normalizedCat) brandsSet.add(p.brand);
+    });
+    return Array.from(brandsSet);
+  }, [normalizedCat]);
 
   useEffect(() => {
     if (subCategorySlug) {
@@ -383,7 +445,7 @@ export default function CategoryDetailsContent({
     router.push(newUrl, { scroll: false });
   };
 
-  // Filter Products strictly by Category AND SubCategory slug!
+  // Filter Products strictly by Category, SubCategory slug, and side filters!
   const filteredProducts = useMemo(() => {
     return ALL_PRODUCTS.filter((product) => {
       // 1. Category check with cross-category exceptions for relevant submenus
@@ -422,14 +484,58 @@ export default function CategoryDetailsContent({
       }
 
       // 2. Subcategory / Slug Filter
-      return matchProductToSubcategory(product, activeSubmenu);
+      if (!matchProductToSubcategory(product, activeSubmenu)) {
+        return false;
+      }
+
+      // 3. Brands filter
+      if (selectedBrands.length > 0) {
+        if (!selectedBrands.some((b) => product.brand.toLowerCase() === b.toLowerCase())) {
+          return false;
+        }
+      }
+
+      // 4. Condition filter
+      if (condition === "new" && product.badge?.includes("PRE-OWNED")) {
+        return false;
+      }
+      if (condition === "pre-owned" && !product.badge?.includes("PRE-OWNED")) {
+        return false;
+      }
+
+      // 5. Price filter
+      if (product.price < minPrice || product.price > maxPrice) {
+        return false;
+      }
+
+      // 6. Rating filter
+      if (minRating !== null && product.rating < minRating) {
+        return false;
+      }
+
+      // 7. In stock
+      if (inStockOnly && !product.inStock) {
+        return false;
+      }
+
+      return true;
     }).sort((a, b) => {
       if (sortBy === "price-low") return a.price - b.price;
       if (sortBy === "price-high") return b.price - a.price;
       if (sortBy === "rating") return b.rating - a.rating;
       return 0;
     });
-  }, [normalizedCat, activeSubmenu, sortBy]);
+  }, [
+    normalizedCat,
+    activeSubmenu,
+    selectedBrands,
+    condition,
+    minPrice,
+    maxPrice,
+    minRating,
+    inStockOnly,
+    sortBy,
+  ]);
 
   const handleQuickAdd = (product: Product, e: React.MouseEvent) => {
     e.preventDefault();
@@ -509,172 +615,683 @@ export default function CategoryDetailsContent({
           </div>
         )}
 
-        {/* 3. Category Submenu Navigation Pills (Strictly wired to subcategories) */}
-        <div>
-          <div className="flex items-center justify-between mb-2.5">
-            <h2 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
-              {config.title} Sub-Departments:
-            </h2>
-            <span className="text-xs text-zinc-500 font-medium">
-              Showing {filteredProducts.length} models
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
-            {config.submenus.map((tab) => {
-              const isSelected =
-                activeSubmenu === tab.id ||
-                activeSubmenu === tab.slug ||
-                (tab.id === "all" && (!activeSubmenu || activeSubmenu === "all"));
-
-              return (
+        {/* 3. Main Body: SIDEBAR FILTER + PRODUCT CATALOG */}
+        <div className="flex flex-col lg:flex-row gap-6 items-start pt-2">
+          {/* Desktop Left Sticky Filter Sidebar */}
+          <aside className="hidden lg:block w-[280px] shrink-0 sticky top-24 bg-white rounded-2xl border border-zinc-200/90 p-5 shadow-xs max-h-[calc(100vh-120px)] overflow-y-auto">
+            {/* Sidebar Header */}
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-zinc-100">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4 text-[#84cc16]" />
+                <h3 className="text-sm font-black text-zinc-950 uppercase tracking-wider">
+                  Filters
+                </h3>
+                {activeFilterCount > 0 && (
+                  <span className="w-5 h-5 rounded-full bg-[#84cc16] text-white text-[10px] font-bold flex items-center justify-center">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </div>
+              {activeFilterCount > 0 && (
                 <button
-                  key={tab.id}
                   type="button"
-                  onClick={() => handleSubmenuClick(tab)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
-                    isSelected
-                      ? "bg-zinc-950 text-white shadow-xs"
-                      : "bg-white text-zinc-700 hover:bg-zinc-100 border border-zinc-200"
-                  }`}
+                  onClick={handleResetFilters}
+                  className="text-xs font-bold text-rose-600 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1"
                 >
-                  {tab.label}
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Reset</span>
                 </button>
-              );
-            })}
-          </div>
-        </div>
+              )}
+            </div>
 
-        {/* 4. Results Header & Sort Dropdown */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-zinc-200/80">
-          <div>
-            <h3 className="text-base sm:text-lg font-black text-zinc-950">
-              {activeSubmenu && activeSubmenu !== "all"
-                ? `${activeSubmenu.replace(/-/g, " ").toUpperCase()}`
-                : config.title}
-            </h3>
-            <p className="text-xs text-zinc-500">
-              All models in stock with official warranty and 24h dispatch
-            </p>
-          </div>
+            <div className="space-y-4">
+              {/* Sub-departments Accordion */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => toggleSection("submenu")}
+                  className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
+                >
+                  <span>Sub-Departments</span>
+                  {openSections.submenu ? (
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
+                  )}
+                </button>
+                {openSections.submenu && (
+                  <div className="space-y-1">
+                    {config.submenus.map((tab) => {
+                      const isSelected =
+                        activeSubmenu === tab.id ||
+                        activeSubmenu === tab.slug ||
+                        (tab.id === "all" && (!activeSubmenu || activeSubmenu === "all"));
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-zinc-500">Sort By</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-white border border-zinc-200 text-xs font-bold text-zinc-800 rounded-lg px-3 py-1.5 outline-none cursor-pointer shadow-2xs"
-            >
-              <option value="recommended">Recommended</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-            </select>
-          </div>
-        </div>
+                      return (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => handleSubmenuClick(tab)}
+                          className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-zinc-950 text-white shadow-2xs"
+                              : "text-zinc-600 hover:bg-zinc-100 font-medium"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
 
-        {/* 5. Products Grid */}
-        {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filteredProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/product/${product.slug}`}
-                className="group bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
-              >
-                <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/70 via-white to-zinc-50/40">
-                  <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 240px"
-                    className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
+              {/* Brands Filter */}
+              {availableBrands.length > 0 && (
+                <div className="pt-3 border-t border-zinc-100">
+                  <button
+                    type="button"
+                    onClick={() => toggleSection("brand")}
+                    className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
+                  >
+                    <span>
+                      Brands {selectedBrands.length > 0 && `(${selectedBrands.length})`}
+                    </span>
+                    {openSections.brand ? (
+                      <ChevronUp className="w-4 h-4 text-zinc-400" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-zinc-400" />
+                    )}
+                  </button>
+                  {openSections.brand && (
+                    <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                      {availableBrands.map((brand) => {
+                        const checked = selectedBrands.includes(brand);
+                        return (
+                          <label
+                            key={brand}
+                            className="flex items-center gap-2 text-xs text-zinc-700 hover:text-zinc-950 cursor-pointer font-medium select-none py-0.5"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => handleBrandToggle(brand)}
+                              className="w-4 h-4 rounded border-zinc-300 text-[#84cc16] focus:ring-[#84cc16] accent-[#84cc16] cursor-pointer"
+                            />
+                            <span>{brand}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Condition (All / New / Pre-Owned) */}
+              <div className="pt-3 border-t border-zinc-100">
+                <button
+                  type="button"
+                  onClick={() => toggleSection("condition")}
+                  className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
+                >
+                  <span>Condition</span>
+                  {openSections.condition ? (
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
+                  )}
+                </button>
+                {openSections.condition && (
+                  <div className="grid grid-cols-3 gap-1 bg-zinc-100 p-1 rounded-xl text-xs font-bold">
+                    {(["all", "new", "pre-owned"] as const).map((cond) => (
+                      <button
+                        key={cond}
+                        type="button"
+                        onClick={() => setCondition(cond)}
+                        className={`py-1.5 text-center text-xs rounded-lg transition-all cursor-pointer ${
+                          condition === cond
+                            ? "bg-white text-zinc-950 font-bold shadow-2xs"
+                            : "text-zinc-500 hover:text-zinc-900 font-medium"
+                        }`}
+                      >
+                        {cond === "all" ? "All" : cond === "new" ? "New" : "Pre-owned"}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Price Range */}
+              <div className="pt-3 border-t border-zinc-100">
+                <button
+                  type="button"
+                  onClick={() => toggleSection("price")}
+                  className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
+                >
+                  <span>Price Range (BDT)</span>
+                  {openSections.price ? (
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
+                  )}
+                </button>
+                {openSections.price && (
+                  <div className="space-y-2.5">
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <span className="text-[10px] text-zinc-400 font-bold block mb-1">
+                          MIN (৳)
+                        </span>
+                        <input
+                          type="number"
+                          value={minPrice}
+                          onChange={(e) => setMinPrice(Math.max(0, Number(e.target.value) || 0))}
+                          className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs outline-none focus:border-[#84cc16]"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[10px] text-zinc-400 font-bold block mb-1">
+                          MAX (৳)
+                        </span>
+                        <input
+                          type="number"
+                          value={maxPrice}
+                          onChange={(e) => setMaxPrice(Math.max(0, Number(e.target.value) || 25000))}
+                          className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs outline-none focus:border-[#84cc16]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Customer Rating */}
+              <div className="pt-3 border-t border-zinc-100">
+                <button
+                  type="button"
+                  onClick={() => toggleSection("rating")}
+                  className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
+                >
+                  <span>Customer Rating</span>
+                  {openSections.rating ? (
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
+                  )}
+                </button>
+                {openSections.rating && (
+                  <div className="space-y-1.5">
+                    {[4.8, 4.5, 4.0].map((star) => {
+                      const checked = minRating === star;
+                      return (
+                        <label
+                          key={star}
+                          className="flex items-center gap-2 text-xs text-zinc-700 cursor-pointer font-medium select-none py-0.5"
+                        >
+                          <input
+                            type="radio"
+                            name="cat-rating"
+                            checked={checked}
+                            onChange={() => setMinRating(checked ? null : star)}
+                            className="w-3.5 h-3.5 accent-[#84cc16] cursor-pointer"
+                          />
+                          <div className="flex items-center gap-0.5 text-[#84cc16]">
+                            <Star className="w-3 h-3 fill-[#84cc16]" />
+                          </div>
+                          <span>{star} & above</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* In-Stock Only */}
+              <div className="pt-3 border-t border-zinc-100">
+                <label className="flex items-center justify-between text-xs text-zinc-800 font-bold cursor-pointer select-none">
+                  <span>In Stock Only</span>
+                  <input
+                    type="checkbox"
+                    checked={inStockOnly}
+                    onChange={(e) => setInStockOnly(e.target.checked)}
+                    className="w-4 h-4 rounded border-zinc-300 text-[#84cc16] focus:ring-[#84cc16] accent-[#84cc16] cursor-pointer"
                   />
+                </label>
+              </div>
+            </div>
+          </aside>
 
-                  {product.badge && (
-                    <span
-                      className={`absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider shadow-2xs ${
-                        product.badge.includes("PRE-OWNED")
-                          ? "bg-zinc-900 text-white"
-                          : product.badge.includes("OFF")
-                          ? "bg-red-500 text-white"
-                          : "bg-[#84cc16] text-black"
-                      }`}
-                    >
-                      {product.badge}
+          {/* Right Main Catalog Content */}
+          <div className="flex-1 w-full min-w-0">
+            {/* Active Filters Bar */}
+            {activeFilterCount > 0 && (
+              <div className="flex items-center flex-wrap gap-2 mb-4 p-2.5 bg-zinc-100/80 rounded-xl">
+                <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">
+                  Active Filters:
+                </span>
+                {activeSubmenu && activeSubmenu !== "all" && (
+                  <button
+                    type="button"
+                    onClick={() => handleSubmenuClick(config.submenus[0])}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs capitalize"
+                  >
+                    <span>{activeSubmenu.replace(/-/g, " ")}</span>
+                    <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
+                  </button>
+                )}
+                {selectedBrands.map((b) => (
+                  <button
+                    key={b}
+                    type="button"
+                    onClick={() => handleBrandToggle(b)}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
+                  >
+                    <span>{b}</span>
+                    <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
+                  </button>
+                ))}
+                {condition !== "all" && (
+                  <button
+                    type="button"
+                    onClick={() => setCondition("all")}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer capitalize shadow-2xs"
+                  >
+                    <span>{condition}</span>
+                    <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
+                  </button>
+                )}
+                {minRating !== null && (
+                  <button
+                    type="button"
+                    onClick={() => setMinRating(null)}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
+                  >
+                    <span>★ {minRating}+</span>
+                    <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
+                  </button>
+                )}
+                {(minPrice > 0 || maxPrice < 25000) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMinPrice(0);
+                      setMaxPrice(25000);
+                    }}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
+                  >
+                    <span>৳{minPrice.toLocaleString()} - ৳{maxPrice.toLocaleString()}</span>
+                    <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="text-xs font-bold text-rose-600 hover:text-rose-700 ml-auto cursor-pointer"
+                >
+                  Clear All
+                </button>
+              </div>
+            )}
+
+            {/* Results Header: Count, Mobile Filter Button, Sort Dropdown */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 mb-4 border-b border-zinc-200/80">
+              <div>
+                <h3 className="text-base sm:text-lg font-black text-zinc-950">
+                  {activeSubmenu && activeSubmenu !== "all"
+                    ? `${activeSubmenu.replace(/-/g, " ").toUpperCase()}`
+                    : config.title}
+                  <span className="text-xs font-semibold text-zinc-500 ml-2">
+                    ({filteredProducts.length} models)
+                  </span>
+                </h3>
+                <p className="text-xs text-zinc-500">
+                  Official match specifications with 24h dispatch across Bangladesh
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 self-start sm:self-auto">
+                {/* Mobile Filter Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsMobileFilterOpen(true)}
+                  className="lg:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-zinc-200 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-zinc-50 cursor-pointer"
+                >
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-[#84cc16]" />
+                  <span>Filters</span>
+                  {activeFilterCount > 0 && (
+                    <span className="w-4 h-4 rounded-full bg-[#84cc16] text-white text-[10px] font-bold flex items-center justify-center">
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Sort Dropdown */}
+                <span className="text-xs text-zinc-500">Sort By</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-white border border-zinc-200 text-xs font-bold text-zinc-800 rounded-lg px-3 py-1.5 outline-none cursor-pointer shadow-2xs"
+                >
+                  <option value="recommended">Recommended</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Products Grid */}
+            {filteredProducts.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredProducts.map((product) => (
+                  <Link
+                    key={product.id}
+                    href={`/product/${product.slug}`}
+                    className="group bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
+                  >
+                    <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/70 via-white to-zinc-50/40">
+                      <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        fill
+                        sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 240px"
+                        className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                      />
+
+                      {product.badge && (
+                        <span
+                          className={`absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider shadow-2xs ${
+                            product.badge.includes("PRE-OWNED")
+                              ? "bg-zinc-900 text-white"
+                              : product.badge.includes("OFF")
+                              ? "bg-red-500 text-white"
+                              : "bg-[#84cc16] text-black"
+                          }`}
+                        >
+                          {product.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">
+                        {product.brand}
+                      </span>
+                      <h3 className="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#65a30d] transition-colors line-clamp-2 leading-snug min-h-[34px] mt-0.5">
+                        {product.name}
+                      </h3>
+
+                      <div className="flex items-center gap-1.5 mt-2">
+                        <div className="flex items-center gap-0.5 text-[#84cc16]">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-3 h-3 ${
+                                i < Math.floor(product.rating)
+                                  ? "fill-[#84cc16] text-[#84cc16]"
+                                  : "text-zinc-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[11px] font-semibold text-zinc-700">
+                          {product.rating}
+                        </span>
+                        <span className="text-[11px] text-zinc-400">
+                          ({product.reviewsCount})
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-3.5 pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-2">
+                      <div>
+                        <span className="text-sm sm:text-base font-black text-zinc-950 tracking-tight block">
+                          ৳ {product.price.toLocaleString()}
+                        </span>
+                        {product.originalPrice && (
+                          <span className="text-[11px] text-zinc-400 line-through">
+                            ৳ {product.originalPrice.toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={(e) => handleQuickAdd(product, e)}
+                        title="Add to Cart"
+                        className="w-8 h-8 rounded-lg bg-zinc-100 hover:bg-[#84cc16] text-zinc-700 hover:text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
+                      >
+                        <ShoppingCart className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white rounded-3xl p-12 text-center border border-zinc-200/80 space-y-3">
+                <h4 className="font-bold text-base text-zinc-900">
+                  No products found matching your filter selection
+                </h4>
+                <p className="text-xs text-zinc-500 max-w-md mx-auto">
+                  Try clearing some brand checkboxes or broadening your price range in {config.title}.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="px-5 py-2.5 rounded-xl bg-zinc-950 text-white font-bold text-xs cursor-pointer hover:bg-zinc-800 transition-colors"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 4. Mobile Slide-Over Filter Drawer */}
+        {isMobileFilterOpen && (
+          <div className="fixed inset-0 z-50 lg:hidden flex">
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+              onClick={() => setIsMobileFilterOpen(false)}
+            />
+
+            {/* Slide-over panel */}
+            <div className="relative ml-0 mr-auto w-full max-w-xs sm:max-w-sm bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-zinc-200 bg-zinc-50">
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal className="w-4 h-4 text-[#84cc16]" />
+                  <h3 className="font-black text-sm text-zinc-950 uppercase tracking-wider">
+                    {config.title} Filters
+                  </h3>
+                  {activeFilterCount > 0 && (
+                    <span className="w-5 h-5 rounded-full bg-[#84cc16] text-white text-[10px] font-bold flex items-center justify-center">
+                      {activeFilterCount}
                     </span>
                   )}
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-500 hover:bg-zinc-200 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
+              {/* Scrollable Filters */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {/* Sub-departments */}
                 <div>
-                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">
-                    {product.brand}
-                  </span>
-                  <h3 className="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#65a30d] transition-colors line-clamp-2 leading-snug min-h-[34px] mt-0.5">
-                    {product.name}
-                  </h3>
+                  <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2">
+                    Sub-Departments
+                  </h4>
+                  <div className="space-y-1">
+                    {config.submenus.map((tab) => {
+                      const isSelected =
+                        activeSubmenu === tab.id ||
+                        activeSubmenu === tab.slug ||
+                        (tab.id === "all" && (!activeSubmenu || activeSubmenu === "all"));
 
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <div className="flex items-center gap-0.5 text-[#84cc16]">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-3 h-3 ${
-                            i < Math.floor(product.rating)
-                              ? "fill-[#84cc16] text-[#84cc16]"
-                              : "text-zinc-300"
+                      return (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => {
+                            handleSubmenuClick(tab);
+                            setIsMobileFilterOpen(false);
+                          }}
+                          className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                            isSelected
+                              ? "bg-zinc-950 text-white shadow-2xs"
+                              : "text-zinc-600 hover:bg-zinc-100 font-medium"
                           }`}
-                        />
-                      ))}
+                        >
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Brands */}
+                {availableBrands.length > 0 && (
+                  <div className="pt-3 border-t border-zinc-100">
+                    <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2">
+                      Brands
+                    </h4>
+                    <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                      {availableBrands.map((brand) => {
+                        const checked = selectedBrands.includes(brand);
+                        return (
+                          <label
+                            key={brand}
+                            className="flex items-center gap-2 text-xs text-zinc-700 hover:text-zinc-950 cursor-pointer font-medium select-none py-0.5"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() => handleBrandToggle(brand)}
+                              className="w-4 h-4 rounded border-zinc-300 text-[#84cc16] focus:ring-[#84cc16] accent-[#84cc16]"
+                            />
+                            <span>{brand}</span>
+                          </label>
+                        );
+                      })}
                     </div>
-                    <span className="text-[11px] font-semibold text-zinc-700">
-                      {product.rating}
-                    </span>
-                    <span className="text-[11px] text-zinc-400">
-                      ({product.reviewsCount})
-                    </span>
+                  </div>
+                )}
+
+                {/* Condition */}
+                <div className="pt-3 border-t border-zinc-100">
+                  <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2">
+                    Condition
+                  </h4>
+                  <div className="grid grid-cols-3 gap-1 bg-zinc-100 p-1 rounded-xl text-xs font-bold">
+                    {(["all", "new", "pre-owned"] as const).map((cond) => (
+                      <button
+                        key={cond}
+                        type="button"
+                        onClick={() => setCondition(cond)}
+                        className={`py-1.5 text-center text-xs rounded-lg transition-all ${
+                          condition === cond
+                            ? "bg-white text-zinc-950 font-bold shadow-2xs"
+                            : "text-zinc-500 hover:text-zinc-900 font-medium"
+                        }`}
+                      >
+                        {cond === "all" ? "All" : cond === "new" ? "New" : "Pre-owned"}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                <div className="mt-3.5 pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-2">
-                  <div>
-                    <span className="text-sm sm:text-base font-black text-zinc-950 tracking-tight block">
-                      ৳ {product.price.toLocaleString()}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-[11px] text-zinc-400 line-through">
-                        ৳ {product.originalPrice.toLocaleString()}
-                      </span>
-                    )}
+                {/* Price Range */}
+                <div className="pt-3 border-t border-zinc-100">
+                  <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2">
+                    Price Range (BDT)
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <span className="text-[10px] text-zinc-400 font-bold block mb-1">MIN (৳)</span>
+                      <input
+                        type="number"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(Math.max(0, Number(e.target.value) || 0))}
+                        className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-zinc-400 font-bold block mb-1">MAX (৳)</span>
+                      <input
+                        type="number"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(Math.max(0, Number(e.target.value) || 25000))}
+                        className="w-full px-2.5 py-1.5 border border-zinc-200 rounded-lg text-xs"
+                      />
+                    </div>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={(e) => handleQuickAdd(product, e)}
-                    title="Add to Cart"
-                    className="w-8 h-8 rounded-lg bg-zinc-100 hover:bg-[#84cc16] text-zinc-700 hover:text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
-                  >
-                    <ShoppingCart className="w-3.5 h-3.5" />
-                  </button>
                 </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-white rounded-3xl p-12 text-center border border-zinc-200/80 space-y-3">
-            <h4 className="font-bold text-base text-zinc-900">
-              No products found in this subcategory
-            </h4>
-            <p className="text-xs text-zinc-500 max-w-md mx-auto">
-              Try switching to another sub-department or browse all models in {config.title}.
-            </p>
-            <button
-              type="button"
-              onClick={() => handleSubmenuClick(config.submenus[0])}
-              className="px-5 py-2.5 rounded-xl bg-zinc-950 text-white font-bold text-xs cursor-pointer"
-            >
-              View All {config.title}
-            </button>
+
+                {/* Rating */}
+                <div className="pt-3 border-t border-zinc-100">
+                  <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2">
+                    Customer Rating
+                  </h4>
+                  <div className="space-y-1.5">
+                    {[4.8, 4.5, 4.0].map((star) => (
+                      <label
+                        key={star}
+                        className="flex items-center gap-2 text-xs text-zinc-700 cursor-pointer font-medium"
+                      >
+                        <input
+                          type="radio"
+                          name="mobile-cat-rating"
+                          checked={minRating === star}
+                          onChange={() => setMinRating(minRating === star ? null : star)}
+                          className="w-3.5 h-3.5 accent-[#84cc16]"
+                        />
+                        <div className="flex items-center gap-0.5 text-[#84cc16]">
+                          <Star className="w-3 h-3 fill-[#84cc16]" />
+                        </div>
+                        <span>{star} & above</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* In Stock */}
+                <div className="pt-3 border-t border-zinc-100">
+                  <label className="flex items-center justify-between text-xs text-zinc-800 font-bold cursor-pointer">
+                    <span>In Stock Only</span>
+                    <input
+                      type="checkbox"
+                      checked={inStockOnly}
+                      onChange={(e) => setInStockOnly(e.target.checked)}
+                      className="w-4 h-4 rounded border-zinc-300 text-[#84cc16] focus:ring-[#84cc16] accent-[#84cc16]"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {/* Bottom Actions */}
+              <div className="p-4 border-t border-zinc-200 bg-white grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="py-2.5 rounded-xl border border-zinc-200 font-bold text-xs text-zinc-700 hover:bg-zinc-100"
+                >
+                  Reset All
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="py-2.5 rounded-xl bg-[#84cc16] hover:bg-[#73b512] font-black text-xs text-white shadow-xs"
+                >
+                  Show {filteredProducts.length} Items
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
