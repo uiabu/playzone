@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import AuthModal from "./AuthModal";
 import { useCart } from "@/context/CartContext";
+import { searchEverything } from "@/lib/searchService";
+import LiveSearchDropdown from "@/components/search/LiveSearchDropdown";
 import {
   Search,
   ShoppingCart,
@@ -185,11 +188,55 @@ const CATEGORIES: CategoryItem[] = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpenDesktop, setIsSearchOpenDesktop] = useState(false);
+  const [isSearchOpenMobile, setIsSearchOpenMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const { openCart, itemCount } = useCart();
+
+  const desktopSearchRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
+
+  // Live search results on-type
+  const liveResults = useMemo(() => {
+    return searchEverything(searchQuery);
+  }, [searchQuery]);
+
+  // Handle click outside to close dropdowns
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        desktopSearchRef.current &&
+        !desktopSearchRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchOpenDesktop(false);
+      }
+      if (
+        mobileSearchRef.current &&
+        !mobileSearchRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchOpenMobile(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!searchQuery.trim()) {
+      router.push("/search");
+    } else {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+    setIsSearchOpenDesktop(false);
+    setIsSearchOpenMobile(false);
+  };
 
   const toggleCategoryDropdown = (catName: string) => {
     setActiveCategory(activeCategory === catName ? null : catName);
@@ -219,23 +266,56 @@ export default function Navbar() {
             </div>
 
             {/* Search Input Bar with Search Icon on the RIGHT */}
-            <div className="flex-1 max-w-2xl hidden md:block">
-              <div className="relative w-full">
+            <div ref={desktopSearchRef} className="flex-1 max-w-2xl hidden md:block relative">
+              <form onSubmit={handleSearchSubmit} className="relative w-full">
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setIsSearchOpenDesktop(true);
+                  }}
+                  onFocus={() => {
+                    if (searchQuery.trim()) setIsSearchOpenDesktop(true);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setIsSearchOpenDesktop(false);
+                  }}
                   placeholder="Search for cricket bats, shoes, gloves..."
-                  className="w-full bg-[#1c1c1f] text-white placeholder-zinc-400 text-sm rounded-full pl-5 pr-11 py-2.5 outline-none border border-zinc-800 focus:border-zinc-500 focus:bg-[#232326] transition-all"
+                  className="w-full bg-[#1c1c1f] text-white placeholder-zinc-400 text-sm rounded-full pl-5 pr-16 py-2.5 outline-none border border-zinc-800 focus:border-zinc-500 focus:bg-[#232326] transition-all"
                 />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setIsSearchOpenDesktop(false);
+                    }}
+                    aria-label="Clear search"
+                    className="absolute right-10 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-white transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
                 <button
-                  type="button"
+                  type="submit"
                   aria-label="Search"
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-zinc-300 hover:text-white transition-colors"
                 >
                   <Search className="w-5 h-5" />
                 </button>
-              </div>
+              </form>
+
+              {/* Live Search Dropdown On-Type */}
+              <LiveSearchDropdown
+                query={searchQuery}
+                products={liveResults.products}
+                experts={liveResults.experts}
+                totalCount={liveResults.totalCount}
+                isOpen={isSearchOpenDesktop && !!searchQuery.trim()}
+                onClose={() => setIsSearchOpenDesktop(false)}
+                onSelectResult={() => setIsSearchOpenDesktop(false)}
+              />
             </div>
 
             {/* Right Action Links: Blog, Track Order, Deals (Yellow), Compare, Cart, User */}
@@ -316,23 +396,56 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Search Bar (visible on small devices) with icon on right */}
-          <div className="block md:hidden pb-3 pt-1">
-            <div className="relative w-full">
+          <div ref={mobileSearchRef} className="block md:hidden pb-3 pt-1 relative">
+            <form onSubmit={handleSearchSubmit} className="relative w-full">
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchOpenMobile(true);
+                }}
+                onFocus={() => {
+                  if (searchQuery.trim()) setIsSearchOpenMobile(true);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setIsSearchOpenMobile(false);
+                }}
                 placeholder="Search for cricket bats, shoes, gloves..."
-                className="w-full bg-[#1c1c1f] text-white placeholder-zinc-400 text-sm rounded-full pl-4 pr-10 py-2 outline-none border border-zinc-800 focus:border-zinc-500 transition-all"
+                className="w-full bg-[#1c1c1f] text-white placeholder-zinc-400 text-sm rounded-full pl-4 pr-16 py-2 outline-none border border-zinc-800 focus:border-zinc-500 transition-all"
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setIsSearchOpenMobile(false);
+                  }}
+                  aria-label="Clear search"
+                  className="absolute right-9 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-white transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
               <button
-                type="button"
+                type="submit"
                 aria-label="Search"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-300 p-1"
               >
                 <Search className="w-4 h-4" />
               </button>
-            </div>
+            </form>
+
+            {/* Mobile On-type Live Search Dropdown */}
+            <LiveSearchDropdown
+              query={searchQuery}
+              products={liveResults.products}
+              experts={liveResults.experts}
+              totalCount={liveResults.totalCount}
+              isOpen={isSearchOpenMobile && !!searchQuery.trim()}
+              onClose={() => setIsSearchOpenMobile(false)}
+              onSelectResult={() => setIsSearchOpenMobile(false)}
+            />
           </div>
         </div>
       </div>

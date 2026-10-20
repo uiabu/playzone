@@ -32,6 +32,7 @@ export interface Product {
   badge?: string;
   rating: number;
   reviewsCount: number;
+  viewsCount?: number;
   inStock: boolean;
   stockCount: number;
   images: string[];
@@ -1660,3 +1661,24 @@ export function getRelatedProducts(currentSlug: string, limit = 5): Product[] {
     .concat(ALL_PRODUCTS.filter((p) => p.slug !== currentSlug))
     .slice(0, limit);
 }
+
+export function formatViews(views: number): string {
+  if (views >= 1000000) {
+    return (views / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+  }
+  if (views >= 1000) {
+    return (views / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  }
+  return views.toString();
+}
+
+export function getProductViews(product: { id?: string; reviewsCount?: number; viewsCount?: number }): string {
+  if (product.viewsCount) {
+    return formatViews(product.viewsCount);
+  }
+  const base = product.reviewsCount || 24;
+  const hash = (product.id || "gear").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const views = base * 15 + (hash % 450) + 180;
+  return formatViews(views);
+}
+

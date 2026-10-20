@@ -187,35 +187,35 @@ export default function HeroSection() {
         </div>
 
         {/* --------------------------------------------------------- */}
-        {/* RIGHT COLUMN: 2 STACKED PROMO CARDS (lg:col-span-4) */}
+        {/* RIGHT COLUMN: 2 PROMO CARDS (Side-by-side on mobile, stacked on lg) */}
         {/* --------------------------------------------------------- */}
-        <div className="lg:col-span-4 flex flex-col gap-3.5 sm:gap-4 justify-between">
-          {/* TOP CARD: HIRE EXPERTS */}
+        <div className="lg:col-span-4 grid grid-cols-2 lg:flex lg:flex-col gap-2.5 sm:gap-3.5 lg:gap-4 justify-between">
+          {/* CARD 1: HIRE EXPERTS */}
           <Link
             href="/hire-experts"
-            className="group relative flex-1 min-h-[160px] sm:min-h-[175px] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-zinc-800/40 bg-zinc-900"
+            className="group relative flex-1 aspect-[2/1] lg:aspect-auto lg:min-h-[175px] rounded-xl sm:rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-zinc-800/40 bg-zinc-900"
           >
             <Image
               src="/images/hero/experts.png"
               alt="Hire Experts - For Training, Matches & Events"
               fill
-              sizes="(max-width: 1024px) 100vw, 32vw"
+              sizes="(max-width: 1024px) 50vw, 32vw"
               className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
             />
             {/* Subtle interactive hover highlight */}
             <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors pointer-events-none" />
           </Link>
 
-          {/* BOTTOM CARD: PRE-OWNED PICKS */}
+          {/* CARD 2: PRE-OWNED PICKS */}
           <Link
             href="/category/pre-owned-gear"
-            className="group relative flex-1 min-h-[160px] sm:min-h-[175px] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-zinc-800/40 bg-zinc-900"
+            className="group relative flex-1 aspect-[2/1] lg:aspect-auto lg:min-h-[175px] rounded-xl sm:rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 border border-zinc-800/40 bg-zinc-900"
           >
             <Image
               src="/images/hero/pre_owned_pick.png"
               alt="Pre-Owned Picks - Quality Gear. Bigger Value."
               fill
-              sizes="(max-width: 1024px) 100vw, 32vw"
+              sizes="(max-width: 1024px) 50vw, 32vw"
               className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-500"
             />
             {/* Subtle interactive hover highlight */}
@@ -226,8 +226,9 @@ export default function HeroSection() {
 
       {/* ========================================================= */}
       {/* 2. BOTTOM HORIZONTAL TRUST BAR (4 CRICKET SERVICE HIGHLIGHTS) */}
+      {/* Visible only on lg+, hidden on mobile/tablet */}
       {/* ========================================================= */}
-      <div className="mt-3.5 sm:mt-4 bg-white rounded-2xl border border-zinc-200/90 shadow-xs px-4 sm:px-6 py-4">
+      <div className="hidden lg:block mt-4 bg-white rounded-2xl border border-zinc-200/90 shadow-xs px-4 sm:px-6 py-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 gap-3 sm:gap-0 ">
           {/* Feature 1: Inspected Pre-owned Gear */}
           <div className="flex items-center gap-3.5 justify-center sm:px-4 first:sm:pl-0 group">

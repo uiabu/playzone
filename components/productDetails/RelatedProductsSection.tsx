@@ -3,8 +3,8 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { Product } from "@/lib/productsData";
+import { ChevronLeft, ChevronRight, Star, Eye } from "lucide-react";
+import { Product, getProductViews } from "@/lib/productsData";
 
 interface RelatedProductsSectionProps {
   products: Product[];
@@ -123,7 +123,7 @@ export default function RelatedProductsSection({
           <Link
             key={item.id}
             href={`/product/${item.slug}`}
-            className="flex-shrink-0 w-[calc((100%-14px)/2)] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
+            className="flex-shrink-0 w-[86%] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
           >
             {/* Image Area */}
             <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/60 to-white">
@@ -148,25 +148,31 @@ export default function RelatedProductsSection({
                 {item.name}
               </h3>
 
-              <div className="flex items-center gap-1.5 mt-2">
-                <div className="flex items-center gap-0.5 text-[#84cc16]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-3 h-3 ${
-                        i < Math.floor(item.rating)
-                          ? "fill-[#84cc16] text-[#84cc16]"
-                          : "text-zinc-300"
-                      }`}
-                    />
-                  ))}
+              <div className="flex items-center justify-between gap-1 mt-2">
+                <div className="flex items-center gap-1 min-w-0">
+                  <div className="flex items-center gap-0.5 text-[#84cc16] shrink-0">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-3 h-3 ${
+                          i < Math.floor(item.rating)
+                            ? "fill-[#84cc16] text-[#84cc16]"
+                            : "text-zinc-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-[11px] font-semibold text-zinc-700">
+                    {item.rating}
+                  </span>
+                  <span className="text-[11px] text-zinc-400 font-normal">
+                    ({item.reviewsCount})
+                  </span>
                 </div>
-                <span className="text-[11px] font-semibold text-zinc-700">
-                  {item.rating}
-                </span>
-                <span className="text-[11px] text-zinc-400 font-normal">
-                  ({item.reviewsCount})
-                </span>
+                <div className="flex items-center gap-1 text-[11px] text-zinc-400 font-medium shrink-0" title="Views">
+                  <Eye className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>{getProductViews(item)}</span>
+                </div>
               </div>
             </div>
 

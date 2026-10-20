@@ -182,7 +182,7 @@ export default function HireExpertsSection() {
         {displayedExperts.map((expert) => (
           <div
             key={expert.id}
-            className="flex-shrink-0 w-[calc((100%-14px)/1.3)] sm:w-[calc((100%-36px)/2.3)] md:w-[calc((100%-54px)/3.1)] lg:w-[calc((100%-54px)/3.6)] xl:w-[calc((100%-72px)/4)] snap-start flex flex-col"
+            className="flex-shrink-0 w-[86%] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start flex flex-col"
           >
             <ExpertCard
               expert={expert}
@@ -195,7 +195,7 @@ export default function HireExpertsSection() {
         {/* Explore All Card at the end */}
         <Link
           href="/hire-experts"
-          className="flex-shrink-0 w-[240px] sm:w-[280px] snap-start bg-gradient-to-br from-zinc-900 via-zinc-900 to-black rounded-2xl border border-zinc-800 shadow-xs hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-center justify-center text-center group select-none hover:-translate-y-1"
+          className="flex-shrink-0 w-[86%] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start bg-gradient-to-br from-zinc-900 via-zinc-900 to-black rounded-2xl border border-zinc-800 shadow-xs hover:shadow-lg transition-all duration-300 p-5 flex flex-col items-center justify-center text-center group select-none hover:-translate-y-1"
         >
           <div className="w-14 h-14 rounded-full bg-[#84cc16]/15 text-[#84cc16] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <Users className="w-7 h-7" />
