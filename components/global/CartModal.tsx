@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, CheckCircle2, AlertCircle } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export default function CartModal() {
+  const router = useRouter();
   const {
     items,
     itemCount,
@@ -16,7 +18,6 @@ export default function CartModal() {
     couponCode,
     isCartOpen,
     closeCart,
-    addItem,
     removeItem,
     updateQuantity,
     clearCart,
@@ -26,7 +27,6 @@ export default function CartModal() {
 
   const [inputCoupon, setInputCoupon] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
-  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   if (!isCartOpen) return null;
 
@@ -43,23 +43,8 @@ export default function CartModal() {
 
   const handleCheckout = () => {
     if (itemCount === 0) return;
-    setCheckoutSuccess(true);
-    setTimeout(() => {
-      setCheckoutSuccess(false);
-      clearCart();
-      closeCart();
-    }, 2500);
-  };
-
-  // Sample quick add for user demonstration
-  const handleAddSampleItem = () => {
-    addItem({
-      id: "ss-ton-gladiator",
-      name: "SS Gladiator Grade 1 English Willow",
-      price: 18500,
-      image: "/images/products/ss_gladiator.png",
-      category: "English Willow Bat",
-    });
+    closeCart();
+    router.push("/checkout");
   };
 
   return (
@@ -112,15 +97,30 @@ export default function CartModal() {
               </div>
               <p className="text-sm font-bold text-zinc-700">Your cart is empty</p>
               <p className="text-xs text-zinc-400 mt-1 max-w-[240px]">
-                Explore Bangladesh&apos;s best cricket bats, gear, and essentials.
+                Explore authentic cricket bats, safety gear, and pre-owned essentials.
               </p>
-              <button
-                type="button"
-                onClick={handleAddSampleItem}
-                className="mt-3.5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-900 hover:bg-black text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
-              >
-                <span>+ Add Sample Bat to Test</span>
-              </button>
+              <div className="mt-4 flex flex-col sm:flex-row items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    closeCart();
+                    router.push("/shop");
+                  }}
+                  className="px-4 py-2 rounded-full bg-zinc-900 hover:bg-black text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
+                >
+                  Shop Cricket Gear
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    closeCart();
+                    router.push("/pre-owned");
+                  }}
+                  className="px-4 py-2 rounded-full bg-lime-100 hover:bg-lime-200 text-zinc-900 text-xs font-bold transition-all shadow-xs cursor-pointer"
+                >
+                  Explore Pre-Owned
+                </button>
+              </div>
             </div>
           ) : (
             items.map((item) => (
@@ -140,9 +140,16 @@ export default function CartModal() {
 
                 {/* Details */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xs sm:text-sm font-bold text-zinc-900 truncate">
-                    {item.name}
-                  </h4>
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    {item.condition === "pre-owned" && (
+                      <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-100 text-amber-800">
+                        Pre-Owned
+                      </span>
+                    )}
+                    <h4 className="text-xs sm:text-sm font-bold text-zinc-900 truncate">
+                      {item.name}
+                    </h4>
+                  </div>
                   {item.category && (
                     <p className="text-[11px] text-zinc-400">{item.category}</p>
                   )}
@@ -165,8 +172,10 @@ export default function CartModal() {
                   </span>
                   <button
                     type="button"
+                    disabled={item.maxStock !== undefined && item.quantity >= item.maxStock}
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    className="w-5 h-5 rounded flex items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 transition-colors"
+                    title={item.maxStock !== undefined && item.quantity >= item.maxStock ? "Max stock reached" : "Increase quantity"}
+                    className="w-5 h-5 rounded flex items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                   >
                     <Plus className="w-3 h-3" />
                   </button>
@@ -265,22 +274,14 @@ export default function CartModal() {
             </div>
           </div>
 
-          {/* Checkout Success Feedback */}
-          {checkoutSuccess && (
-            <div className="mb-2.5 p-2 bg-lime-50 border border-lime-200 rounded-xl text-xs text-[#4d8c00] font-bold text-center animate-fade-in flex items-center justify-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#74d600]" />
-              <span>Order placed successfully! Thank you.</span>
-            </div>
-          )}
-
-          {/* 5. CONTINUE / CHECKOUT ACTION BUTTON (PLAYZONE NEON LIME GREEN) */}
+          {/* 5. PROCEED TO CHECKOUT ACTION BUTTON (PLAYZONE NEON LIME GREEN) */}
           <button
             type="button"
             onClick={handleCheckout}
-            disabled={itemCount === 0 || checkoutSuccess}
+            disabled={itemCount === 0}
             className="w-full py-3.5 rounded-full bg-[#74d600] hover:bg-[#65c200] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed text-zinc-950 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md shadow-lime-500/25 cursor-pointer"
           >
-            <span>Continue</span>
+            <span>Proceed to Checkout</span>
             <ArrowRight className="w-4 h-4 stroke-[2.5]" />
           </button>
         </div>

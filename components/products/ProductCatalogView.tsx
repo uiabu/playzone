@@ -209,7 +209,7 @@ export default function ProductCatalogView({
     (isDealsPage
       ? "Special Deals & Clearance Offers"
       : filters.condition === "pre-owned"
-      ? "Certified Pre-Owned Cricket Gear"
+      ? "Pre-Owned Cricket Gear"
       : filters.category !== "all"
       ? `${CATEGORIES.find((c) => c.id === filters.category)?.label || filters.category} in Bangladesh`
       : "Shop Professional Cricket Gear");
@@ -219,7 +219,7 @@ export default function ProductCatalogView({
     (isDealsPage
       ? "Up to 45% off on genuine English willow bats, protection pads, gloves, shoes and accessories."
       : filters.condition === "pre-owned"
-      ? "PLAYZONE 12-point certified pre-owned bats and protection gear at unbeatable value with warranty."
+      ? "Quality-graded pre-owned cricket bats and protection gear sold directly by PLAYZONE as-is at unbeatable prices."
       : "Find authentic English willow bats, pads, gloves, leather balls, and cricket shoes with express delivery.");
 
   const handleQuickAddToCart = (product: Product, e: React.MouseEvent) => {
@@ -772,10 +772,10 @@ export default function ProductCatalogView({
               CRICKET EXPERTS FOR COACHING & MATCHES
             </span>
             <h3 className="text-xl sm:text-2xl font-black">
-              Hire Certified Coaches, Umpires & Video Analysts
+              Hire Experienced Coaches, Umpires & Video Analysts
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400">
-              Browse over 245+ cricket professionals in Dhaka, Chittagong, Sylhet and all over Bangladesh.
+              Browse registered cricket professionals in Dhaka, Chittagong, Sylhet and across Bangladesh.
             </p>
           </div>
           <Link

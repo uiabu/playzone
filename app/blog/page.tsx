@@ -29,7 +29,7 @@ const BLOG_ARTICLES = [
       "A complete breakdown of traction, knee impact, and outsole durability across Dhaka, Chittagong, and Sylhet pitch conditions.",
   },
   {
-    slug: "certified-pre-owned-cricket-bats-guide",
+    slug: "pre-owned-cricket-bats-guide",
     title: "How to Buy a Pre-Owned English Willow Bat with Confidence",
     category: "Smart Buying",
     readTime: "4 min read",
@@ -37,7 +37,7 @@ const BLOG_ARTICLES = [
     author: "Tanvir Ahmed (First-Class Cricketer)",
     imageSrc: "/images/products/bats/ss_ton.png",
     excerpt:
-      "Get test-grade willow at 50% of the retail price. How PLAYZONE's 12-point inspection tests handle flex, acoustic ping, and wood grain integrity.",
+      "Get test-grade willow at 50% of the retail price. How PLAYZONE evaluates handle flex, acoustic ping, and condition grading standards.",
   },
   {
     slug: "mastering-the-sidearm-throwdown",

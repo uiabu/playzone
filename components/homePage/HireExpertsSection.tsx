@@ -202,7 +202,7 @@ export default function HireExpertsSection() {
           </div>
           <h3 className="font-bold text-white text-base">Explore All Experts</h3>
           <p className="text-zinc-400 text-xs mt-1.5 mb-5 max-w-[200px]">
-            Browse all certified cricket coaches, trainers & match specialists
+            Browse registered cricket coaches, trainers & match specialists
           </p>
           <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#84cc16] text-white text-xs font-bold group-hover:bg-[#73b512] transition-colors shadow-xs">
             <span>View All</span>

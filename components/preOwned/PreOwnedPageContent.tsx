@@ -55,11 +55,11 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     inStock: true,
     stockCount: 3,
     images: ["/images/products/bats/ss_ton.png"],
-    shortDescription: "Certified Grade A pre-owned English Willow bat. Seasoned and match-ready.",
+    shortDescription: "Grade A pre-owned English Willow bat. Seasoned and match-ready.",
     description: "Inspected by PLAYZONE master bat-makers. Zero handle cracks, clean ping, newly oiled and gripped.",
     highlights: ["Grade A Condition (9/10)", "Fully Seasoned & Match Ready", "New Grip & Toe Guard"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "6-Month Handle Integrity Warranty",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -84,10 +84,10 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     stockCount: 2,
     images: ["/images/products/bats/sf_bat.png"],
     shortDescription: "Naturally aged English willow with outstanding rebound response.",
-    description: "Tested and certified. Refitted with high-traction grip and fresh Extratec face sheet.",
+    description: "Graded and prepared. Refitted with high-traction grip and fresh Extratec face sheet.",
     highlights: ["Grade A Condition (9/10)", "Deep ping resonance", "Toe guard fitted"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "6-Month Handle Warranty",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -114,8 +114,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Like-new condition. Played only 2 net sessions. Massive 40mm power edges.",
     description: "Mint condition Grade A+ English Willow. Flawless face, perfectly balanced Sarawak cane handle.",
     highlights: ["Grade A+ Mint Condition (9.5/10)", "Huge 40mm edges", "Ready for match play"],
-    specs: [{ label: "Condition", value: "Grade A+ (9.5/10)" }],
-    warranty: "6-Month Handle Warranty",
+    specs: [{ label: "Condition", value: "Grade A+ (9.5/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -140,10 +140,10 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     stockCount: 3,
     images: ["/images/products/bats/kookaburra_bat.png"],
     shortDescription: "Australian profile with sweeping spine contour. Seasoned English Willow.",
-    description: "Fully inspected and certified. Re-oiled and fitted with new grip. Extraordinary pick-up.",
+    description: "Inspected and graded. Re-oiled and fitted with new grip. Extraordinary pick-up.",
     highlights: ["Grade A Condition (9/10)", "Lightweight feel", "Dynamic power face"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "6-Month Handle Warranty",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -168,10 +168,10 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     stockCount: 2,
     images: ["/images/products/bats/mrf.png"],
     shortDescription: "Player spec Grade 1 English Willow at half the price. Exceptional middle.",
-    description: "Certified pre-owned. 9 straight grains, clean face, newly fitted rubber toe protector.",
+    description: "Grade A pre-owned. 9 straight grains, clean face, newly fitted rubber toe protector.",
     highlights: ["Grade A Condition (9.3/10)", "9 Straight grains", "Superb ping"],
-    specs: [{ label: "Condition", value: "Grade A (9.3/10)" }],
-    warranty: "6-Month Handle Warranty",
+    specs: [{ label: "Condition", value: "Grade A (9.3/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -198,8 +198,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Budget powerhouse for tape-ball and club net practice. Solid meat behind the mid.",
     description: "Honest surface cosmetic wear, but structurally 100% sound. Maximum power per Taka.",
     highlights: ["Grade B Value Condition (8/10)", "Ideal for heavy practice", "New grip"],
-    specs: [{ label: "Condition", value: "Grade B (8/10)" }],
-    warranty: "3-Month Warranty",
+    specs: [{ label: "Condition", value: "Grade B (8/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -227,8 +227,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Pro level vertical cane legguards with clean white facing and intact straps.",
     description: "Pre-owned Grade A condition. Cleaned and sanitized, zero structural damage.",
     highlights: ["Grade A Condition (9/10)", "Lightweight 820g per pad", "Sanitized"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "6-Month Guarantee",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -252,17 +252,17 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     inStock: true,
     stockCount: 4,
     images: ["/images/products/batting_essentials/gray_nicolls_helmet.png"],
-    shortDescription: "Certified steel grille face protection. Inspected for zero shell stress.",
-    description: "Fully sanitized, structurally inspected for shell and grille integrity, fitted with fresh padding.",
-    highlights: ["Grade A Condition (9.2/10)", "High tensile steel grille", "Sanitized inner lining"],
-    specs: [{ label: "Condition", value: "Grade A (9.2/10)" }],
-    warranty: "6-Month Guarantee",
+    shortDescription: "Pre-owned Grade A cricket helmet. Cleaned and sanitized; sold as-is without safety warranty.",
+    description: "Visually inspected for shell integrity and grille firmness. Cleaned and sanitized. Note: Pre-owned helmets are sold as-is without warranty; players should independently confirm sizing and condition before play.",
+    highlights: ["Grade A Cosmetic Condition", "High tensile steel grille", "Sanitized inner lining", "Sold as-is without safety warranty"],
+    specs: [{ label: "Condition", value: "Grade A (Cosmetic)" }, { label: "Important Note", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
     conditionScore: "9.2/10 Condition",
-    inspectionNote: "Shell X-ray tested • Grille intact",
+    inspectionNote: "Shell and grille visually intact (sold as-is)",
   },
   {
     id: "gray-nicolls-thigh-guard",
@@ -283,8 +283,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Dual thigh combination pad. High-density molded EVA foam with poly shell inserts.",
     description: "Pre-owned Grade A, fully washed and sanitized with pristine velcro straps.",
     highlights: ["Grade A Condition (9/10)", "Molded HD EVA Foam", "Sanitized & Fresh"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "6-Month Guarantee",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -311,8 +311,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Soft sheep leather palm, multi-split sausage rolls. Fully sanitized with zero tears.",
     description: "Gently used for 3 matches. Sanitized with antimicrobial leather treatment. Soft, flexible palm.",
     highlights: ["Grade A Condition (9/10)", "Supple sheep leather", "Antimicrobial treated"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "6-Month Guarantee",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -340,8 +340,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Pro metal spikes for turf wickets. Complete set of fresh replacement spikes included.",
     description: "Inspected for upper integrity and sole plate rigidity. Thoroughly washed and deodorized.",
     highlights: ["Grade A Condition (8.8/10)", "Spikes wrench key included", "Sanitized"],
-    specs: [{ label: "Condition", value: "Grade A (8.8/10)" }],
-    warranty: "6-Month Guarantee",
+    specs: [{ label: "Condition", value: "Grade A (8.8/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -368,8 +368,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Heavy duty tractor wheelie bag. 3-bat padded compartment and separate shoe tunnel.",
     description: "All zippers and tractor wheel bearings verified and lubricated. Clean ballistic nylon exterior.",
     highlights: ["Grade A Condition (9/10)", "Heavy tractor wheels", "Zippers 100% smooth"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "1-Year Hardware Warranty",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -396,8 +396,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "ICC compliant octopus grip wicketkeeping gloves. Sanitized leather palm.",
     description: "Supple sheep leather with zero webbing rips. Completely disinfected and tested for flexibility.",
     highlights: ["Grade A Condition (9/10)", "Octopus Grip", "Clean & Sanitized"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }],
-    warranty: "6-Month Guarantee",
+    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -424,8 +424,8 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     shortDescription: "Tough practice bat with massive power profile. Fresh grip and Extratec sheet fitted.",
     description: "Ideal for club practice sessions and cement net wickets. Strong cane handle with new grip.",
     highlights: ["Grade B Value Condition (8.2/10)", "New grip fitted", "Great for practice"],
-    specs: [{ label: "Condition", value: "Grade B (8.2/10)" }],
-    warranty: "3-Month Warranty",
+    specs: [{ label: "Condition", value: "Grade B (8.2/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
+    warranty: "No Warranty (Sold As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -558,7 +558,7 @@ export default function PreOwnedPageContent() {
       )
         return false;
 
-      // 3. Certified Grade Filter
+      // 3. Condition Grade Filter
       if (selectedGrade !== "all" && item.grade !== selectedGrade) return false;
 
       // 4. Brand Filter
@@ -712,7 +712,7 @@ export default function PreOwnedPageContent() {
           onClick={() => toggleSection("grade")}
           className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
         >
-          <span>Certified Grade</span>
+          <span>Condition Grade</span>
           {openSections.grade ? (
             <ChevronUp className="w-4 h-4 text-zinc-400" />
           ) : (
@@ -976,25 +976,23 @@ export default function PreOwnedPageContent() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="px-3 py-1 rounded-full bg-[#84cc16]/15 border border-[#84cc16]/30 text-[#4d7c0f] text-xs font-black uppercase tracking-wider">
-              PLAYZONE CERTIFIED PRE-OWNED PROGRAM
+              PLAYZONE PRE-OWNED GEAR PROGRAM
             </span>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-zinc-950 mt-2">
               Great Gear. Smarter Prices.
             </h1>
             <p className="mt-1 text-xs sm:text-sm text-zinc-500 max-w-2xl leading-relaxed">
-              Play with premium English Willow bats and international gear at 40% – 50% lower prices. Every piece is 12-point certified, fully seasoned, sanitized, and backed by our 7-day risk-free net trial.
+              Play with premium English Willow bats and genuine cricket gear at 40% – 50% lower prices. Each piece is condition-graded (Grade A+, A, B) and sold directly by PLAYZONE as-is.
             </p>
           </div>
 
-          {/* Sell / Trade-in Trigger Button */}
-          <button
-            type="button"
-            onClick={() => setIsTradeInOpen(true)}
-            className="px-5 py-3 rounded-2xl bg-zinc-950 hover:bg-black active:scale-98 text-white font-black text-xs sm:text-sm flex items-center gap-2.5 transition-all shadow-md shrink-0 cursor-pointer self-start md:self-auto"
+          {/* Action Link to Catalog */}
+          <a
+            href="#pre-owned-catalog"
+            className="px-5 py-3 rounded-2xl bg-zinc-950 hover:bg-black active:scale-98 text-white font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-md shrink-0 cursor-pointer self-start md:self-auto"
           >
-            <RefreshCw className="w-4 h-4 text-[#84cc16]" />
-            <span>Sell or Trade-In Your Old Gear →</span>
-          </button>
+            <span>Browse Pre-Owned Gear ↓</span>
+          </a>
         </div>
 
         {/* Toast Alert */}
@@ -1091,8 +1089,8 @@ export default function PreOwnedPageContent() {
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">12-Point Checked</strong>
-              <span className="text-zinc-500 text-[11px]">Zero hidden cracks</span>
+              <strong className="block text-zinc-900 font-bold">Condition Graded</strong>
+              <span className="text-zinc-500 text-[11px]">Grade A+, A, B standard</span>
             </div>
           </div>
 
@@ -1101,8 +1099,8 @@ export default function PreOwnedPageContent() {
               <Sparkles className="w-5 h-5" />
             </div>
             <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">Fully Knocked-In</strong>
-              <span className="text-zinc-500 text-[11px]">Match ready on day 1</span>
+              <strong className="block text-zinc-900 font-bold">Seasoned Willow</strong>
+              <span className="text-zinc-500 text-[11px]">Match ready performance</span>
             </div>
           </div>
 
@@ -1111,18 +1109,18 @@ export default function PreOwnedPageContent() {
               <RotateCcw className="w-5 h-5" />
             </div>
             <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">7-Day Net Trial</strong>
-              <span className="text-zinc-500 text-[11px]">Risk-free exchange</span>
+              <strong className="block text-zinc-900 font-bold">Direct Retailer</strong>
+              <span className="text-zinc-500 text-[11px]">Sold direct by PLAYZONE</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-lime-50 text-[#65a30d] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
               <Award className="w-5 h-5" />
             </div>
             <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">6-Month Warranty</strong>
-              <span className="text-zinc-500 text-[11px]">Handle integrity cover</span>
+              <strong className="block text-zinc-900 font-bold">Sold As-Is</strong>
+              <span className="text-zinc-500 text-[11px]">Unbeatable value • No warranty</span>
             </div>
           </div>
         </div>
@@ -1434,79 +1432,88 @@ export default function PreOwnedPageContent() {
           </div>
         </div>
 
-        {/* 7. The PLAYZONE 12-Point Inspection Process Details */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-zinc-200/90 shadow-sm space-y-6">
+        {/* 7. PLAYZONE Condition Grading Standards & Pre-Owned Policy */}
+        <div id="pre-owned-catalog" className="bg-white rounded-3xl p-6 sm:p-8 border border-zinc-200/90 shadow-sm space-y-6">
           <div>
             <span className="text-[11px] font-black uppercase text-[#4d7c0f] tracking-wider">
-              HOW WE CERTIFY EVERY BAT
+              TRANSPARENT QUALITY GRADING
             </span>
             <h2 className="text-xl sm:text-2xl font-black text-zinc-950 tracking-tight mt-1">
-              The PLAYZONE 12-Point Quality Certification Process
+              PLAYZONE Pre-Owned Condition Grading Standards
             </h2>
             <p className="text-xs sm:text-sm text-zinc-500 mt-1 max-w-2xl">
-              Unlike unverified second-hand gear on social media, every bat sold through PLAYZONE undergoes rigorous acoustic, structural, and moisture tests by veteran bat-makers.
+              Every pre-owned product on PLAYZONE is sold directly by us. Items are physically inspected and graded with full disclosure of wear so you know exactly what you are purchasing.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2">
               <span className="w-7 h-7 rounded-full bg-zinc-950 text-white font-bold text-xs flex items-center justify-center">
-                1
+                A+
               </span>
               <h4 className="font-bold text-sm text-zinc-900">
-                Handle Flex & Cane Integrity
+                Grade A+ (Like New)
               </h4>
               <p className="text-xs text-zinc-600 leading-relaxed">
-                We stress-test the Sarawak cane handle on an automated flex jig to detect any internal rubber delamination or handle loosening.
+                Played only 1-2 friendly sessions. Immaculate surface, zero handle stress, pristine edges, and fresh grip.
               </p>
             </div>
 
             <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2">
               <span className="w-7 h-7 rounded-full bg-zinc-950 text-white font-bold text-xs flex items-center justify-center">
-                2
+                A
               </span>
               <h4 className="font-bold text-sm text-zinc-900">
-                Acoustic Ping & Rebound Test
+                Grade A (Seasoned Pro)
               </h4>
               <p className="text-xs text-zinc-600 leading-relaxed">
-                Tapped with precision mallets across 12 grid points on the blade to measure sound pitch and rebound velocity, mapping the exact sweet spot.
+                Light cosmetic markings from net practice. Fully intact handle, re-oiled face, and explosive acoustic rebound.
               </p>
             </div>
 
             <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2">
               <span className="w-7 h-7 rounded-full bg-zinc-950 text-white font-bold text-xs flex items-center justify-center">
-                3
+                B
               </span>
               <h4 className="font-bold text-sm text-zinc-900">
-                Sanding, Linseed Oiling & New Grip
+                Grade B (Practice Value)
               </h4>
               <p className="text-xs text-zinc-600 leading-relaxed">
-                Surface blemishes are gently hand-sanded. The cleft receives pure English raw linseed oil, a fresh high-traction grip, and a new rubber toe guard.
+                Visible cosmetic battle wear, but structurally 100% sound. Superb budget value for heavy net sessions and academy drills.
               </p>
             </div>
+          </div>
+
+          {/* Explicit Pre-Owned Policy Notice */}
+          <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 space-y-1">
+            <div className="font-bold flex items-center gap-1.5 text-amber-950">
+              <span>⚠️ Pre-Owned Equipment Policy</span>
+            </div>
+            <p className="leading-relaxed">
+              All pre-owned cricket equipment is sold directly by PLAYZONE <strong>as-is without store or manufacturer warranty</strong>. Condition grades reflect physical inspection at intake. Helmets and protective equipment must be independently inspected by the player for proper sizing, fit, and suitability prior to match use.
+            </p>
           </div>
         </div>
 
-        {/* 8. Player Testimonial Banner */}
+        {/* 8. Callout Banner: Direct Retail Value */}
         <div className="rounded-3xl bg-gradient-to-r from-zinc-950 via-zinc-900 to-black p-6 sm:p-8 text-white border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1.5 text-center md:text-left">
             <span className="text-[#a3e635] text-[11px] font-black uppercase tracking-wider">
-              TRUSTED BY 2,000+ BANGLADESH CRICKETERS
+              DIRECT CRICKET RETAILER IN BANGLADESH
             </span>
             <h3 className="text-xl sm:text-2xl font-black">
-              "Scored my first First-Division century with a Pre-Owned SS TON"
+              Authentic Pre-Owned Gear at Unbeatable Value
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 max-w-xl">
-              "Saved ৳4,000 compared to a brand new bat, and the ping was already seasoned and explosive. The 7-day trial gave me total peace of mind." — Tanvir A., Dhaka League Player
+              Get international match-grade English Willow and equipment at 40% – 50% off retail, delivered straight to your doorstep across Bangladesh with Cash on Delivery.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsTradeInOpen(true)}
+          <Link
+            href="/category/cricket-bats"
             className="px-6 py-3 rounded-xl bg-[#84cc16] hover:bg-[#73b512] text-black font-black text-xs sm:text-sm shrink-0 whitespace-nowrap shadow-md cursor-pointer"
           >
-            Sell Your Gear to Us →
-          </button>
+            Explore All Cricket Gear →
+          </Link>
         </div>
       </div>
 

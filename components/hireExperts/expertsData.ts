@@ -48,7 +48,7 @@ export function getExpertProfileViews(expert: { id?: string; reviewsCount?: numb
 export const EXPERTS_DATA: Expert[] = [
   {
     id: "head-cricket-coach-dhaka",
-    name: "Sample Expert",
+    name: "Coach Rafiqul Islam",
     role: "Head Cricket Coach",
     imageSrc: "/images/experts/head_coach.png",
     rating: 4.8,
@@ -70,7 +70,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "batting-coach-chittagong",
-    name: "Sample Expert",
+    name: "Coach Faisal Mahmud",
     role: "Batting Coach",
     imageSrc: "/images/experts/batting_coach.png",
     rating: 4.5,
@@ -92,7 +92,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "fast-bowling-coach-dhaka",
-    name: "Sample Expert",
+    name: "Coach Enamul Haque",
     role: "Fast Bowling Coach",
     imageSrc: "/images/experts/fast_bowling_coach.png",
     rating: 4.7,
@@ -114,7 +114,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "sidearm-thrower-dhaka",
-    name: "Sample Expert",
+    name: "Kamrul Hasan",
     role: "Sidearm Thrower",
     imageSrc: "/images/experts/sidearm_thrower.png",
     rating: 4.4,
@@ -136,7 +136,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "cricket-umpire-bangladesh",
-    name: "Sample Expert",
+    name: "Masudur Rahman",
     role: "Cricket Umpire",
     imageSrc: "/images/experts/cricket_umpire.png",
     rating: 4.5,
@@ -158,7 +158,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "fitness-trainer-dhaka",
-    name: "Sample Expert",
+    name: "Sazzad Hossain",
     role: "Fitness Trainer",
     imageSrc: "/images/experts/fitness_trainer.png",
     rating: 4.6,
@@ -180,7 +180,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "video-analysis-specialist-dhaka",
-    name: "Sample Expert",
+    name: "Tanvir Ahmed",
     role: "Video Analysis Specialist",
     imageSrc: "/images/experts/video_analyst.png",
     rating: 4.8,
@@ -202,7 +202,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "pitch-curator-khulna",
-    name: "Sample Expert",
+    name: "Abdul Matin",
     role: "Pitch Curator",
     imageSrc: "/images/experts/pitch_curator.png",
     rating: 4.3,
@@ -224,7 +224,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "cricket-photographer-dhaka",
-    name: "Sample Expert",
+    name: "Jahidul Islam",
     role: "Cricket Photographer",
     imageSrc: "/images/experts/cricket_photographer.png",
     rating: 4.6,
@@ -246,7 +246,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "bowling-machine-operator-dhaka",
-    name: "Sample Expert",
+    name: "Robiul Islam",
     role: "Bowling Machine Operator",
     imageSrc: "/images/experts/bowling_machine_operator.png",
     rating: 4.4,
@@ -268,7 +268,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "spin-bowling-coach-rajshahi",
-    name: "Sample Expert",
+    name: "Coach Ziaur Rahman",
     role: "Spin Bowling Coach",
     imageSrc: "/images/experts/spin_bowling_coach.png",
     rating: 4.5,
@@ -290,7 +290,7 @@ export const EXPERTS_DATA: Expert[] = [
   },
   {
     id: "wicketkeeping-coach-dhaka",
-    name: "Sample Expert",
+    name: "Coach Nurul Amin",
     role: "Wicketkeeping Coach",
     imageSrc: "/images/experts/wicketkeeping_coach.png",
     rating: 4.7,

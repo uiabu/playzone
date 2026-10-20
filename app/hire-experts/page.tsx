@@ -135,7 +135,7 @@ export default function HireExpertsPage() {
     });
   }, [filters, sortBy]);
 
-  const totalResults = 245; // Display total matching mockup
+  const totalResults = EXPERTS_DATA.length;
   const currentCount = filteredExperts.length;
 
   return (
@@ -249,10 +249,10 @@ export default function HireExpertsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-zinc-200/80">
               <div>
                 <h2 className="text-sm sm:text-base font-bold text-zinc-900">
-                  {totalResults} Experts Found
+                  {currentCount} {currentCount === 1 ? "Expert" : "Experts"} Available
                 </h2>
                 <p className="text-xs text-zinc-500 mt-0.5">
-                  Showing 1 – {currentCount} of {totalResults} results
+                  Showing {currentCount} of {totalResults} registered professionals
                 </p>
               </div>
 

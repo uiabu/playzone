@@ -151,7 +151,7 @@ export default function OffersPageContent() {
                 Save Up to <span className="text-[#a3e635]">45% OFF</span> on Pro Cricket Gear
               </h1>
               <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-xl">
-                Genuine English willow bats, certified pre-owned masterclasses, test-level protection, and cricket spikes with manufacturer warranties.
+                Genuine English willow bats, graded pre-owned equipment, test-level protection, and cricket spikes with manufacturer warranties on new gear.
               </p>
             </div>
 
@@ -276,7 +276,7 @@ export default function OffersPageContent() {
           {[
             { id: "all", label: "All Special Offers", count: dealProducts.length },
             { id: "flash", label: "🔥 Big Clearance (20%+ OFF)" },
-            { id: "pre-owned", label: "Certified Pre-Owned Deals" },
+            { id: "pre-owned", label: "Pre-Owned Gear Deals" },
             { id: "bats", label: "Cricket Bats on Sale" },
             { id: "gear", label: "Pads, Shoes & Accessories" },
           ].map((tab) => {
@@ -487,7 +487,7 @@ export default function OffersPageContent() {
               Pair Your New Gear with 1-on-1 Coaching
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400">
-              Book certified batting coaches, throwdown operators, match umpires, and fitness trainers.
+              Book experienced batting coaches, throwdown operators, match umpires, and fitness trainers.
             </p>
           </div>
           <Link

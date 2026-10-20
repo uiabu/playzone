@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import AuthModal from "./AuthModal";
 import { useCart } from "@/context/CartContext";
 import { searchEverything } from "@/lib/searchService";
@@ -16,7 +16,19 @@ import {
   Menu,
   X,
   Package,
+  ArrowRight,
+  ShieldCheck,
+  Truck,
+  Zap,
 } from "lucide-react";
+
+interface MegaMenuPromo {
+  title: string;
+  subtitle: string;
+  badge?: string;
+  image: string;
+  href: string;
+}
 
 interface SubCategoryGroup {
   title: string;
@@ -28,6 +40,7 @@ interface CategoryItem {
   href: string;
   hasDropdown?: boolean;
   subcategories?: SubCategoryGroup[];
+  promos?: MegaMenuPromo[];
 }
 
 const CATEGORIES: CategoryItem[] = [
@@ -74,6 +87,22 @@ const CATEGORIES: CategoryItem[] = [
         ],
       },
     ],
+    promos: [
+      {
+        title: "Pro English Willow",
+        subtitle: "Hand-selected Grade 1 & 2 willow with explosive sweet spots.",
+        badge: "TOP WILLOW",
+        image: "/images/categories/cricket_bats.png",
+        href: "/category/cricket-bats",
+      },
+      {
+        title: "Pre-Owned Willow Bats",
+        subtitle: "Seasoned match-ready willow at 40%-50% discount. Graded A+, A, B.",
+        badge: "PRE-OWNED",
+        image: "/images/products/bats/ss_ton.png",
+        href: "/pre-owned",
+      },
+    ],
   },
   {
     name: "Batting",
@@ -98,6 +127,22 @@ const CATEGORIES: CategoryItem[] = [
           "Batting Grip Bands",
           "Anti-Abrasion Base Layers",
         ],
+      },
+    ],
+    promos: [
+      {
+        title: "Test Batting Gloves",
+        subtitle: "Split-finger high-density foam with Pittards leather palm.",
+        badge: "TEST SPEC",
+        image: "/images/categories/batting_gloves.png",
+        href: "/category/batting",
+      },
+      {
+        title: "Cricket Helmets & Pads",
+        subtitle: "High-tensile steel face grilles and lightweight foam cane pads.",
+        badge: "SAFETY FIRST",
+        image: "/images/categories/helmets.png",
+        href: "/category/batting",
       },
     ],
   },
@@ -125,6 +170,22 @@ const CATEGORIES: CategoryItem[] = [
         ],
       },
     ],
+    promos: [
+      {
+        title: "Match Leather Balls",
+        subtitle: "Alum tanned 4-piece leather balls for maximum swing and seam.",
+        badge: "TOURNAMENT",
+        image: "/images/categories/cricket_balls.png",
+        href: "/category/bowling",
+      },
+      {
+        title: "Target Stumps & Aids",
+        subtitle: "Spring return stumps and coaching accessories for bowling drills.",
+        badge: "TRAINING",
+        image: "/images/categories/stumps.png",
+        href: "/category/bowling",
+      },
+    ],
   },
   {
     name: "Wicketkeeping",
@@ -140,6 +201,22 @@ const CATEGORIES: CategoryItem[] = [
           "Chamois Leather Inners",
           "Keeper Helmets & Caps",
         ],
+      },
+    ],
+    promos: [
+      {
+        title: "Pro Keeping Gloves",
+        subtitle: "Octopus rubber grip catch pocket with flexible ergonomic cuffs.",
+        badge: "PRO SPEC",
+        image: "/images/categories/wicketkeeping.png",
+        href: "/category/wicketkeeping",
+      },
+      {
+        title: "Lightweight Keeping Pads",
+        subtitle: "Ultra-compact ergonomic leg guards for agile stump movements.",
+        badge: "COMFORT",
+        image: "/images/categories/batting_pads.png",
+        href: "/category/wicketkeeping",
       },
     ],
   },
@@ -159,6 +236,22 @@ const CATEGORIES: CategoryItem[] = [
         ],
       },
     ],
+    promos: [
+      {
+        title: "Pro Cricket Spikes",
+        subtitle: "Full metal spikes and rubber studs for maximum pitch traction.",
+        badge: "MAX TRACTION",
+        image: "/images/categories/cricket_shoes.png",
+        href: "/category/shoes",
+      },
+      {
+        title: "Turf & Bowling Boots",
+        subtitle: "High impact cushioning engineered for subcontinental turf.",
+        badge: "POPULAR",
+        image: "/images/products/shoes_bags/adidas_spikes.png",
+        href: "/category/shoes",
+      },
+    ],
   },
   {
     name: "Accessories",
@@ -176,7 +269,7 @@ const CATEGORIES: CategoryItem[] = [
         ],
       },
       {
-        title: "Training & Essentials",
+        title: "Kit & Essentials",
         items: [
           "Target Stumps & Bails",
           "Scorebooks & Counter Clickers",
@@ -184,16 +277,64 @@ const CATEGORIES: CategoryItem[] = [
         ],
       },
     ],
+    promos: [
+      {
+        title: "Pro Wheelie Kit Bags",
+        subtitle: "Spacious compartments with heavy duty wheels for full player kits.",
+        badge: "HEAVY DUTY",
+        image: "/images/categories/kit_bags.png",
+        href: "/category/accessories",
+      },
+      {
+        title: "Bat Care & Accessories",
+        subtitle: "Linseed oil, knocking mallets, and face sheets for long willow life.",
+        badge: "MAINTENANCE",
+        image: "/images/categories/training_gear.png",
+        href: "/category/accessories",
+      },
+    ],
   },
 ];
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpenDesktop, setIsSearchOpenDesktop] = useState(false);
   const [isSearchOpenMobile, setIsSearchOpenMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeMegaCategory, setActiveMegaCategory] = useState<string | null>(null);
+  const closeMegaTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleCategoryMouseEnter = (catName: string) => {
+    if (closeMegaTimeoutRef.current) {
+      clearTimeout(closeMegaTimeoutRef.current);
+      closeMegaTimeoutRef.current = null;
+    }
+    setActiveMegaCategory(catName);
+  };
+
+  const handleCategoryMouseLeave = () => {
+    closeMegaTimeoutRef.current = setTimeout(() => {
+      setActiveMegaCategory(null);
+    }, 220);
+  };
+
+  const activeCategoryData = useMemo(() => {
+    return CATEGORIES.find((c) => c.name === activeMegaCategory && c.hasDropdown) || null;
+  }, [activeMegaCategory]);
+
+  const [displayedCategoryData, setDisplayedCategoryData] = useState<CategoryItem | null>(null);
+
+  useEffect(() => {
+    if (activeCategoryData) {
+      setDisplayedCategoryData(activeCategoryData);
+    }
+  }, [activeCategoryData]);
+
+  const isMegaOpen = Boolean(activeMegaCategory && activeCategoryData);
+
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const { openCart, itemCount } = useCart();
 
@@ -450,53 +591,186 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* 2. BOTTOM CATEGORY BAR (White Background - Desktop) */}
-      <nav className="bg-white border-b border-zinc-200/90 hidden lg:block text-zinc-900">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-          <ul className="flex items-center justify-between gap-1 xl:gap-2 text-xs xl:text-[13px] font-semibold py-2.5">
-            {CATEGORIES.map((cat) => (
-              <li key={cat.name} className="relative group">
-                <Link
-                  href={cat.href}
-                  className="flex items-center gap-1 py-1 px-1.5 rounded text-zinc-800 hover:text-yellow-600 transition-colors whitespace-nowrap"
-                >
-                  <span>{cat.name}</span>
-                  {cat.hasDropdown && (
-                    <ChevronDown className="w-3.5 h-3.5 text-zinc-500 group-hover:text-yellow-600 transition-transform group-hover:rotate-180" />
-                  )}
-                </Link>
+      {/* 2. BOTTOM CATEGORY BAR (White Background - Desktop with Smooth Mega Menu) */}
+      <nav
+        className="bg-white border-b border-zinc-200/90 hidden lg:block text-zinc-900 relative"
+        onMouseLeave={handleCategoryMouseLeave}
+      >
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <ul className="flex items-center justify-between gap-1 xl:gap-2 text-xs xl:text-[13px] font-semibold py-2">
+            {CATEGORIES.map((cat) => {
+              const isCurrentRoute = Boolean(
+                pathname === cat.href ||
+                (cat.href !== "/" && pathname.startsWith(cat.href)) ||
+                (cat.name === "Bats" && (pathname.includes("bats") || pathname.includes("cricket-bats"))) ||
+                (cat.name === "Pre-owned Gear" && (pathname.includes("pre-owned") || pathname.includes("used"))) ||
+                (cat.name === "Hire Experts" && pathname.includes("hire-experts")) ||
+                (cat.name === "Protective Gear" && (pathname.includes("protective") || pathname.includes("pads") || pathname.includes("gloves") || pathname.includes("helmets"))) ||
+                (cat.name === "Cricket Balls" && pathname.includes("balls")) ||
+                (cat.name === "Wicket Keeping" && pathname.includes("wicket-keeping")) ||
+                (cat.name === "Footwear" && (pathname.includes("shoes") || pathname.includes("footwear"))) ||
+                (cat.name === "Kit Bags & Accessories" && (pathname.includes("kit-bags") || pathname.includes("accessories")))
+              );
+              const isHovered = activeMegaCategory === cat.name;
+              const isActive = isHovered || isCurrentRoute;
 
-                {/* Dropdown Menu on Hover */}
-                {cat.hasDropdown && cat.subcategories && cat.subcategories.length > 0 && (
-                  <div className="absolute left-0 top-full pt-1.5 hidden group-hover:block z-50">
-                    <div className="bg-white rounded-lg shadow-xl border border-zinc-100 p-4 min-w-[260px] animate-in fade-in slide-in-from-top-1 duration-150">
-                      <div className="flex gap-6">
-                        {cat.subcategories.map((sub, idx) => (
-                          <div key={idx} className="space-y-1 min-w-[150px]">
-                            <p className="text-[11px] font-bold tracking-wider text-zinc-400 uppercase mb-2">
-                              {sub.title}
-                            </p>
-                            <ul className="space-y-1.5">
-                              {sub.items.map((item, itemIdx) => (
-                                <li key={itemIdx}>
-                                  <Link
-                                    href={`${cat.href}/${item.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                                    className="block text-xs text-zinc-600 hover:text-yellow-600 hover:translate-x-1 transition-all py-0.5"
-                                  >
-                                    {item}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </li>
-            ))}
+              return (
+                <li
+                  key={cat.name}
+                  className="py-0.5"
+                  onMouseEnter={() => handleCategoryMouseEnter(cat.name)}
+                >
+                  <Link
+                    href={cat.href}
+                    className={`group flex items-center gap-1.5 py-1.5 px-2.5 transition-colors duration-200 whitespace-nowrap cursor-pointer select-none bg-transparent ${
+                      isActive
+                        ? "text-[#65a30d] font-bold"
+                        : "text-zinc-800 hover:text-[#65a30d] font-semibold"
+                    }`}
+                  >
+                    <span>{cat.name}</span>
+                    {cat.hasDropdown && (
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 transition-all duration-200 ${
+                          isHovered ? "rotate-180" : ""
+                        } ${
+                          isActive
+                            ? "text-[#65a30d]"
+                            : "text-zinc-400 group-hover:text-[#65a30d]"
+                        }`}
+                      />
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
+
+          {/* DESKTOP MEGA MENU PANEL WITH IMAGES & SMOOTH TRANSITIONS */}
+          {displayedCategoryData && displayedCategoryData.hasDropdown && (
+            <div
+              className={`absolute left-4 right-4 top-full z-50 pt-2 select-none transition-all duration-300 ease-out ${
+                isMegaOpen
+                  ? "opacity-100 translate-y-0 visible pointer-events-auto"
+                  : "opacity-0 -translate-y-2 invisible pointer-events-none"
+              }`}
+              onMouseEnter={() => {
+                if (closeMegaTimeoutRef.current) {
+                  clearTimeout(closeMegaTimeoutRef.current);
+                  closeMegaTimeoutRef.current = null;
+                }
+              }}
+              onMouseLeave={handleCategoryMouseLeave}
+            >
+              {/* Invisible hit-bridge so mouse movement over pt-2 gap never drops hover */}
+              <div className="absolute -top-3 left-0 right-0 h-4 bg-transparent" />
+
+              <div className="relative bg-white rounded-3xl shadow-2xl border border-zinc-200/90 p-6 xl:p-7 overflow-hidden transition-all duration-300">
+                {/* Top Lime Accent line */}
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#74d600] via-[#a3e635] to-[#549900]" />
+
+                <div className="grid grid-cols-12 gap-8 items-start">
+                  {/* Left: Subcategory Groups (7 cols) */}
+                  <div className="col-span-7 grid grid-cols-2 gap-8">
+                    {displayedCategoryData.subcategories?.map((sub, idx) => (
+                      <div key={idx} className="space-y-3">
+                        <div className="flex items-center justify-between pb-2 border-b border-zinc-100">
+                          <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900">
+                            {sub.title}
+                          </h4>
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#74d600]" />
+                        </div>
+                        <ul className="space-y-1">
+                          {sub.items.map((item, itemIdx) => (
+                            <li key={itemIdx}>
+                              <Link
+                                href={`${displayedCategoryData.href}?sub=${encodeURIComponent(item)}`}
+                                onClick={() => setActiveMegaCategory(null)}
+                                className="group/link flex items-center justify-between py-1.5 px-2.5 rounded-xl text-xs font-medium text-zinc-600 hover:text-[#549900] hover:bg-lime-50/70 hover:translate-x-1 transition-all duration-200 ease-out"
+                              >
+                                <span className="group-hover/link:text-[#549900] transition-colors duration-200">
+                                  {item}
+                                </span>
+                                <ArrowRight className="w-3.5 h-3.5 text-[#549900] opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all duration-200 ease-out" />
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Right: Featured Promo Cards with High-Res Images (5 cols) */}
+                  <div className="col-span-5 grid grid-cols-2 gap-4 border-l border-zinc-100 pl-8">
+                    {displayedCategoryData.promos?.map((promo, pIdx) => (
+                      <Link
+                        key={pIdx}
+                        href={promo.href}
+                        onClick={() => setActiveMegaCategory(null)}
+                        className="group/promo flex flex-col justify-between p-3.5 rounded-2xl bg-gradient-to-b from-zinc-50/70 to-white border border-zinc-200/80 hover:border-[#74d600] hover:shadow-xl hover:shadow-lime-500/10 hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden"
+                      >
+                        <div>
+                          {/* Image Container with Floating Badge */}
+                          <div className="relative w-full h-32 rounded-xl bg-white border border-zinc-100 p-2 overflow-hidden flex items-center justify-center mb-3 group-hover/promo:scale-[1.02] transition-transform duration-300 ease-out">
+                            <Image
+                              src={promo.image}
+                              alt={promo.title}
+                              fill
+                              className="object-contain p-1 group-hover/promo:scale-105 transition-transform duration-300 ease-out"
+                            />
+                            {promo.badge && (
+                              <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-zinc-950 text-[#84cc16] border border-zinc-800 shadow-xs">
+                                {promo.badge}
+                              </span>
+                            )}
+                          </div>
+
+                          <h5 className="text-xs font-black text-zinc-950 group-hover/promo:text-[#549900] transition-colors duration-200 leading-tight mb-1">
+                            {promo.title}
+                          </h5>
+                          <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
+                            {promo.subtitle}
+                          </p>
+                        </div>
+
+                        <div className="mt-3 pt-2.5 border-t border-zinc-100 flex items-center justify-between text-[11px] font-extrabold text-[#549900]">
+                          <span>Explore Collection</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover/promo:translate-x-1 transition-transform duration-200" />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom Info & Quick-View Bar */}
+                <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
+                  <div className="flex items-center gap-6">
+                    <span className="flex items-center gap-1.5 font-medium hover:text-zinc-700 transition-colors">
+                      <ShieldCheck className="w-4 h-4 text-[#74d600]" />
+                      100% Genuine Gear
+                    </span>
+                    <span className="flex items-center gap-1.5 font-medium hover:text-zinc-700 transition-colors">
+                      <Truck className="w-4 h-4 text-[#74d600]" />
+                      24h Dhaka Delivery (৳80)
+                    </span>
+                    <span className="flex items-center gap-1.5 font-medium hover:text-zinc-700 transition-colors">
+                      <Zap className="w-4 h-4 text-[#74d600]" />
+                      Cash on Delivery Across Bangladesh
+                    </span>
+                  </div>
+
+                  <Link
+                    href={displayedCategoryData.href}
+                    onClick={() => setActiveMegaCategory(null)}
+                    className="text-xs font-black text-zinc-900 hover:text-[#549900] flex items-center gap-1.5 transition-colors"
+                  >
+                    <span>Browse All {displayedCategoryData.name}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -570,7 +844,7 @@ export default function Navbar() {
                     <Link
                       href={cat.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="text-sm font-medium text-zinc-800 hover:text-yellow-600 flex-1"
+                      className="text-sm font-semibold text-zinc-800 hover:text-[#65a30d] transition-colors flex-1"
                     >
                       {cat.name}
                     </Link>
@@ -578,11 +852,11 @@ export default function Navbar() {
                       <button
                         type="button"
                         onClick={() => toggleCategoryDropdown(cat.name)}
-                        className="p-1 text-zinc-500 hover:text-zinc-800"
+                        className="p-1 text-zinc-500 hover:text-[#65a30d] transition-colors"
                       >
                         <ChevronDown
                           className={`w-4 h-4 transition-transform duration-200 ${
-                            isExpanded ? "rotate-180 text-yellow-600" : ""
+                            isExpanded ? "rotate-180 text-[#65a30d]" : ""
                           }`}
                         />
                       </button>
@@ -590,7 +864,7 @@ export default function Navbar() {
                   </div>
 
                   {isExpanded && cat.subcategories && (
-                    <div className="mt-2 pl-3 border-l-2 border-yellow-500 space-y-3 py-1">
+                    <div className="mt-2 pl-3 border-l-2 border-[#65a30d] space-y-3 py-1 animate-in fade-in slide-in-from-top-1 duration-200">
                       {cat.subcategories.map((sub, sIdx) => (
                         <div key={sIdx} className="space-y-1">
                           <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wide">
@@ -599,9 +873,9 @@ export default function Navbar() {
                           {sub.items.map((item, itemIdx) => (
                             <Link
                               key={itemIdx}
-                              href={`${cat.href}/${item.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                              href={`${cat.href}?sub=${encodeURIComponent(item)}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="block text-xs text-zinc-600 hover:text-yellow-600 py-0.5"
+                              className="block text-xs text-zinc-600 hover:text-[#65a30d] hover:translate-x-1 transition-all duration-200 py-0.5"
                             >
                               {item}
                             </Link>

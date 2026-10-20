@@ -18,30 +18,7 @@ export default function ProductReviewsSection({
   productName,
 }: ProductReviewsSectionProps) {
   const [reviewsList, setReviewsList] = useState<ProductReview[]>(
-    initialReviews.length > 0
-      ? initialReviews
-      : [
-          {
-            author: "Tamim Kawsar",
-            verified: true,
-            rating: 5,
-            date: "October 12, 2026",
-            title: "Superb quality, delivers true match performance",
-            comment:
-              "Ordered this item from PLAYZONE. Delivered to Dhanmondi within 24 hours. The craftsmanship and finish are 100% authentic. Tested in the nets and performed exceptionally well.",
-            location: "Dhaka, Bangladesh",
-          },
-          {
-            author: "Ashraful Haque",
-            verified: true,
-            rating: 4.8,
-            date: "September 29, 2026",
-            title: "Genuine gear at the best price in BD",
-            comment:
-              "Compared prices with local sports markets in Stadium market and PLAYZONE was both cheaper and provided official warranty. Very satisfied with customer service.",
-            location: "Chittagong",
-          },
-        ]
+    initialReviews || []
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -145,7 +122,23 @@ export default function ProductReviewsSection({
 
       {/* 2. Reviews Feed */}
       <div className="space-y-4">
-        {reviewsList.map((review, idx) => (
+        {reviewsList.length === 0 ? (
+          <div className="text-center py-10 px-4 rounded-2xl bg-white border border-zinc-200/80 space-y-2">
+            <MessageSquarePlus className="w-9 h-9 text-zinc-400 mx-auto stroke-[1.5]" />
+            <h4 className="text-sm font-bold text-zinc-900">No reviews yet for {productName}</h4>
+            <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+              Be the first to share your experience with this equipment. Your review helps other cricket players make informed choices.
+            </p>
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="mt-2 inline-block px-4 py-2 rounded-xl bg-zinc-950 hover:bg-black text-white text-xs font-bold transition-all cursor-pointer"
+            >
+              Write the First Review
+            </button>
+          </div>
+        ) : (
+          reviewsList.map((review, idx) => (
           <div
             key={idx}
             className="bg-white rounded-2xl p-5 sm:p-6 border border-zinc-200/80 shadow-2xs space-y-3"
@@ -193,7 +186,7 @@ export default function ProductReviewsSection({
               {review.comment}
             </p>
           </div>
-        ))}
+        )))}
       </div>
 
       {/* 3. Write Review Modal */}

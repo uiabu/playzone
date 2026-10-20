@@ -5,7 +5,7 @@ import SearchPageContent from "@/components/search/SearchPageContent";
 export const metadata: Metadata = {
   title: "Search Cricket Products & Experts | PLAYZONE",
   description:
-    "Live search for premium cricket bats, gear, pads, balls, shoes, pre-owned equipment, and certified cricket coaches & net bowlers.",
+    "Live search for premium cricket bats, gear, pads, balls, shoes, pre-owned equipment, and professional cricket coaches & net bowlers.",
 };
 
 export default function SearchPage() {

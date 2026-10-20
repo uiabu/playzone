@@ -19,6 +19,7 @@ export default function BookingModal({ expert, isOpen, onClose }: BookingModalPr
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [bookingRef, setBookingRef] = useState("");
 
   if (!isOpen || !expert) return null;
 
@@ -26,11 +27,41 @@ export default function BookingModal({ expert, isOpen, onClose }: BookingModalPr
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const ref = `EXP-${Math.floor(100000 + Math.random() * 900000)}`;
+    setBookingRef(ref);
+
+    // Save to localStorage for transparency
+    try {
+      const existing = JSON.parse(localStorage.getItem("playzone_expert_bookings") || "[]");
+      existing.unshift({
+        id: ref,
+        expertId: expert.id,
+        expertName: expert.name,
+        role: expert.role,
+        date: selectedDate,
+        time: selectedTime,
+        location: groundLocation,
+        phone,
+        notes,
+        status: "Pending Confirmation",
+        totalCost,
+        createdAt: new Date().toISOString(),
+      });
+      localStorage.setItem("playzone_expert_bookings", JSON.stringify(existing));
+    } catch {
+      // Ignore localStorage errors
+    }
+
     setIsSuccess(true);
-    setTimeout(() => {
-      setIsSuccess(false);
-      onClose();
-    }, 2400);
+  };
+
+  const handleCloseSuccess = () => {
+    setIsSuccess(false);
+    onClose();
+    setSelectedDate("");
+    setGroundLocation("");
+    setPhone("");
+    setNotes("");
   };
 
   return (
@@ -44,7 +75,7 @@ export default function BookingModal({ expert, isOpen, onClose }: BookingModalPr
           </div>
           <button
             type="button"
-            onClick={onClose}
+            onClick={isSuccess ? handleCloseSuccess : onClose}
             className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:bg-zinc-200/60 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -52,14 +83,50 @@ export default function BookingModal({ expert, isOpen, onClose }: BookingModalPr
         </div>
 
         {isSuccess ? (
-          <div className="p-8 text-center flex flex-col items-center justify-center space-y-3">
-            <div className="w-16 h-16 rounded-full bg-lime-100 flex items-center justify-center text-lime-600 mb-2">
-              <CheckCircle2 className="w-10 h-10" />
+          <div className="p-6 sm:p-8 text-center flex flex-col items-center justify-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 mb-1">
+              <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h4 className="text-xl font-black text-zinc-900">Booking Confirmed!</h4>
-            <p className="text-sm text-zinc-600 max-w-xs">
-              Your session with <span className="font-bold text-zinc-900">{expert.name}</span> ({expert.role}) has been requested. We will contact you at {phone || "your phone"} shortly.
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-black tracking-wide uppercase mb-2">
+                Status: Pending Confirmation
+              </span>
+              <h4 className="text-xl font-black text-zinc-900">Booking Request Submitted</h4>
+              <p className="text-xs text-zinc-500 font-mono mt-1">
+                Reference ID: <strong className="text-zinc-900">{bookingRef}</strong>
+              </p>
+            </div>
+
+            <div className="w-full bg-zinc-50 rounded-2xl p-4 border border-zinc-200/80 text-left text-xs space-y-1.5">
+              <div className="flex justify-between">
+                <span className="text-zinc-500">Expert:</span>
+                <span className="font-bold text-zinc-900">{expert.name} ({expert.role})</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">Date & Time:</span>
+                <span className="font-semibold text-zinc-800">{selectedDate} • {selectedTime}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">Venue:</span>
+                <span className="font-semibold text-zinc-800">{groundLocation}</span>
+              </div>
+              <div className="flex justify-between pt-1 border-t border-zinc-200">
+                <span className="text-zinc-500 font-bold">Estimated Fee:</span>
+                <span className="font-black text-zinc-900 text-sm">৳ {totalCost.toLocaleString()}</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-zinc-600 leading-relaxed max-w-sm">
+              Because expert availability depends on official match and net fixtures, our coordinator will call <span className="font-bold text-zinc-900">{phone}</span> to confirm schedule availability before finalizing the session.
             </p>
+
+            <button
+              type="button"
+              onClick={handleCloseSuccess}
+              className="w-full py-3 rounded-xl bg-zinc-950 hover:bg-black text-white font-bold text-sm transition-all"
+            >
+              Done
+            </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[85vh] overflow-y-auto">

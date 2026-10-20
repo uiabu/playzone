@@ -23,7 +23,8 @@ function CategoryPageContent() {
   if (
     mainCategory === "shop-cricket" ||
     mainCategory === "shop" ||
-    mainCategory === "all"
+    mainCategory === "all" ||
+    mainCategory === "new-gear"
   ) {
     return <ShopPageContent />;
   }

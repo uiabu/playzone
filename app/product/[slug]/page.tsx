@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,8 +19,9 @@ import {
   Info,
   Clock,
   Sparkles,
+  Eye,
 } from "lucide-react";
-import { getProductBySlug, getRelatedProducts, Product } from "@/lib/productsData";
+import { getProductBySlug, getRelatedProducts, Product, isPreOwnedProduct } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
 import ProductImageGallery from "@/components/productDetails/ProductImageGallery";
 import ProductReviewsSection from "@/components/productDetails/ProductReviewsSection";
@@ -55,6 +56,31 @@ function ProductDetailContent() {
   const [quantity, setQuantity] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<ActiveTab>("specs");
   const [addedToast, setAddedToast] = useState<boolean>(false);
+
+  // Deterministic base views calculation
+  const initialBaseViews = useMemo(() => {
+    if (!product) return 180;
+    if (product.viewsCount) return product.viewsCount;
+    const base = product.reviewsCount || 24;
+    const hash = (product.id || "gear").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return base * 15 + (hash % 450) + 180;
+  }, [product]);
+
+  const [views, setViews] = useState<number>(initialBaseViews);
+
+  useEffect(() => {
+    if (!product) return;
+    try {
+      const storageKey = `playzone_views_${product.id}`;
+      const saved = localStorage.getItem(storageKey);
+      const current = saved ? parseInt(saved, 10) : initialBaseViews;
+      const nextViews = current + 1;
+      localStorage.setItem(storageKey, nextViews.toString());
+      setViews(nextViews);
+    } catch {
+      setViews(initialBaseViews);
+    }
+  }, [product, initialBaseViews]);
 
   if (!product) {
     return (
@@ -110,7 +136,7 @@ function ProductDetailContent() {
 
   const handleBuyNow = () => {
     handleAddToCart();
-    openCart();
+    router.push("/checkout");
   };
 
   return (
@@ -174,7 +200,7 @@ function ProductDetailContent() {
               {product.name}
             </h1>
 
-            {/* Ratings & SKU Strip */}
+            {/* Ratings, Total Views & SKU Strip */}
             <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500 pb-3 border-b border-zinc-200/80">
               <div className="flex items-center gap-1">
                 <div className="flex items-center gap-0.5 text-[#84cc16]">
@@ -194,6 +220,19 @@ function ProductDetailContent() {
                 </span>
                 <span className="text-zinc-400">
                   ({product.reviewsCount} verified reviews)
+                </span>
+              </div>
+
+              <span className="text-zinc-300">•</span>
+
+              {/* Total Views */}
+              <div className="flex items-center gap-1.5 text-zinc-500 font-medium" title="Total Product Views">
+                <Eye className="w-3.5 h-3.5 text-zinc-400" />
+                <span>
+                  Total Views:{" "}
+                  <span className="text-zinc-800 font-semibold">
+                    {views.toLocaleString()}
+                  </span>
                 </span>
               </div>
 
@@ -373,27 +412,34 @@ function ProductDetailContent() {
                   </button>
                 </div>
 
-                {/* Add to Cart Button */}
-                <button
-                  type="button"
-                  onClick={handleAddToCart}
-                  className="flex-1 py-3.5 px-6 rounded-xl bg-[#84cc16] hover:bg-[#73b512] active:bg-[#65a30d] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm active:scale-98 cursor-pointer"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>
-                    Add to Cart • ৳ {totalPrice.toLocaleString()}
-                  </span>
-                </button>
+                {/* Add to Cart & Buy Now Buttons */}
+                {!product.inStock || product.stockCount <= 0 ? (
+                  <div className="flex-1 py-3.5 px-6 rounded-xl bg-zinc-200 text-zinc-600 font-bold text-xs sm:text-sm text-center">
+                    Currently Out of Stock
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleAddToCart}
+                      className="flex-1 py-3.5 px-6 rounded-xl bg-[#84cc16] hover:bg-[#73b512] active:bg-[#65a30d] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm active:scale-98 cursor-pointer"
+                    >
+                      <ShoppingCart className="w-4 h-4" />
+                      <span>
+                        Add to Cart • ৳ {totalPrice.toLocaleString()}
+                      </span>
+                    </button>
 
-                {/* Buy Now Button */}
-                <button
-                  type="button"
-                  onClick={handleBuyNow}
-                  className="flex-1 sm:flex-none py-3.5 px-6 rounded-xl bg-zinc-950 hover:bg-zinc-800 active:bg-black text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm active:scale-98 cursor-pointer"
-                >
-                  <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  <span>Buy Now</span>
-                </button>
+                    <button
+                      type="button"
+                      onClick={handleBuyNow}
+                      className="flex-1 sm:flex-none py-3.5 px-6 rounded-xl bg-zinc-950 hover:bg-zinc-800 active:bg-black text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm active:scale-98 cursor-pointer"
+                    >
+                      <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
+                      <span>Buy Now</span>
+                    </button>
+                  </>
+                )}
               </div>
 
               {/* Toast Feedback */}
@@ -433,11 +479,23 @@ function ProductDetailContent() {
               </div>
 
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-zinc-200/70">
-                <RotateCcw className="w-4 h-4 text-[#84cc16] shrink-0" />
-                <div className="text-[11px] leading-tight">
-                  <strong className="block text-zinc-900 font-bold">7-Day Return</strong>
-                  <span className="text-zinc-500">Hassle-Free</span>
-                </div>
+                {isPreOwnedProduct(product) ? (
+                  <>
+                    <Award className="w-4 h-4 text-amber-500 shrink-0" />
+                    <div className="text-[11px] leading-tight">
+                      <strong className="block text-zinc-900 font-bold">As-Is Gear</strong>
+                      <span className="text-zinc-500">No Warranty</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <RotateCcw className="w-4 h-4 text-[#84cc16] shrink-0" />
+                    <div className="text-[11px] leading-tight">
+                      <strong className="block text-zinc-900 font-bold">Easy Return</strong>
+                      <span className="text-zinc-500">Brand Policy</span>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white border border-zinc-200/70">
@@ -469,7 +527,7 @@ function ProductDetailContent() {
               href="/hire-experts"
               className="px-6 py-3 rounded-xl bg-[#84cc16] hover:bg-[#73b512] text-black font-black text-xs sm:text-sm transition-all shadow-md shrink-0 whitespace-nowrap"
             >
-              Browse 245+ Cricket Experts →
+              Browse Cricket Experts →
             </Link>
           </div>
         </div>
@@ -531,8 +589,10 @@ function ProductDetailContent() {
                     </div>
                   ))}
                   <div className="flex items-center justify-between py-2.5 border-b border-zinc-100 text-xs sm:text-sm">
-                    <span className="font-semibold text-zinc-500">Warranty</span>
-                    <span className="font-bold text-zinc-900 text-right">
+                    <span className="font-semibold text-zinc-500">
+                      {isPreOwnedProduct(product) ? "Warranty Policy" : "Warranty"}
+                    </span>
+                    <span className={`font-bold text-right ${isPreOwnedProduct(product) ? "text-amber-700" : "text-zinc-900"}`}>
                       {product.warranty}
                     </span>
                   </div>

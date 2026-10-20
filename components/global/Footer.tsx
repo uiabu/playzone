@@ -223,8 +223,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/partner" className="hover:text-white transition-colors block py-0.5">
-                  Partner With Us
+                <Link href="/pre-owned" className="hover:text-white transition-colors block py-0.5">
+                  Pre-Owned Gear
                 </Link>
               </li>
               <li>

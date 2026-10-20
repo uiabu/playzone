@@ -1334,7 +1334,7 @@ export default function CategoryDetailsContent({
               LOOKING FOR 1-ON-1 COACHING?
             </span>
             <h3 className="text-xl sm:text-2xl font-black">
-              Hire Certified Cricket Coaches & Net Bowlers
+              Hire Cricket Coaches & Net Bowlers
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400">
               Pair your new {config.title.toLowerCase()} with training masterclasses across Bangladesh.

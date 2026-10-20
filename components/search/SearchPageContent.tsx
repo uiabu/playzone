@@ -157,7 +157,7 @@ export default function SearchPageContent() {
               Search <span className="text-[#84cc16]">Playzone</span>
             </h1>
             <p className="text-xs sm:text-sm text-zinc-400 mt-1.5">
-              Instantly find authentic cricket gear, bats, accessories, and certified cricket experts.
+              Instantly find authentic cricket gear, bats, accessories, and cricket coaching experts.
             </p>
 
             {/* Interactive Search Input Box */}

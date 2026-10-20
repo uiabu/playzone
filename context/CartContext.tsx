@@ -10,6 +10,8 @@ export interface CartItem {
   image: string;
   category?: string;
   quantity: number;
+  maxStock?: number;
+  condition?: "new" | "pre-owned" | string;
 }
 
 interface CartContextType {
@@ -67,13 +69,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((prev) => {
       const existing = prev.find((item) => item.id === newItem.id);
       if (existing) {
+        const targetMax = newItem.maxStock ?? existing.maxStock ?? 99;
+        const newQty = Math.min(existing.quantity + quantity, targetMax);
         return prev.map((item) =>
           item.id === newItem.id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: newQty, maxStock: newItem.maxStock ?? item.maxStock }
             : item
         );
       }
-      return [...prev, { ...newItem, quantity }];
+      const initialMax = newItem.maxStock ?? 99;
+      return [...prev, { ...newItem, quantity: Math.min(quantity, initialMax) }];
     });
     setIsCartOpen(true);
   };
@@ -88,7 +93,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity: newQuantity } : item))
+      prev.map((item) => {
+        if (item.id === id) {
+          const maxAllowed = item.maxStock ?? 99;
+          return { ...item, quantity: Math.min(newQuantity, maxAllowed) };
+        }
+        return item;
+      })
     );
   };
 
