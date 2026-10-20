@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { X, Star, MapPin, Award, ShieldCheck, Calendar, Clock } from "lucide-react";
-import { Expert } from "./expertsData";
+import { X, Star, MapPin, Award, ShieldCheck, Calendar, Clock, Eye } from "lucide-react";
+import { Expert, getExpertProfileViews } from "./expertsData";
 
 interface ProfileModalProps {
   expert: Expert | null;
@@ -64,7 +64,7 @@ export default function ProfileModal({ expert, isOpen, onClose, onBook }: Profil
                 )}
               </div>
               <p className="text-sm font-semibold text-zinc-700">{expert.role}</p>
-              <div className="flex items-center gap-3 mt-1.5 text-xs text-zinc-500">
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mt-1.5 text-xs text-zinc-500">
                 <div className="flex items-center gap-1 text-[#84cc16]">
                   <Star className="w-3.5 h-3.5 fill-[#84cc16] text-[#84cc16]" />
                   <span className="font-bold text-zinc-800">{expert.rating}</span>
@@ -76,6 +76,10 @@ export default function ProfileModal({ expert, isOpen, onClose, onBook }: Profil
                 </span>
                 <span>•</span>
                 <span className="text-zinc-600 font-medium">Experience: {expert.experienceYears}+ years</span>
+                <span>•</span>
+                <span className="flex items-center gap-1 text-zinc-600 font-medium">
+                  <Eye className="w-3.5 h-3.5 text-zinc-400" /> {getExpertProfileViews(expert)} profile views
+                </span>
               </div>
             </div>
 

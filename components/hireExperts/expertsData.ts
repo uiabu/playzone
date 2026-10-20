@@ -26,6 +26,23 @@ export interface Expert {
   fullBio: string;
   certifications: string[];
   availableDays: string[];
+  profileViews?: number;
+}
+
+export function getExpertProfileViews(expert: { id?: string; reviewsCount?: number; profileViews?: number }): string {
+  if (expert.profileViews) {
+    if (expert.profileViews >= 1000) {
+      return (expert.profileViews / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    }
+    return expert.profileViews.toString();
+  }
+  const base = expert.reviewsCount || 20;
+  const hash = (expert.id || "expert").split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const views = base * 38 + (hash % 500) + 420;
+  if (views >= 1000) {
+    return (views / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  }
+  return views.toString();
 }
 
 export const EXPERTS_DATA: Expert[] = [

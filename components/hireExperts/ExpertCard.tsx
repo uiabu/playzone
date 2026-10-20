@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Star, MapPin, Heart, Check } from "lucide-react";
-import { Expert } from "./expertsData";
+import { Star, MapPin, Heart, Check, Eye } from "lucide-react";
+import { Expert, getExpertProfileViews } from "./expertsData";
 
 interface ExpertCardProps {
   expert: Expert;
@@ -53,10 +53,10 @@ export default function ExpertCard({
       </div>
 
       {/* Card Content */}
-      <div className="p-3.5 sm:p-4 flex flex-col flex-1">
+      <div className="p-3.5 sm:p-3.5 flex flex-col flex-1">
         {/* Name and Role */}
         <div className="flex items-center gap-1.5">
-          <h3 className="font-semibold text-zinc-900 text-sm sm:text-[15px] leading-snug">
+          <h3 className="font-semibold text-zinc-900 text-sm sm:text-sm leading-snug">
             {expert.name}
           </h3>
           {expert.verified && (
@@ -72,18 +72,24 @@ export default function ExpertCard({
           {expert.role}
         </p>
 
-        {/* Rating and Location */}
-        <div className="flex items-center gap-1.5 mt-2 text-xs text-zinc-500">
-          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
-          <span className="font-semibold text-zinc-800">
-            {expert.rating.toFixed(1)}
-          </span>
-          <span className="text-zinc-400">({expert.reviewsCount})</span>
-          <span className="text-zinc-300">•</span>
-          <span className="flex items-center gap-0.5 truncate text-zinc-600">
-            <MapPin className="w-3 h-3 text-zinc-400 shrink-0" />
-            {expert.location}
-          </span>
+        {/* Rating, Location and Profile Views */}
+        <div className="flex items-center justify-between gap-1.5 mt-2 text-xs text-zinc-500">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
+            <span className="font-semibold text-zinc-800">
+              {expert.rating.toFixed(1)}
+            </span>
+            <span className="text-zinc-400">({expert.reviewsCount})</span>
+            <span className="text-zinc-300">•</span>
+            <span className="flex items-center gap-0.5 truncate text-zinc-600">
+              <MapPin className="w-3 h-3 text-zinc-400 shrink-0" />
+              {expert.location}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 text-[11px] text-zinc-500 font-medium shrink-0" title="Profile views">
+            <Eye className="w-3.5 h-3.5 text-zinc-400" />
+            <span>{getExpertProfileViews(expert)}</span>
+          </div>
         </div>
 
         {/* Bio snippet */}

@@ -23,8 +23,9 @@ import {
   X,
   Filter,
   Truck,
+  Eye,
 } from "lucide-react";
-import { Product } from "@/lib/productsData";
+import { Product, getProductViews } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
 import TradeInModal from "./TradeInModal";
 
@@ -1368,26 +1369,32 @@ export default function PreOwnedPageContent() {
                         {item.name}
                       </h3>
 
-                      {/* Ratings */}
-                      <div className="flex items-center gap-1.5 pt-0.5">
-                        <div className="flex items-center gap-0.5 text-[#84cc16]">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-3 h-3 ${
-                                i < Math.floor(item.rating)
-                                  ? "fill-[#84cc16] text-[#84cc16]"
-                                  : "text-zinc-300"
-                              }`}
-                            />
-                          ))}
+                      {/* Ratings & Views */}
+                      <div className="flex items-center justify-between gap-1 pt-0.5">
+                        <div className="flex items-center gap-1 min-w-0">
+                          <div className="flex items-center gap-0.5 text-[#84cc16] shrink-0">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-3 h-3 ${
+                                  i < Math.floor(item.rating)
+                                    ? "fill-[#84cc16] text-[#84cc16]"
+                                    : "text-zinc-300"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-[11px] font-semibold text-zinc-700">
+                            {item.rating}
+                          </span>
+                          <span className="text-[11px] text-zinc-400">
+                            ({item.reviewsCount})
+                          </span>
                         </div>
-                        <span className="text-[11px] font-semibold text-zinc-700">
-                          {item.rating}
-                        </span>
-                        <span className="text-[11px] text-zinc-400">
-                          ({item.reviewsCount})
-                        </span>
+                        <div className="flex items-center gap-1 text-[11px] text-zinc-400 font-medium shrink-0" title="Views">
+                          <Eye className="w-3.5 h-3.5 text-zinc-400" />
+                          <span>{getProductViews(item)}</span>
+                        </div>
                       </div>
 
                       {/* Inspection Note */}

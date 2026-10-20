@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, Eye } from "lucide-react";
+import { getProductViews } from "@/lib/productsData";
 
 interface EssentialProduct {
   id: string;
@@ -11,6 +12,7 @@ interface EssentialProduct {
   imageSrc: string;
   rating: number;
   reviewsCount: number;
+  viewsCount?: number;
   price: string;
   badge: "NEW" | "PRE-OWNED - GRADE A";
   category: "batting-gloves" | "batting-pads" | "helmets" | "thigh-guards" | "guards";
@@ -269,7 +271,7 @@ export default function BattingEssentialsSection() {
           <Link
             key={product.id}
             href={`/product/${product.id}`}
-            className="flex-shrink-0 w-[calc((100%-14px)/2)] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
+            className="flex-shrink-0 w-[86%] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
           >
             {/* Product Image Area */}
             <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/60 to-white">
@@ -288,28 +290,34 @@ export default function BattingEssentialsSection() {
                 {product.name}
               </h3>
 
-              {/* Star Rating & Review Count */}
-              <div className="flex items-center gap-1.5 mt-2">
-                <div className="flex items-center gap-0.5 text-[#84cc16]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-3 h-3 ${
-                        i < Math.floor(product.rating)
-                          ? "fill-[#84cc16] text-[#84cc16]"
-                          : i < product.rating
-                          ? "fill-[#84cc16]/50 text-[#84cc16]"
-                          : "text-zinc-300"
-                      }`}
-                    />
-                  ))}
+              {/* Star Rating, Review Count & Views */}
+              <div className="flex items-center justify-between gap-1 mt-2">
+                <div className="flex items-center gap-1 min-w-0">
+                  <div className="flex items-center gap-0.5 text-[#84cc16] shrink-0">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-3 h-3 ${
+                          i < Math.floor(product.rating)
+                            ? "fill-[#84cc16] text-[#84cc16]"
+                            : i < product.rating
+                            ? "fill-[#84cc16]/50 text-[#84cc16]"
+                            : "text-zinc-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-[11px] font-semibold text-zinc-700">
+                    {product.rating}
+                  </span>
+                  <span className="text-[11px] text-zinc-400 font-normal">
+                    ({product.reviewsCount})
+                  </span>
                 </div>
-                <span className="text-[11px] font-semibold text-zinc-700">
-                  {product.rating}
-                </span>
-                <span className="text-[11px] text-zinc-400 font-normal">
-                  ({product.reviewsCount})
-                </span>
+                <div className="flex items-center gap-1 text-[11px] text-zinc-400 font-medium shrink-0" title="Views">
+                  <Eye className="w-3.5 h-3.5 text-zinc-400" />
+                  <span>{getProductViews(product)}</span>
+                </div>
               </div>
             </div>
 
