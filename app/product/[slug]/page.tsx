@@ -38,7 +38,7 @@ function ProductDetailContent() {
   }, [slug]);
 
   const relatedProducts = useMemo(() => {
-    return getRelatedProducts(slug, 5);
+    return getRelatedProducts(slug, 10);
   }, [slug]);
 
   // Cart context

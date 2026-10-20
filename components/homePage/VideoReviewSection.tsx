@@ -60,14 +60,48 @@ export default function VideoReviewSection() {
   const [activePlayer, setActivePlayer] = useState<PlayerReview | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollState = React.useCallback(() => {
+    if (!scrollContainerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+    setCanScrollLeft(scrollLeft > 5);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
+  }, []);
+
+  React.useEffect(() => {
+    updateScrollState();
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener("scroll", updateScrollState, { passive: true });
+      window.addEventListener("resize", updateScrollState);
+      return () => {
+        container.removeEventListener("scroll", updateScrollState);
+        window.removeEventListener("resize", updateScrollState);
+      };
+    }
+  }, [updateScrollState]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (!scrollContainerRef.current) return;
-    const scrollAmount = 300;
-    scrollContainerRef.current.scrollBy({
+    const container = scrollContainerRef.current;
+    let scrollAmount = 280;
+    const firstCard = container.firstElementChild as HTMLElement | null;
+    const secondCard = firstCard?.nextElementSibling as HTMLElement | null;
+    if (firstCard && secondCard) {
+      scrollAmount = Math.round(
+        secondCard.getBoundingClientRect().left - firstCard.getBoundingClientRect().left
+      );
+    } else if (firstCard) {
+      scrollAmount = Math.round(firstCard.getBoundingClientRect().width + 18);
+    }
+
+    container.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behavior: "smooth",
     });
+    setTimeout(updateScrollState, 350);
     setActiveSlide((prev) =>
       direction === "left" ? Math.max(0, prev - 1) : Math.min(PLAYER_REVIEWS.length - 1, prev + 1)
     );
@@ -114,8 +148,13 @@ export default function VideoReviewSection() {
           <button
             type="button"
             onClick={() => handleScroll("left")}
+            disabled={!canScrollLeft}
             aria-label="Previous Player Review"
-            className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-zinc-950 shadow-xl flex items-center justify-center hover:bg-zinc-100 hover:scale-105 active:scale-95 transition-all"
+            className={`absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all ${
+              canScrollLeft
+                ? "bg-white text-zinc-950 shadow-xl hover:bg-zinc-100 hover:scale-105 active:scale-95 cursor-pointer opacity-100"
+                : "bg-white/40 text-zinc-400 cursor-not-allowed opacity-40"
+            }`}
           >
             <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
           </button>
@@ -124,8 +163,13 @@ export default function VideoReviewSection() {
           <button
             type="button"
             onClick={() => handleScroll("right")}
+            disabled={!canScrollRight}
             aria-label="Next Player Review"
-            className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-zinc-950 shadow-xl flex items-center justify-center hover:bg-zinc-100 hover:scale-105 active:scale-95 transition-all"
+            className={`absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all ${
+              canScrollRight
+                ? "bg-white text-zinc-950 shadow-xl hover:bg-zinc-100 hover:scale-105 active:scale-95 cursor-pointer opacity-100"
+                : "bg-white/40 text-zinc-400 cursor-not-allowed opacity-40"
+            }`}
           >
             <ChevronRight className="w-6 h-6 stroke-[2.5]" />
           </button>
@@ -133,13 +177,13 @@ export default function VideoReviewSection() {
           {/* 5 Video Cards Row */}
           <div
             ref={scrollContainerRef}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4.5 overflow-x-auto scrollbar-none pb-4"
+            className="flex gap-3.5 sm:gap-4.5 overflow-x-auto scroll-smooth scrollbar-none pb-4 snap-x snap-mandatory"
           >
-            {PLAYER_REVIEWS.map((player, idx) => (
+            {PLAYER_REVIEWS.map((player) => (
               <div
                 key={player.id}
                 onClick={() => setActivePlayer(player)}
-                className="group relative cursor-pointer flex flex-col justify-between rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 bg-gradient-to-b from-zinc-900/90 to-[#070b09] shadow-xl hover:border-[#84cc16]/70 transition-all duration-300 hover:-translate-y-1.5"
+                className="flex-shrink-0 w-[calc((100%-14px)/2)] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group relative cursor-pointer flex flex-col justify-between rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 bg-gradient-to-b from-zinc-900/90 to-[#070b09] shadow-xl hover:border-[#84cc16]/70 transition-all duration-300 hover:-translate-y-1.5"
               >
                 {/* Player Photo with Play Button Overlay */}
                 <div className="relative w-full aspect-[3/4] overflow-hidden bg-zinc-900">

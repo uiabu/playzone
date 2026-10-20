@@ -103,20 +103,15 @@ export default function HireExpertsSection() {
 
   return (
     <section className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-      {/* 1. SECTION HEADER: "Hire Cricket Experts" + View All + Prev/Next Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-5">
-        <div>
-          <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight inline-flex items-center gap-2">
-            <span className="text-zinc-950">Hire</span>
-            <span className="text-[#84cc16]">Cricket Experts</span>
-          </h2>
-          <p className="text-xs sm:text-sm text-zinc-500 mt-1">
-            Book certified coaches, net bowlers, fitness trainers & specialist cricket professionals
-          </p>
-        </div>
+      {/* 1. SECTION HEADER: "Hire Cricket Experts" + Carousel Arrow Buttons */}
+      <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
+        <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight inline-flex items-center gap-2">
+          <span className="text-zinc-950">Hire</span>
+          <span className="text-[#84cc16]">Cricket Experts</span>
+        </h2>
 
         {/* Carousel Arrow Buttons */}
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        <div className="flex items-center gap-2">
           {/* Previous (<) */}
           <button
             type="button"
@@ -182,12 +177,12 @@ export default function HireExpertsSection() {
       {/* 3. EXPERTS CARDS SLIDER */}
       <div
         ref={scrollContainerRef}
-        className="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth scrollbar-none pb-3 snap-x snap-mandatory"
+        className="flex gap-3.5 sm:gap-4.5 overflow-x-auto scroll-smooth scrollbar-none pb-2 snap-x snap-mandatory"
       >
         {displayedExperts.map((expert) => (
           <div
             key={expert.id}
-            className="flex-shrink-0 w-[275px] sm:w-[310px] md:w-[330px] snap-start flex flex-col"
+            className="flex-shrink-0 w-[calc((100%-14px)/1.3)] sm:w-[calc((100%-36px)/2.3)] md:w-[calc((100%-54px)/3.1)] lg:w-[calc((100%-54px)/3.6)] xl:w-[calc((100%-72px)/4)] snap-start flex flex-col"
           >
             <ExpertCard
               expert={expert}
