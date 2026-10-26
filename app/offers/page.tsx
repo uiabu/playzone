@@ -5,7 +5,7 @@ import OffersPageContent from "@/components/offers/OffersPageContent";
 
 export default function OffersPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-zinc-50" />}>
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
       <OffersPageContent />
     </Suspense>
   );

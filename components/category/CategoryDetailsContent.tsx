@@ -23,6 +23,8 @@ import {
 } from "lucide-react";
 import { ALL_PRODUCTS, Product, getProductViews } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
+import { useProducts } from "@/context/ProductsContext";
+import ProductCardMedia from "@/components/products/ProductCardMedia";
 
 interface SubmenuTab {
   id: string;
@@ -358,6 +360,11 @@ export default function CategoryDetailsContent({
 }: CategoryDetailsContentProps) {
   const router = useRouter();
   const { addItem, openCart } = useCart();
+  const { products: contextProducts } = useProducts();
+  const sourceProducts =
+    contextProducts && contextProducts.length > 0
+      ? contextProducts
+      : ALL_PRODUCTS;
 
   // Normalize category slug
   const normalizedCat =
@@ -418,7 +425,7 @@ export default function CategoryDetailsContent({
   // Available brands in this specific department
   const availableBrands = useMemo(() => {
     const brandsSet = new Set<string>();
-    ALL_PRODUCTS.forEach((p) => {
+    sourceProducts.forEach((p) => {
       if (normalizedCat === "cricket-bats" && p.categorySlug === "cricket-bats") brandsSet.add(p.brand);
       else if (normalizedCat === "batting" && p.categorySlug === "batting") brandsSet.add(p.brand);
       else if (normalizedCat === "bowling" && (p.categorySlug === "bowling" || p.categorySlug === "shoes")) brandsSet.add(p.brand);
@@ -428,7 +435,7 @@ export default function CategoryDetailsContent({
       else if (p.categorySlug === normalizedCat) brandsSet.add(p.brand);
     });
     return Array.from(brandsSet);
-  }, [normalizedCat]);
+  }, [normalizedCat, sourceProducts]);
 
   useEffect(() => {
     if (subCategorySlug) {
@@ -448,7 +455,7 @@ export default function CategoryDetailsContent({
 
   // Filter Products strictly by Category, SubCategory slug, and side filters!
   const filteredProducts = useMemo(() => {
-    return ALL_PRODUCTS.filter((product) => {
+    return sourceProducts.filter((product) => {
       // 1. Category check with cross-category exceptions for relevant submenus
       if (activeSubmenu && activeSubmenu !== "all") {
         const sub = activeSubmenu.toLowerCase();
@@ -554,7 +561,7 @@ export default function CategoryDetailsContent({
   };
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]/70 pb-20 select-none">
+    <main className="min-h-screen bg-white pb-20 select-none">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-8">
         {/* 1. Category-Specific Panoramic Banner */}
         <div className="relative w-full rounded-3xl overflow-hidden shadow-lg border border-zinc-800 bg-gradient-to-r from-zinc-950 via-zinc-900 to-black p-6 sm:p-10 text-white">
@@ -990,29 +997,14 @@ export default function CategoryDetailsContent({
                     href={`/product/${product.slug}`}
                     className="group bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
                   >
-                    <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/70 via-white to-zinc-50/40">
-                      <Image
-                        src={product.images[0]}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 240px"
-                        className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
-                      />
-
-                      {product.badge && (
-                        <span
-                          className={`absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider shadow-2xs ${
-                            product.badge.includes("PRE-OWNED")
-                              ? "bg-zinc-900 text-white"
-                              : product.badge.includes("OFF")
-                              ? "bg-red-500 text-white"
-                              : "bg-[#84cc16] text-black"
-                          }`}
-                        >
-                          {product.badge}
-                        </span>
-                      )}
-                    </div>
+                    {/* Media Display Area with Video on Hover */}
+                    <ProductCardMedia
+                      src={product.images && product.images[0] ? product.images[0] : "/images/products/bats/sg_bat.png"}
+                      alt={product.name}
+                      videoUrl={product.videoUrl}
+                      badge={product.badge}
+                      className="mb-3"
+                    />
 
                     <div>
                       <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">

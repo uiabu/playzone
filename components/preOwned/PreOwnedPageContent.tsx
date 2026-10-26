@@ -25,6 +25,7 @@ import {
   Truck,
   Eye,
 } from "lucide-react";
+import ProductCardMedia from "@/components/products/ProductCardMedia";
 import { Product, getProductViews } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
 import TradeInModal from "./TradeInModal";
@@ -941,7 +942,7 @@ export default function PreOwnedPageContent() {
   );
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]/70 pb-20 select-none">
+    <main className="min-h-screen bg-white pb-20 select-none">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-7">
         {/* 1. Panoramic Pre-Owned CTA Banner (Matching Home Page Mockup) */}
         <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-zinc-800/40 bg-black">
@@ -1327,30 +1328,14 @@ export default function PreOwnedPageContent() {
                     href={`/product/${item.slug}`}
                     className="group bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-300 p-3 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
                   >
-                    {/* Media area */}
-                    <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/70 via-white to-zinc-50/40">
-                      <Image
-                        src={item.images[0]}
-                        alt={item.name}
-                        fill
-                        sizes="(max-width: 640px) 160px, (max-width: 1024px) 220px, 260px"
-                        className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
-                      />
-
-                      {/* EXACT LIME GREEN BADGE FROM SCREENSHOT: PRE-OWNED - GRADE A */}
-                      <div className="absolute top-2 left-2 flex flex-col gap-1 items-start">
-                        <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-[#a3e635] text-black shadow-xs">
-                          PRE-OWNED • {item.grade.toUpperCase()}
-                        </span>
-                      </div>
-
-                      {/* Savings Pill */}
-                      {item.discountPercent && (
-                        <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-red-600 text-white shadow-2xs">
-                          Save {item.discountPercent}%
-                        </span>
-                      )}
-                    </div>
+                    {/* Media area with Video on Hover */}
+                    <ProductCardMedia
+                      src={item.images && item.images[0] ? item.images[0] : "/images/products/bats/sg_bat.png"}
+                      alt={item.name}
+                      videoUrl={(item as any).videoUrl}
+                      badge={`PRE-OWNED • ${item.grade.toUpperCase()}`}
+                      className="mb-3"
+                    />
 
                     {/* Product Info */}
                     <div className="space-y-1">

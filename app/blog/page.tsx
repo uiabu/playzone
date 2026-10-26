@@ -54,7 +54,7 @@ const BLOG_ARTICLES = [
 
 export default function BlogIndexPage() {
   return (
-    <main className="min-h-screen bg-[#f8fafc]/70 pb-20 select-none">
+    <main className="min-h-screen bg-white pb-20 select-none">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         {/* Breadcrumbs */}
         <nav

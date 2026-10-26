@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { ALL_PRODUCTS, Product, getProductViews } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
+import { useProducts } from "@/context/ProductsContext";
+import ProductCardMedia from "@/components/products/ProductCardMedia";
 
 type OfferTab = "all" | "flash" | "pre-owned" | "bats" | "gear";
 
@@ -50,6 +52,11 @@ const COUPONS = [
 
 export default function OffersPageContent() {
   const { addItem, openCart, applyCoupon } = useCart();
+  const { products: contextProducts } = useProducts();
+  const sourceProducts =
+    contextProducts && contextProducts.length > 0
+      ? contextProducts
+      : ALL_PRODUCTS;
   const [activeTab, setActiveTab] = useState<OfferTab>("all");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -92,7 +99,7 @@ export default function OffersPageContent() {
 
   const dealProducts = useMemo(() => {
     // Collect all products with discounts or special badges
-    const discounted = ALL_PRODUCTS.filter(
+    const discounted = sourceProducts.filter(
       (p) =>
         (p.discountPercent && p.discountPercent > 0) ||
         p.originalPrice ||
@@ -133,7 +140,7 @@ export default function OffersPageContent() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]/70 pb-20 select-none">
+    <main className="min-h-screen bg-white pb-20 select-none">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-8">
         {/* 1. Panoramic Deals Banner with Live Countdown */}
         <div className="relative w-full rounded-3xl overflow-hidden shadow-xl border border-zinc-800 bg-gradient-to-r from-zinc-950 via-zinc-900 to-black p-6 sm:p-10 text-white">
@@ -312,29 +319,18 @@ export default function OffersPageContent() {
                 href={`/product/${product.slug}`}
                 className="group bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-300 p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
               >
-                {/* Media area */}
-                <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/70 via-white to-zinc-50/40">
-                  <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 640px) 160px, (max-width: 1024px) 220px, 260px"
-                    className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
-                  />
-
-                  {/* Badges */}
-                  <div className="absolute top-2 left-2 flex flex-col gap-1 items-start">
-                    {product.discountPercent ? (
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-red-600 text-white shadow-xs">
-                        {product.discountPercent}% OFF
-                      </span>
-                    ) : product.badge ? (
-                      <span className="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-zinc-900 text-white shadow-xs">
-                        {product.badge}
-                      </span>
-                    ) : null}
-                  </div>
-                </div>
+                {/* Media area with Video on Hover */}
+                <ProductCardMedia
+                  src={product.images && product.images[0] ? product.images[0] : "/images/products/bats/sg_bat.png"}
+                  alt={product.name}
+                  videoUrl={product.videoUrl}
+                  badge={
+                    product.discountPercent
+                      ? `${product.discountPercent}% OFF`
+                      : product.badge
+                  }
+                  className="mb-3"
+                />
 
                 {/* Info */}
                 <div className="space-y-1">

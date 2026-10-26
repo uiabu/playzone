@@ -45,7 +45,7 @@ function CategoryPageContent() {
 
 function CategorySkeleton() {
   return (
-    <div className="min-h-screen bg-[#f8fafc]/70 p-6 sm:p-10">
+    <div className="min-h-screen bg-white p-6 sm:p-10">
       <div className="max-w-[1440px] mx-auto animate-pulse space-y-6">
         <div className="h-44 bg-zinc-200 rounded-3xl" />
         <div className="h-6 bg-zinc-200 rounded w-48" />

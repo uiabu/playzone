@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Star, Eye } from "lucide-react";
 import { Product, getProductViews } from "@/lib/productsData";
+import ProductCardMedia from "@/components/products/ProductCardMedia";
 
 interface RelatedProductsSectionProps {
   products: Product[];
@@ -125,22 +126,14 @@ export default function RelatedProductsSection({
             href={`/product/${item.slug}`}
             className="flex-shrink-0 w-[86%] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
           >
-            {/* Image Area */}
-            <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/60 to-white">
-              <Image
-                src={item.images[0]}
-                alt={item.name}
-                fill
-                sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 240px"
-                className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
-              />
-
-              {item.badge && (
-                <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-[#a3e635] text-black shadow-2xs">
-                  {item.badge}
-                </span>
-              )}
-            </div>
+            {/* Image Area with Video on Hover */}
+            <ProductCardMedia
+              src={item.images && item.images[0] ? item.images[0] : "/images/products/bats/sg_bat.png"}
+              alt={item.name}
+              videoUrl={item.videoUrl}
+              badge={item.badge}
+              className="mb-3"
+            />
 
             {/* Title & Rating */}
             <div className="flex-1">

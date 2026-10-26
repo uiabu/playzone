@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Star, Eye } from "lucide-react";
 import { getProductViews } from "@/lib/productsData";
+import { useProducts } from "@/context/ProductsContext";
+import ProductCardMedia from "@/components/products/ProductCardMedia";
 
 interface GearProduct {
   id: string;
@@ -16,6 +18,7 @@ interface GearProduct {
   originalPrice?: string;
   price: string;
   badge: string;
+  videoUrl?: string;
   tags: ("offers" | "new-arrivals" | "pre-owned" | "combo-sets" | "trending" | "best-rated")[];
 }
 
@@ -288,6 +291,7 @@ const FILTER_TABS: { id: FilterType; label: string }[] = [
 ];
 
 export default function FeaturedCricketGearSection() {
+  const { getProductBySlugOrId } = useProducts();
   const [activeFilter, setActiveFilter] = useState<FilterType>("offers");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -416,22 +420,25 @@ export default function FeaturedCricketGearSection() {
         ref={scrollContainerRef}
         className="flex gap-3.5 sm:gap-4.5 overflow-x-auto scroll-smooth scrollbar-none pb-2 snap-x snap-mandatory"
       >
-        {displayedProducts.map((product) => (
-          <Link
-            key={product.id}
-            href={`/product/${product.id}`}
-            className="flex-shrink-0 w-[86%] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
-          >
-            {/* Realistic Product Image Area */}
-            <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/60 to-white">
-              <Image
-                src={product.imageSrc}
+        {displayedProducts.map((product) => {
+          const liveProduct = getProductBySlugOrId(product.id);
+          const resolvedVideoUrl = product.videoUrl || liveProduct?.videoUrl;
+          const resolvedImage = liveProduct?.images?.[0] || product.imageSrc;
+
+          return (
+            <Link
+              key={product.id}
+              href={`/product/${product.id}`}
+              className="flex-shrink-0 w-[86%] sm:w-[calc((100%-36px)/3)] md:w-[calc((100%-54px)/4)] lg:w-[calc((100%-72px)/5)] snap-start group bg-white rounded-2xl border border-zinc-200/80 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
+            >
+              {/* Product Media with Video on Hover */}
+              <ProductCardMedia
+                src={resolvedImage}
                 alt={product.name}
-                fill
-                sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 240px"
-                className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                videoUrl={resolvedVideoUrl}
+                badge={product.badge}
+                className="mb-3"
               />
-            </div>
 
             {/* Product Title */}
             <div className="flex-1">
@@ -497,7 +504,8 @@ export default function FeaturedCricketGearSection() {
               </span>
             </div>
           </Link>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

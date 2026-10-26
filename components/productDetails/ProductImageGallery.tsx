@@ -13,22 +13,28 @@ import {
   ChevronLeft,
   ChevronRight,
   Maximize2,
+  Play,
+  Film,
 } from "lucide-react";
+import { extractYoutubeId } from "@/components/products/ProductCardMedia";
 
 interface ProductImageGalleryProps {
   images: string[];
   productName: string;
   badge?: string;
+  videoUrl?: string;
 }
 
 export default function ProductImageGallery({
   images,
   productName,
   badge,
+  videoUrl,
 }: ProductImageGalleryProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   // In-card Smooth Zoom & Pan States (Default: 100% scale initially)
   const [cardScale, setCardScale] = useState(1);
@@ -389,6 +395,70 @@ export default function ProductImageGallery({
           );
         })}
       </div>
+
+      {/* Video Showcase Button */}
+      {videoUrl && (
+        <div className="mt-3">
+          <button
+            type="button"
+            onClick={() => setIsVideoModalOpen(true)}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-xs font-bold transition-all shadow-md shadow-red-600/20 active:scale-[0.98] cursor-pointer"
+          >
+            <Play className="w-4 h-4 fill-current" />
+            <span>Watch Product Video Showcase & Review</span>
+          </button>
+        </div>
+      )}
+
+      {/* Video Showcase Modal */}
+      {isVideoModalOpen && videoUrl && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setIsVideoModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-3xl bg-zinc-950 rounded-3xl border border-zinc-800 overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center">
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                </div>
+                <h3 className="text-sm font-bold text-white truncate max-w-md">
+                  {productName} — Video Review
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsVideoModalOpen(false)}
+                className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="relative aspect-video w-full bg-black">
+              {extractYoutubeId(videoUrl) ? (
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${extractYoutubeId(videoUrl)}?autoplay=1&controls=1&rel=0`}
+                  title={`${productName} Video Showcase`}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  src={videoUrl}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ================= 3. FULLSCREEN INTERACTIVE LIGHTBOX MODAL ================= */}
       {isLightboxOpen && (

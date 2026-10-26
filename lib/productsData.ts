@@ -49,6 +49,7 @@ export interface Product {
   warranty: string;
   deliveryDaysDhaka: string;
   deliveryDaysNationwide: string;
+  videoUrl?: string;
   reviews: ProductReview[];
 }
 
@@ -106,6 +107,7 @@ export const ALL_PRODUCTS: Product[] = [
     warranty: "1 Year Official Brand Warranty on Handle",
     deliveryDaysDhaka: "24 Hours (Express Delivery Available)",
     deliveryDaysNationwide: "2 - 3 Days via Steadfast / RedX Courier",
+    videoUrl: "https://www.youtube.com/watch?v=kYJzX2eQZrs",
     reviews: [
       {
         author: "Rahim Al-Hasan",
@@ -179,6 +181,7 @@ export const ALL_PRODUCTS: Product[] = [
     warranty: "1 Year Manufacturer Handle Warranty",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
+    videoUrl: "https://www.youtube.com/watch?v=1x9iX5-sZ78",
     reviews: [
       {
         author: "Tanvir S.",

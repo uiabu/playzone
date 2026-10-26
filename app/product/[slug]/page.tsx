@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { getProductBySlug, getRelatedProducts, Product, isPreOwnedProduct } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
+import { useProducts } from "@/context/ProductsContext";
 import ProductImageGallery from "@/components/productDetails/ProductImageGallery";
 import ProductReviewsSection from "@/components/productDetails/ProductReviewsSection";
 import RelatedProductsSection from "@/components/productDetails/RelatedProductsSection";
@@ -33,10 +34,11 @@ function ProductDetailContent() {
   const params = useParams();
   const router = useRouter();
   const slug = (params?.slug as string) || "";
+  const { getProductBySlugOrId } = useProducts();
 
   const product = useMemo(() => {
-    return getProductBySlug(slug);
-  }, [slug]);
+    return getProductBySlugOrId(slug) || getProductBySlug(slug);
+  }, [slug, getProductBySlugOrId]);
 
   const relatedProducts = useMemo(() => {
     return getRelatedProducts(slug, 10);
@@ -84,7 +86,7 @@ function ProductDetailContent() {
 
   if (!product) {
     return (
-      <main className="min-h-screen bg-zinc-50 flex items-center justify-center p-6">
+      <main className="min-h-screen bg-white flex items-center justify-center p-6">
         <div className="bg-white rounded-3xl p-8 max-w-md text-center border border-zinc-200 shadow-md">
           <h2 className="text-xl font-bold text-zinc-900">Product Not Found</h2>
           <p className="text-xs text-zinc-500 mt-2">
@@ -140,7 +142,7 @@ function ProductDetailContent() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]/70 pb-20 select-none">
+    <main className="min-h-screen bg-white pb-20 select-none">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         {/* 1. Breadcrumbs */}
         <nav
@@ -171,6 +173,7 @@ function ProductDetailContent() {
               images={product.images}
               productName={product.name}
               badge={product.badge}
+              videoUrl={product.videoUrl}
             />
           </div>
 
@@ -721,7 +724,7 @@ function ProductDetailContent() {
 
 function ProductDetailSkeleton() {
   return (
-    <div className="min-h-screen bg-[#f8fafc]/70 p-6 sm:p-10">
+    <div className="min-h-screen bg-white p-6 sm:p-10">
       <div className="max-w-[1440px] mx-auto animate-pulse space-y-6">
         <div className="h-4 bg-zinc-200 rounded w-48" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

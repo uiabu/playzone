@@ -149,7 +149,7 @@ export default function HireExpertsPage() {
   const currentCount = filteredExperts.length;
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]/70 pb-20">
+    <main className="min-h-screen bg-white pb-20">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         {/* 1. Panoramic Top Banner */}
         <div className="relative w-full aspect-[1108/236] min-h-[140px] sm:min-h-[180px] md:min-h-[220px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-zinc-200/80 bg-zinc-950">

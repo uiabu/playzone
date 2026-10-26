@@ -22,6 +22,8 @@ import { ALL_PRODUCTS, Product, getProductViews } from "@/lib/productsData";
 import { EXPERTS_DATA, Expert, getExpertProfileViews } from "@/components/hireExperts/expertsData";
 import { searchEverything } from "@/lib/searchService";
 import { useCart } from "@/context/CartContext";
+import { useProducts } from "@/context/ProductsContext";
+import ProductCardMedia from "@/components/products/ProductCardMedia";
 import ExpertCard from "@/components/hireExperts/ExpertCard";
 import ProfileModal from "@/components/hireExperts/ProfileModal";
 import BookingModal from "@/components/hireExperts/BookingModal";
@@ -131,7 +133,7 @@ export default function SearchPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 pb-20">
+    <div className="min-h-screen bg-white pb-20">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-zinc-950 text-white text-xs sm:text-sm font-semibold px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 border border-zinc-800 animate-in fade-in slide-in-from-bottom-3 duration-200">
@@ -327,21 +329,14 @@ export default function SearchPageContent() {
                     href={`/product/${product.slug}`}
                     className="group bg-white rounded-2xl border border-zinc-200/90 shadow-xs hover:shadow-md transition-all duration-300 p-3.5 flex flex-col justify-between hover:-translate-y-1 select-none"
                   >
-                    {/* Image */}
-                    <div className="relative w-full aspect-[4/3] rounded-xl flex items-center justify-center mb-3 overflow-hidden bg-gradient-to-b from-zinc-50/60 to-white">
-                      <Image
-                        src={product.images[0]}
-                        alt={product.name}
-                        fill
-                        sizes="(max-width: 640px) 160px, (max-width: 1024px) 200px, 240px"
-                        className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
-                      />
-                      {product.badge && (
-                        <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-[#a3e635] text-black shadow-2xs">
-                          {product.badge}
-                        </span>
-                      )}
-                    </div>
+                    {/* Product Media with Video on Hover */}
+                    <ProductCardMedia
+                      src={product.images && product.images[0] ? product.images[0] : "/images/products/bats/sg_bat.png"}
+                      alt={product.name}
+                      videoUrl={product.videoUrl}
+                      badge={product.badge}
+                      className="mb-3"
+                    />
 
                     {/* Title & Brand */}
                     <div className="flex-1">

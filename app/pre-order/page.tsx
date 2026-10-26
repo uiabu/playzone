@@ -184,7 +184,7 @@ export default function PreOrderPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#f8faf8] overflow-hidden py-10 sm:py-16 px-4 select-none">
+    <div className="relative min-h-screen bg-white overflow-hidden py-10 sm:py-16 px-4 select-none">
       {/* ================= BACKGROUND STYLING & CRICKET ACCENTS ================= */}
       {/* Angular Lime Speed Streaks & Gradient Ambient Glow */}
       <div

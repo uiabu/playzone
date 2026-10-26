@@ -13,7 +13,7 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-white">
       {/* 1. Hero Section with Carousel & Stacked Cards */}
       <HeroSection />
 
