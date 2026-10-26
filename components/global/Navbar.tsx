@@ -342,7 +342,28 @@ export default function Navbar() {
     "⚡ FREE Express Delivery across Dhaka on orders over ৳5,000! Pre-orders open for 2026 English Willow bats."
   );
   const [announcementActive, setAnnouncementActive] = useState(true);
+  const [isAnnouncementDismissed, setIsAnnouncementDismissed] = useState(false);
   const { openCart, itemCount } = useCart();
+
+  useEffect(() => {
+    try {
+      const dismissed = sessionStorage.getItem("playzone_announcement_dismissed");
+      if (dismissed === "true") {
+        setIsAnnouncementDismissed(true);
+      }
+    } catch {
+      // ignore storage access errors
+    }
+  }, []);
+
+  const handleDismissAnnouncement = () => {
+    setIsAnnouncementDismissed(true);
+    try {
+      sessionStorage.setItem("playzone_announcement_dismissed", "true");
+    } catch {
+      // ignore storage access errors
+    }
+  };
 
   useEffect(() => {
     websiteApi
@@ -403,10 +424,21 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full shadow-md">
       {/* 0. LIVE ANNOUNCEMENT BAR (From Admin Dashboard Settings) */}
-      {announcementActive && announcementText && (
-        <div className="bg-[#84cc16] text-black text-[11px] sm:text-xs font-black tracking-wide py-1.5 px-4 text-center flex items-center justify-center gap-2 select-none shadow-xs">
-          <Megaphone className="w-3.5 h-3.5 text-black shrink-0 hidden sm:inline" />
-          <span>{announcementText}</span>
+      {!isAnnouncementDismissed && announcementActive && announcementText && (
+        <div className="relative bg-[#84cc16] text-black text-[11px] sm:text-xs font-black tracking-wide py-1.5 px-8 sm:px-10 text-center flex items-center justify-center gap-2 select-none shadow-xs transition-all duration-200">
+          <div className="flex items-center justify-center gap-2 max-w-[1300px] mx-auto">
+            <Megaphone className="w-3.5 h-3.5 text-black shrink-0 hidden sm:inline" />
+            <span className="leading-snug">{announcementText}</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleDismissAnnouncement}
+            className="absolute right-2 sm:right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full text-black/75 hover:text-black hover:bg-black/10 active:bg-black/20 transition-all cursor-pointer flex items-center justify-center"
+            aria-label="Dismiss announcement"
+            title="Dismiss"
+          >
+            <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          </button>
         </div>
       )}
 

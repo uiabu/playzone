@@ -128,26 +128,42 @@ export default function Footer() {
 
             {/* Social Icons */}
             <div className="mt-6 flex items-center gap-2.5">
-              {/* Facebook */}
+              {/* Facebook Page */}
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/playzone.cricket"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#a3e635] hover:text-[#a3e635] text-zinc-300 flex items-center justify-center transition-all duration-200"
+                aria-label="Facebook Page"
+                title="Facebook Page (@playzone.cricket)"
+                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white text-zinc-300 flex items-center justify-center transition-all duration-200"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                   <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z" />
                 </svg>
               </a>
 
+              {/* Facebook Community Group */}
+              <a
+                href="https://www.facebook.com/groups/playzone.cricket"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook Group"
+                title="Join Facebook Cricket Group"
+                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white text-zinc-300 flex items-center justify-center transition-all duration-200"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                </svg>
+              </a>
+
               {/* Instagram */}
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/playzone.cricket"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#a3e635] hover:text-[#a3e635] text-zinc-300 flex items-center justify-center transition-all duration-200"
+                title="Instagram (@playzone.cricket)"
+                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#E4405F] hover:bg-[#E4405F] hover:text-white text-zinc-300 flex items-center justify-center transition-all duration-200"
               >
                 <svg className="w-3.5 h-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -156,42 +172,31 @@ export default function Footer() {
                 </svg>
               </a>
 
-              {/* YouTube */}
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#a3e635] hover:text-[#a3e635] text-zinc-300 flex items-center justify-center transition-all duration-200"
-              >
-                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                </svg>
-              </a>
-
               {/* TikTok */}
               <a
-                href="https://tiktok.com"
+                href="https://www.tiktok.com/@playzone.cricket"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok"
-                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#a3e635] hover:text-[#a3e635] text-zinc-300 flex items-center justify-center transition-all duration-200"
+                title="TikTok (@playzone.cricket)"
+                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-white hover:bg-black hover:text-white text-zinc-300 flex items-center justify-center transition-all duration-200"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                   <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.17 1.17 2.12 2.34 2.37.74.17 1.54.12 2.25-.17.8-.32 1.43-.97 1.73-1.76.22-.54.3-1.12.29-1.7V.02z" />
                 </svg>
               </a>
 
-              {/* X (formerly Twitter) */}
+              {/* YouTube */}
               <a
-                href="https://x.com"
+                href="https://www.youtube.com/@playzone.cricket"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="X (Twitter)"
-                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#a3e635] hover:text-[#a3e635] text-zinc-300 flex items-center justify-center transition-all duration-200"
+                aria-label="YouTube"
+                title="YouTube (@playzone.cricket)"
+                className="w-9 h-9 rounded-full bg-[#111113] border border-zinc-800 hover:border-[#FF0000] hover:bg-[#FF0000] hover:text-white text-zinc-300 flex items-center justify-center transition-all duration-200"
               >
                 <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                 </svg>
               </a>
             </div>

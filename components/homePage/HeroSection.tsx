@@ -260,211 +260,215 @@ export default function HeroSection() {
       </div>
 
       {/* ========================================================= */}
-      {/* 2. BOTTOM HORIZONTAL TRUST BAR (4 CRICKET SERVICE HIGHLIGHTS) */}
+      {/* 2. BOTTOM HORIZONTAL SOCIAL MEDIA & COMMUNITY BAR (5 CHANNELS) */}
       {/* Visible only on lg+, hidden on mobile/tablet */}
       {/* ========================================================= */}
       <div className="hidden lg:block mt-4 bg-white rounded-2xl border border-zinc-200/90 shadow-xs px-4 sm:px-6 py-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 gap-3 sm:gap-0 ">
-          {/* Feature 1: Inspected Pre-owned Gear */}
-          <div className="flex items-center gap-3.5 justify-center sm:px-4 first:sm:pl-0 group">
-            {/* Icon: Magnifier with Lime Checkmark */}
-            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200/80 gap-3 sm:gap-0">
+          {/* Channel 1: Facebook Page */}
+          <a
+            href="https://www.facebook.com/playzone.cricket"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Playzone Facebook Page"
+            className="flex items-center gap-3.5 justify-center sm:px-4 first:sm:pl-0 group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            {/* Icon: Facebook with Lime Green Accent */}
+            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-110">
               <svg
                 viewBox="0 0 44 44"
                 className="w-10 h-10"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Magnifier Glass Circle */}
-                <circle
-                  cx="19"
-                  cy="19"
-                  r="13"
-                  stroke="#18181b"
-                  strokeWidth="3.2"
-                />
-                {/* Handle */}
+                <circle cx="22" cy="22" r="17" fill="#ffffff" stroke="#18181b" strokeWidth="3" />
+                <circle cx="22" cy="22" r="13.5" fill="#a3e635" />
                 <path
-                  d="M28.5 28.5L38 38"
-                  stroke="#18181b"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                />
-                {/* Green Checkmark Circle Inside */}
-                <circle cx="19" cy="19" r="8" fill="#a3e635" />
-                <path
-                  d="M15.5 19L18 21.5L23 16.5"
-                  stroke="#18181b"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <div className="min-w-0">
-              <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                Inspected Pre-owned Gear
-              </h4>
-              <p className="text-xs text-zinc-500 font-medium">
-                Quality checked by experts
-              </p>
-            </div>
-          </div>
-
-          {/* Feature 2: Fast Bangladesh Delivery */}
-          <div className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group">
-            {/* Icon: Delivery Truck with Lime Cargo Box */}
-            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
-              <svg
-                viewBox="0 0 44 44"
-                className="w-10 h-10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Green Cargo Box */}
-                <rect
-                  x="6"
-                  y="12"
-                  width="18"
-                  height="16"
-                  rx="2"
-                  fill="#a3e635"
-                  stroke="#18181b"
-                  strokeWidth="3"
-                />
-                {/* Truck Cabin */}
-                <path
-                  d="M24 16H30L36 22V28H24V16Z"
-                  fill="#ffffff"
-                  stroke="#18181b"
-                  strokeWidth="3"
-                  strokeLinejoin="round"
-                />
-                {/* Front Windshield */}
-                <path
-                  d="M26 19H29L33 23H26V19Z"
+                  d="M24.5 15H22C19.8 15 18.5 16.5 18.5 18.8V21H16V24.5H18.5V31H22.5V24.5H25.2L25.8 21H22.5V19C22.5 18.2 22.9 17.8 23.8 17.8H25V15H24.5Z"
                   fill="#18181b"
                 />
-                {/* Left Wheel */}
-                <circle cx="13" cy="30" r="4" fill="#18181b" />
-                <circle cx="13" cy="30" r="1.5" fill="#ffffff" />
-                {/* Right Wheel */}
-                <circle cx="31" cy="30" r="4" fill="#18181b" />
-                <circle cx="31" cy="30" r="1.5" fill="#ffffff" />
               </svg>
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                Fast Bangladesh Delivery
+                Facebook Page
               </h4>
-              <p className="text-xs text-zinc-500 font-medium">
-                Nationwide shipping
+              <p className="text-xs text-zinc-500 font-medium truncate">
+                @playzone.cricket
               </p>
             </div>
-          </div>
+          </a>
 
-          {/* Feature 3: Secure Payments */}
-          <div className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group">
-            {/* Icon: Shield with Lime Checkmark */}
-            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
+          {/* Channel 2: Facebook Community Group */}
+          <a
+            href="https://www.facebook.com/groups/playzone.cricket"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Playzone Cricket Community Group"
+            className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            {/* Icon: Community Group with Lime Green Badge */}
+            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-110">
               <svg
                 viewBox="0 0 44 44"
                 className="w-10 h-10"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Shield Outline */}
-                <path
-                  d="M22 6L9 11V21C9 29.5 14.5 37 22 39C29.5 37 35 29.5 35 21V11L22 6Z"
+                <rect
+                  x="6"
+                  y="7"
+                  width="32"
+                  height="30"
+                  rx="8"
                   fill="#ffffff"
                   stroke="#18181b"
                   strokeWidth="3"
-                  strokeLinejoin="round"
                 />
-                {/* Lime Green Center Shield */}
+                <rect x="9.5" y="10.5" width="25" height="23" rx="5" fill="#a3e635" />
+                <circle cx="22" cy="18" r="3.5" fill="#18181b" />
                 <path
-                  d="M22 10L13 14V21C13 27 16.8 32.5 22 34C27.2 32.5 31 27 31 21V14L22 10Z"
-                  fill="#a3e635"
-                />
-                {/* Checkmark */}
-                <path
-                  d="M17 21.5L20.5 25L27 18.5"
+                  d="M16 29C16 25.5 18.5 24 22 24C25.5 24 28 25.5 28 29"
                   stroke="#18181b"
-                  strokeWidth="2.8"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
                 />
+                <circle cx="15.5" cy="19.5" r="2.5" fill="#18181b" />
+                <path d="M12 28.5C12 26.5 13.5 25.2 15.5 25" stroke="#18181b" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="28.5" cy="19.5" r="2.5" fill="#18181b" />
+                <path d="M32 28.5C32 26.5 30.5 25.2 28.5 25" stroke="#18181b" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                Secure Payments
+                Cricket Group
               </h4>
-              <p className="text-xs text-zinc-500 font-medium">
-                bKash, Nagad, Cards
+              <p className="text-xs text-zinc-500 font-medium truncate">
+                Join Community
               </p>
             </div>
-          </div>
+          </a>
 
-          {/* Feature 4: Easy Support */}
-          <div className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group">
-            {/* Icon: Headphone with Lime Earcups */}
-            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-105">
+          {/* Channel 3: Instagram */}
+          <a
+            href="https://www.instagram.com/playzone.cricket"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Playzone Instagram"
+            className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            {/* Icon: Camera with Lime Lens */}
+            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-110">
               <svg
                 viewBox="0 0 44 44"
                 className="w-10 h-10"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Headset Arc */}
-                <path
-                  d="M10 24V21C10 14.37 15.37 9 22 9C28.63 9 34 14.37 34 21V24"
-                  stroke="#18181b"
-                  strokeWidth="3.2"
-                  strokeLinecap="round"
-                />
-                {/* Left Earcup */}
                 <rect
                   x="7"
-                  y="22"
-                  width="7"
-                  height="12"
-                  rx="3.5"
-                  fill="#a3e635"
+                  y="7"
+                  width="30"
+                  height="30"
+                  rx="9"
+                  fill="#ffffff"
                   stroke="#18181b"
-                  strokeWidth="2.5"
+                  strokeWidth="3"
                 />
-                {/* Right Earcup */}
-                <rect
-                  x="30"
-                  y="22"
-                  width="7"
-                  height="12"
-                  rx="3.5"
-                  fill="#a3e635"
-                  stroke="#18181b"
-                  strokeWidth="2.5"
-                />
-                {/* Microphone Wire */}
-                <path
-                  d="M33 30C33 35 28 37 25 37H23"
-                  stroke="#18181b"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                {/* Microphone Tip */}
-                <circle cx="21" cy="37" r="2.5" fill="#a3e635" stroke="#18181b" strokeWidth="2" />
+                <circle cx="22" cy="22" r="7.5" fill="#a3e635" stroke="#18181b" strokeWidth="2.8" />
+                <circle cx="22" cy="22" r="3" fill="#18181b" />
+                <circle cx="29.5" cy="14.5" r="1.8" fill="#a3e635" stroke="#18181b" strokeWidth="1.2" />
               </svg>
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                Easy Support
+                Instagram
               </h4>
-              <p className="text-xs text-zinc-500 font-medium">
-                We&apos;re here to help
+              <p className="text-xs text-zinc-500 font-medium truncate">
+                @playzone.cricket
               </p>
             </div>
-          </div>
+          </a>
+
+          {/* Channel 4: TikTok */}
+          <a
+            href="https://www.tiktok.com/@playzone.cricket"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Playzone TikTok"
+            className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            {/* Icon: TikTok Note with Lime Green Circle */}
+            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-110">
+              <svg
+                viewBox="0 0 44 44"
+                className="w-10 h-10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="22" cy="22" r="17" fill="#ffffff" stroke="#18181b" strokeWidth="3" />
+                <circle cx="22" cy="22" r="13.5" fill="#a3e635" />
+                <path
+                  d="M26.5 13C25.5 15.2 23.5 16.5 21 16.8V25.2C21 27.8 18.8 29.8 16.2 29.5C14 29.2 12.3 27.2 12.5 25C12.7 22.8 14.6 21.2 17 21.3V24C16 23.9 15.2 24.6 15.1 25.4C15 26.2 15.7 27 16.5 27C17.4 27 18.2 26.2 18.2 25.2V13H21.2C21.4 14.5 22.4 15.6 23.8 15.8V13H26.5Z"
+                  fill="#18181b"
+                />
+              </svg>
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
+                TikTok
+              </h4>
+              <p className="text-xs text-zinc-500 font-medium truncate">
+                @playzone.cricket
+              </p>
+            </div>
+          </a>
+
+          {/* Channel 5: YouTube */}
+          <a
+            href="https://www.youtube.com/@playzone.cricket"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Playzone YouTube Channel"
+            className="flex items-center gap-3.5 justify-center sm:px-4 pt-3 sm:pt-0 group transition-all duration-200 hover:-translate-y-0.5"
+          >
+            {/* Icon: Screen with Lime Display & Play Arrow */}
+            <div className="w-11 h-11 shrink-0 flex items-center justify-center transition-transform group-hover:scale-110">
+              <svg
+                viewBox="0 0 44 44"
+                className="w-10 h-10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="6"
+                  y="10"
+                  width="32"
+                  height="24"
+                  rx="7"
+                  fill="#ffffff"
+                  stroke="#18181b"
+                  strokeWidth="3"
+                />
+                <rect x="9" y="13" width="26" height="18" rx="4.5" fill="#a3e635" />
+                <path
+                  d="M19 17.5L27 22L19 26.5V17.5Z"
+                  fill="#18181b"
+                  stroke="#18181b"
+                  strokeWidth="1.2"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
+                YouTube Channel
+              </h4>
+              <p className="text-xs text-zinc-500 font-medium truncate">
+                @playzone.cricket
+              </p>
+            </div>
+          </a>
         </div>
       </div>
     </section>
