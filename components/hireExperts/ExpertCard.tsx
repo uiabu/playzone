@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Star, MapPin, Heart, Check, Eye } from "lucide-react";
+import { Star, MapPin, Heart, Check, Eye, Share2 } from "lucide-react";
 import { Expert, getExpertProfileViews } from "./expertsData";
+import ShareExpertModal from "./ShareExpertModal";
 
 interface ExpertCardProps {
   expert: Expert;
@@ -17,39 +18,57 @@ export default function ExpertCard({
   onBook,
 }: ExpertCardProps) {
   const [isLiked, setIsLiked] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   return (
     <div className="group relative flex flex-col h-full bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-200 overflow-hidden">
-      {/* Top Media Area */}
-      <div className="relative w-full aspect-[16/11] bg-zinc-100 overflow-hidden">
+      {/* Top Media Area - Adjusted Height/Aspect Ratio with Head Alignment & No Hover Scale */}
+      <div className="relative w-full aspect-[4/3] sm:h-52 bg-zinc-100 overflow-hidden">
         <Image
           src={expert.imageSrc}
           alt={`${expert.name} - ${expert.role}`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover group-hover:scale-102 transition-transform duration-300"
+          className="object-cover object-top"
         />
 
-        {/* Wishlist / Favorite Button (Top Right) */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsLiked(!isLiked);
-          }}
-          aria-label={isLiked ? "Remove from favorites" : "Add to favorites"}
-          className={`absolute top-2.5 right-2.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all shadow-sm ${
-            isLiked
-              ? "bg-rose-500 text-white"
-              : "bg-black/40 hover:bg-black/60 text-white backdrop-blur-xs"
-          }`}
-        >
-          <Heart
-            className={`w-4 h-4 transition-transform active:scale-125 ${
-              isLiked ? "fill-white" : ""
+        {/* Action Buttons (Top Right): Share to Social Media & Favorite */}
+        <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-10">
+          {/* Social Share Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsShareOpen(true);
+            }}
+            aria-label="Share expert card on social media"
+            title="Share to Social Media"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-xs flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Wishlist / Favorite Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsLiked(!isLiked);
+            }}
+            aria-label={isLiked ? "Remove from favorites" : "Add to favorites"}
+            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer ${
+              isLiked
+                ? "bg-rose-500 text-white"
+                : "bg-black/40 hover:bg-black/70 text-white backdrop-blur-xs"
             }`}
-          />
-        </button>
+          >
+            <Heart
+              className={`w-3.5 h-3.5 transition-transform active:scale-125 ${
+                isLiked ? "fill-white" : ""
+              }`}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Card Content */}
@@ -136,6 +155,13 @@ export default function ExpertCard({
           </button>
         </div>
       </div>
+
+      {/* Social Media Share Modal */}
+      <ShareExpertModal
+        expert={expert}
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+      />
     </div>
   );
 }

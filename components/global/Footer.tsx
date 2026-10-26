@@ -323,6 +323,16 @@ export default function Footer() {
                   Hire Cricket Experts
                 </Link>
               </li>
+              <li>
+                <Link href="/cricket-academies" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
+                  Cricket Academies
+                </Link>
+              </li>
+              <li>
+                <Link href="/foundation" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
+                  PLAYZONE Foundation
+                </Link>
+              </li>
             </ul>
           </div>
 

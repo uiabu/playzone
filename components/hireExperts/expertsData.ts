@@ -1,7 +1,35 @@
+export type ExpertType =
+  | "Cricket Coach"
+  | "Net Bowler"
+  | "Sidearm Thrower"
+  | "Fitness Trainer"
+  | "Sports Physio"
+  | "Bat Repairer"
+  | "Gear Repairer"
+  | "Cricket Umpire"
+  | "Cricket Scorer"
+  | "Commentator"
+  | "Match Videographer";
+
+export const EXPERT_TYPES: ExpertType[] = [
+  "Cricket Coach",
+  "Net Bowler",
+  "Sidearm Thrower",
+  "Fitness Trainer",
+  "Sports Physio",
+  "Bat Repairer",
+  "Gear Repairer",
+  "Cricket Umpire",
+  "Cricket Scorer",
+  "Commentator",
+  "Match Videographer",
+];
+
 export interface Expert {
   id: string;
   name: string;
   role: string;
+  expertType?: ExpertType;
   imageSrc: string;
   rating: number;
   reviewsCount: number;
@@ -11,14 +39,14 @@ export interface Expert {
   price: number;
   priceUnit: "/hour" | "/match" | "/session" | "/service" | "/event";
   category:
-    | "coaching"
-    | "practice"
-    | "analysis"
-    | "officials"
-    | "ground"
-    | "fitness"
-    | "equipment"
-    | "media";
+  | "coaching"
+  | "practice"
+  | "analysis"
+  | "officials"
+  | "ground"
+  | "fitness"
+  | "equipment"
+  | "media";
   experienceYears: number;
   experienceLabel: "1 - 3 years" | "3 - 5 years" | "5 - 10 years" | "10+ years";
   verified: boolean;
@@ -27,6 +55,23 @@ export interface Expert {
   certifications: string[];
   availableDays: string[];
   profileViews?: number;
+}
+
+export function getExpertType(expert: Expert): ExpertType {
+  if (expert.expertType) return expert.expertType;
+  const role = expert.role.toLowerCase();
+  if (role.includes("sidearm")) return "Sidearm Thrower";
+  if (role.includes("net bowler")) return "Net Bowler";
+  if (role.includes("umpire")) return "Cricket Umpire";
+  if (role.includes("scorer")) return "Cricket Scorer";
+  if (role.includes("commentator")) return "Commentator";
+  if (role.includes("physio")) return "Sports Physio";
+  if (role.includes("fitness")) return "Fitness Trainer";
+  if (role.includes("bat repair")) return "Bat Repairer";
+  if (role.includes("gear repair") || role.includes("equipment")) return "Gear Repairer";
+  if (role.includes("video") || role.includes("photographer")) return "Match Videographer";
+  if (role.includes("coach") || expert.category === "coaching") return "Cricket Coach";
+  return "Cricket Coach";
 }
 
 export function getExpertProfileViews(expert: { id?: string; reviewsCount?: number; profileViews?: number }): string {
@@ -48,9 +93,9 @@ export function getExpertProfileViews(expert: { id?: string; reviewsCount?: numb
 export const EXPERTS_DATA: Expert[] = [
   {
     id: "head-cricket-coach-dhaka",
-    name: "Coach Rafiqul Islam",
+    name: "Coach Shafikul Islam",
     role: "Head Cricket Coach",
-    imageSrc: "/images/experts/head_coach.png",
+    imageSrc: "/images/experts/head_coach.jpg",
     rating: 4.8,
     reviewsCount: 32,
     location: "Dhaka",
@@ -308,6 +353,167 @@ export const EXPERTS_DATA: Expert[] = [
     fullBio:
       "Dedicated wicketkeeping trainer focusing on posture, glove softness, stance mobility, stumping reflex drills, standing up to fast bowling, and clean leg-side gathering.",
     certifications: ["BCB Level 2 Wicketkeeping Coach", "Reflex & Hand-Eye Coordination Specialist"],
+    availableDays: ["This week", "Weekends"],
+  },
+  {
+    id: "net-bowler-dhaka",
+    name: "Tariqul Islam",
+    role: "Express Net Bowler",
+    expertType: "Net Bowler",
+    imageSrc: "/images/experts/fast_bowling_coach.png",
+    rating: 4.7,
+    reviewsCount: 19,
+    location: "Dhaka",
+    bio: "Pace & swing net bowler for rigorous top-order batsman practice.",
+    tags: ["Net Practice", "135+ km/h Pace"],
+    price: 800,
+    priceUnit: "/hour",
+    category: "practice",
+    experienceYears: 4,
+    experienceLabel: "3 - 5 years",
+    verified: true,
+    serviceModes: ["ground"],
+    fullBio:
+      "First-division league fast bowler available for club, academy, and individual batsman practice sessions. Consistent yorker length, bouncers, and seam movement under pressure.",
+    certifications: ["First Division League Player", "Pace Academy Certified"],
+    availableDays: ["Today", "This week", "Weekends"],
+  },
+  {
+    id: "sports-physio-dhaka",
+    name: "Dr. Ariful Haque",
+    role: "Sports Physiotherapist",
+    expertType: "Sports Physio",
+    imageSrc: "/images/experts/fitness_trainer.png",
+    rating: 4.9,
+    reviewsCount: 22,
+    location: "Dhaka",
+    bio: "Cricket injury rehab, shoulder mobility, and fast bowling recovery.",
+    tags: ["Rehabilitation", "Injury Prevention"],
+    price: 2000,
+    priceUnit: "/session",
+    category: "fitness",
+    experienceYears: 9,
+    experienceLabel: "5 - 10 years",
+    verified: true,
+    serviceModes: ["ground", "home", "online"],
+    fullBio:
+      "Licensed sports physiotherapist with extensive work supporting premier league cricket clubs. Specializes in rotator cuff rehabilitation, hamstring recovery, lumbar spine care, and match-day strapping.",
+    certifications: ["BPT Sports Physiotherapy", "Dry Needling & Kinesiology Taping Certified"],
+    availableDays: ["Today", "This week", "Weekends"],
+  },
+  {
+    id: "bat-repairer-dhaka",
+    name: "Master Kabir Hossain",
+    role: "Bat Repairer & Knocking Craftsman",
+    expertType: "Bat Repairer",
+    imageSrc: "/images/experts/head_coach.png",
+    rating: 4.8,
+    reviewsCount: 35,
+    location: "Dhaka",
+    bio: "English willow repair, weight reduction, handle replacement and hand knocking.",
+    tags: ["Willow Repair", "Hand Knocking"],
+    price: 1200,
+    priceUnit: "/service",
+    category: "equipment",
+    experienceYears: 15,
+    experienceLabel: "10+ years",
+    verified: true,
+    serviceModes: ["ground", "home"],
+    fullBio:
+      "Master bat repair craftsman with over 15 years servicing bats for Bangladesh national and premier league players. Specializes in toe repairs, handle re-cording, surface cleaving fixes, oiling, and customized balance tuning.",
+    certifications: ["Master Craftsman Certified", "Willow Engineering Specialist"],
+    availableDays: ["Today", "This week", "Weekends"],
+  },
+  {
+    id: "gear-repairer-dhaka",
+    name: "Mizanur Rahman",
+    role: "Cricket Gear & Padding Repairer",
+    expertType: "Gear Repairer",
+    imageSrc: "/images/experts/pitch_curator.png",
+    rating: 4.6,
+    reviewsCount: 14,
+    location: "Dhaka",
+    bio: "Batting pad restitching, glove palm replacement, helmet refurbishing.",
+    tags: ["Glove Palm Repair", "Pad Restitching"],
+    price: 900,
+    priceUnit: "/service",
+    category: "equipment",
+    experienceYears: 8,
+    experienceLabel: "5 - 10 years",
+    verified: true,
+    serviceModes: ["home", "ground"],
+    fullBio:
+      "Specialist in restoring cricket protective equipment. Premium sheepskin/pittards leather palm replacements for batting gloves, velcro buckle renewals on leg guards, and helmet foam restorations.",
+    certifications: ["Leather Craftsmanship Diploma", "Protective Equipment Specialist"],
+    availableDays: ["This week", "Weekends"],
+  },
+  {
+    id: "cricket-scorer-dhaka",
+    name: "Shakil Ahmed",
+    role: "Cricket Scorer & Data Analyst",
+    expertType: "Cricket Scorer",
+    imageSrc: "/images/experts/video_analyst.png",
+    rating: 4.7,
+    reviewsCount: 18,
+    location: "Dhaka",
+    bio: "Certified match scorer for CricHQ, CricHeroes, manual books and live ball-by-ball.",
+    tags: ["Digital Scoring", "CricHeroes Verified"],
+    price: 1200,
+    priceUnit: "/match",
+    category: "officials",
+    experienceYears: 6,
+    experienceLabel: "5 - 10 years",
+    verified: true,
+    serviceModes: ["ground"],
+    fullBio:
+      "Official match scorer certified with BCB and Asian scoring systems. Accurate real-time ball-by-ball recording on CricHQ, CricHeroes, and traditional MCC scorebooks for tournaments and club fixtures.",
+    certifications: ["BCB Certified Match Scorer", "CricHeroes Elite Scorer Badge"],
+    availableDays: ["Today", "This week", "Weekends"],
+  },
+  {
+    id: "commentator-dhaka",
+    name: "Mahfuzur Rahman",
+    role: "Cricket Commentator",
+    expertType: "Commentator",
+    imageSrc: "/images/experts/head_coach.png",
+    rating: 4.8,
+    reviewsCount: 26,
+    location: "Dhaka",
+    bio: "Engaging bilingual commentary in Bangla & English for tournaments and livestreams.",
+    tags: ["Live Commentary", "Bangla & English"],
+    price: 2500,
+    priceUnit: "/match",
+    category: "media",
+    experienceYears: 7,
+    experienceLabel: "5 - 10 years",
+    verified: true,
+    serviceModes: ["ground", "online"],
+    fullBio:
+      "Dynamic cricket broadcaster and commentator with tournament coverage experience across corporate leagues, division matches, and livestream broadcast productions. Eloquent analysis, voice modulation, and rich cricket trivia.",
+    certifications: ["Sports Broadcasting Accreditation", "Radio & Livestream Media Certified"],
+    availableDays: ["Today", "This week", "Weekends"],
+  },
+  {
+    id: "match-videographer-dhaka",
+    name: "Tanvir Ahmed",
+    role: "Match Videographer & Drone Analyst",
+    expertType: "Match Videographer",
+    imageSrc: "/images/experts/cricket_photographer.png",
+    rating: 4.9,
+    reviewsCount: 29,
+    location: "Dhaka",
+    bio: "Multi-camera match recording, 4K livestreaming, and drone tactical analysis.",
+    tags: ["4K Video", "Drone Coverage"],
+    price: 3000,
+    priceUnit: "/match",
+    category: "media",
+    experienceYears: 6,
+    experienceLabel: "5 - 10 years",
+    verified: true,
+    serviceModes: ["ground"],
+    fullBio:
+      "Professional cricket videographer equipped with high-FPS action cameras, telephoto rigs, and certified aerial drones. Delivers complete match recordings, broadcast graphics, and highlight packages.",
+    certifications: ["Sports Videography Guild Member", "Certified Drone Pilot (CAAB)"],
     availableDays: ["This week", "Weekends"],
   },
 ];

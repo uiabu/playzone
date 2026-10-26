@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, ChevronUp, Search, Star, RotateCcw } from "lucide-react";
+import { ChevronDown, ChevronUp, Search, Star, RotateCcw, Sparkles } from "lucide-react";
 
 export interface FilterState {
   categories: string[];
@@ -21,6 +21,7 @@ interface HireExpertsSidebarProps {
   setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
   onReset: () => void;
   onApply?: () => void;
+  onOpenJoinModal?: () => void;
   className?: string;
 }
 
@@ -29,6 +30,7 @@ export default function HireExpertsSidebar({
   setFilters,
   onReset,
   onApply,
+  onOpenJoinModal,
   className = "",
 }: HireExpertsSidebarProps) {
   // Collapsible section state
@@ -142,24 +144,27 @@ export default function HireExpertsSidebar({
             onClick={() => toggleSection("category")}
             className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2.5"
           >
-            <span>Service Category</span>
+            <span>Expert Type</span>
             {openSections.category ? (
-              <ChevronUp className="w-4 h-4 text-zinc-400" />
+               <ChevronUp className="w-4 h-4 text-zinc-400" />
             ) : (
-              <ChevronDown className="w-4 h-4 text-zinc-400" />
+               <ChevronDown className="w-4 h-4 text-zinc-400" />
             )}
           </button>
           {openSections.category && (
             <div className="space-y-2">
               {[
-                { id: "coaching", label: "Coaching & Training" },
-                { id: "practice", label: "Practice Partners" },
-                { id: "analysis", label: "Performance Analysis" },
-                { id: "officials", label: "Match Officials" },
-                { id: "ground", label: "Ground & Pitch Services" },
-                { id: "fitness", label: "Fitness & Sports Science" },
-                { id: "equipment", label: "Equipment & Technical" },
-                { id: "media", label: "Media & Tournament" },
+                { id: "Cricket Coach", label: "Cricket Coach" },
+                { id: "Net Bowler", label: "Net Bowler" },
+                { id: "Sidearm Thrower", label: "Sidearm Thrower" },
+                { id: "Fitness Trainer", label: "Fitness Trainer" },
+                { id: "Sports Physio", label: "Sports Physio" },
+                { id: "Bat Repairer", label: "Bat Repairer" },
+                { id: "Gear Repairer", label: "Gear Repairer" },
+                { id: "Cricket Umpire", label: "Cricket Umpire" },
+                { id: "Cricket Scorer", label: "Cricket Scorer" },
+                { id: "Commentator", label: "Commentator" },
+                { id: "Match Videographer", label: "Match Videographer" },
               ].map((item) => {
                 const checked = filters.categories.includes(item.id);
                 return (
@@ -552,6 +557,26 @@ export default function HireExpertsSidebar({
           Reset
         </button>
       </div>
+
+      {/* 11. Join as Expert Sidebar Banner */}
+      {onOpenJoinModal && (
+        <div className="mt-6 p-4 rounded-2xl bg-zinc-950 text-white text-center border border-zinc-800 shadow-sm">
+          <div className="w-9 h-9 rounded-full bg-[#84cc16]/20 text-[#84cc16] flex items-center justify-center mx-auto mb-2">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <h4 className="text-xs font-black text-white">Join as a Cricket Expert</h4>
+          <p className="text-[11px] text-zinc-400 mt-1 mb-3 leading-relaxed">
+            Offer coaching, throwdown, repairs or match scoring across Bangladesh.
+          </p>
+          <button
+            type="button"
+            onClick={onOpenJoinModal}
+            className="w-full py-2.5 px-3 rounded-xl bg-[#84cc16] hover:bg-[#74d600] active:scale-95 text-zinc-950 font-black text-xs transition-colors cursor-pointer shadow-xs"
+          >
+            + Join as Expert
+          </button>
+        </div>
+      )}
     </aside>
   );
 }

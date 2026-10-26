@@ -9,14 +9,21 @@ import {
   X,
   ChevronLeft,
   ChevronsRight,
+  Sparkles,
+  UserPlus,
 } from "lucide-react";
-import { EXPERTS_DATA, Expert } from "@/components/hireExperts/expertsData";
+import {
+  EXPERTS_DATA,
+  Expert,
+  getExpertType,
+} from "@/components/hireExperts/expertsData";
 import ExpertCard from "@/components/hireExperts/ExpertCard";
 import HireExpertsSidebar, {
   FilterState,
 } from "@/components/hireExperts/HireExpertsSidebar";
 import BookingModal from "@/components/hireExperts/BookingModal";
 import ProfileModal from "@/components/hireExperts/ProfileModal";
+import JoinExpertModal from "@/components/hireExperts/JoinExpertModal";
 
 const INITIAL_FILTERS: FilterState = {
   categories: [],
@@ -42,6 +49,7 @@ export default function HireExpertsPage() {
     useState<Expert | null>(null);
   const [selectedBookingExpert, setSelectedBookingExpert] =
     useState<Expert | null>(null);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState<boolean>(false);
 
   const handleResetFilters = () => {
     setFilters(INITIAL_FILTERS);
@@ -56,12 +64,14 @@ export default function HireExpertsPage() {
   // Filter & Sort Logic
   const filteredExperts = useMemo(() => {
     return EXPERTS_DATA.filter((expert) => {
-      // Category filter
-      if (
-        filters.categories.length > 0 &&
-        !filters.categories.includes(expert.category)
-      ) {
-        return false;
+      // Category / Expert Type filter
+      if (filters.categories.length > 0) {
+        const expertType = getExpertType(expert);
+        const matchesCategory = filters.categories.includes(expert.category);
+        const matchesType = filters.categories.includes(expertType);
+        if (!matchesCategory && !matchesType) {
+          return false;
+        }
       }
 
       // Location filter
@@ -168,15 +178,25 @@ export default function HireExpertsPage() {
           <span className="text-zinc-700 font-semibold">Hire Experts</span>
         </nav>
 
-        {/* 3. Heading & Subtitle */}
-        <div className="mt-3">
-          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black tracking-tight text-zinc-950 font-serif md:font-sans">
-            Hire Cricket Experts in Bangladesh
-          </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-500">
-            Find and book professional cricket experts for coaching, training,
-            analysis, matches and events.
-          </p>
+        {/* 3. Heading & Subtitle + Join as Expert Action */}
+        <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black tracking-tight text-zinc-950 font-serif md:font-sans">
+              Hire Cricket Experts in Bangladesh
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm text-zinc-500">
+              Find and book professional cricket experts for coaching, training,
+              analysis, matches and events.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsJoinModalOpen(true)}
+            className="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-black bg-[#84cc16] hover:bg-[#74d600] active:scale-95 text-zinc-950 transition-all duration-200 shadow-xs hover:shadow cursor-pointer shrink-0"
+          >
+            <UserPlus className="w-4 h-4" />
+            <span>Join as Expert</span>
+          </button>
         </div>
 
         {/* Mobile Filter Toggle Button */}
@@ -210,6 +230,7 @@ export default function HireExpertsPage() {
               setFilters={setFilters}
               onReset={handleResetFilters}
               onApply={handleApplyFilters}
+              onOpenJoinModal={() => setIsJoinModalOpen(true)}
             />
           </div>
 
@@ -237,6 +258,10 @@ export default function HireExpertsPage() {
                     setFilters={setFilters}
                     onReset={handleResetFilters}
                     onApply={handleApplyFilters}
+                    onOpenJoinModal={() => {
+                      setIsMobileFilterOpen(false);
+                      setIsJoinModalOpen(true);
+                    }}
                   />
                 </div>
               </div>
@@ -420,6 +445,12 @@ export default function HireExpertsPage() {
         expert={selectedBookingExpert}
         isOpen={Boolean(selectedBookingExpert)}
         onClose={() => setSelectedBookingExpert(null)}
+      />
+
+      {/* Join as Expert Application Modal */}
+      <JoinExpertModal
+        isOpen={isJoinModalOpen}
+        onClose={() => setIsJoinModalOpen(false)}
       />
     </main>
   );

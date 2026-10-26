@@ -62,6 +62,16 @@ const CATEGORIES: CategoryItem[] = [
     hasDropdown: false,
   },
   {
+    name: "Cricket Academies",
+    href: "/cricket-academies",
+    hasDropdown: false,
+  },
+  {
+    name: "Foundation",
+    href: "/foundation",
+    hasDropdown: false,
+  },
+  {
     name: "Bats",
     href: "/category/cricket-bats",
     hasDropdown: true,
@@ -859,6 +869,13 @@ export default function Navbar() {
               className="p-2 rounded bg-lime-50 border border-lime-300 text-center text-lime-800 font-bold flex items-center justify-center gap-1.5"
             >
               <span>🏏 Hire Experts</span>
+            </Link>
+            <Link
+              href="/cricket-academies"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded bg-emerald-50 border border-emerald-300 text-center text-emerald-900 font-bold flex items-center justify-center gap-1.5"
+            >
+              <span>🏟️ Academies</span>
             </Link>
             <button
               type="button"

@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { X, Star, MapPin, Award, ShieldCheck, Calendar, Clock, Eye } from "lucide-react";
+import { X, Star, MapPin, Award, ShieldCheck, Calendar, Clock, Eye, Share2 } from "lucide-react";
 import { Expert, getExpertProfileViews } from "./expertsData";
+import ShareExpertModal from "./ShareExpertModal";
 
 interface ProfileModalProps {
   expert: Expert | null;
@@ -13,6 +14,8 @@ interface ProfileModalProps {
 }
 
 export default function ProfileModal({ expert, isOpen, onClose, onBook }: ProfileModalProps) {
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
   if (!isOpen || !expert) return null;
 
   return (
@@ -28,14 +31,27 @@ export default function ProfileModal({ expert, isOpen, onClose, onBook }: Profil
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-          {/* Close button */}
-          <button
-            type="button"
-            onClick={onClose}
-            className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/80 flex items-center justify-center transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          {/* Top Actions: Share to Social Media & Close */}
+          <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsShareOpen(true)}
+              className="px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/85 text-white backdrop-blur-md flex items-center gap-1.5 text-xs font-bold transition-all shadow-sm cursor-pointer"
+              title="Share profile to social media"
+            >
+              <Share2 className="w-3.5 h-3.5 text-[#84cc16]" />
+              <span>Share Profile</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/80 flex items-center justify-center transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
 
           {/* Profile Avatar Overlay */}
           <div className="absolute -bottom-8 left-6 flex items-end gap-4 z-10">
@@ -44,7 +60,7 @@ export default function ProfileModal({ expert, isOpen, onClose, onBook }: Profil
                 src={expert.imageSrc}
                 alt={expert.name}
                 fill
-                className="object-cover"
+                className="object-cover object-top"
               />
             </div>
           </div>
@@ -153,6 +169,13 @@ export default function ProfileModal({ expert, isOpen, onClose, onBook }: Profil
           </div>
         </div>
       </div>
+
+      {/* Social Media Share Modal */}
+      <ShareExpertModal
+        expert={expert}
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+      />
     </div>
   );
 }
