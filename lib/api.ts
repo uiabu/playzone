@@ -1,7 +1,24 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+function getApiBase(): string {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
+  }
+  // When running client-side, relative path "/api" hits Next.js route handlers directly
+  if (typeof window !== "undefined") {
+    return "/api";
+  }
+  // When running server-side (SSR / Node), use port or host
+  const port = process.env.PORT || 3000;
+  const host = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : `http://localhost:${port}`;
+  return `${host}/api`;
+}
 
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  const url = `${API_BASE}${endpoint}`;
+  const base = getApiBase();
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  const url = `${base}${cleanEndpoint}`;
+
   try {
     const res = await fetch(url, {
       ...options,
@@ -19,7 +36,10 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     const data = await res.json();
     return data;
   } catch (err: unknown) {
-    console.warn(`[API] ${endpoint} request failed:`, err);
+    // Only warn if in development
+    if (process.env.NODE_ENV === "development") {
+      console.warn(`[API] ${endpoint} request notice:`, err);
+    }
     throw err;
   }
 }
@@ -117,6 +137,30 @@ export const websiteApi = {
       }
     ),
 
+  // Cricketer Bookings
+  bookCricketer: (booking: {
+    cricketerId?: string;
+    cricketerName: string;
+    eventType: string;
+    preferredDate?: string;
+    backupDate?: string;
+    duration?: string;
+    venue?: string;
+    budgetRange?: string;
+    organizationName?: string;
+    contactName: string;
+    contactPhone: string;
+    contactEmail?: string;
+    eventDescription?: string;
+  }) =>
+    request<{ success: boolean; message: string; data: any }>(
+      "/cricketer-bookings",
+      {
+        method: "POST",
+        body: JSON.stringify(booking),
+      }
+    ),
+
   // Banners & Settings
   getBanners: () => request<{ success: boolean; data: any[] }>("/banners"),
   getSettings: () => request<{ success: boolean; data: any }>("/settings"),
@@ -127,4 +171,3 @@ export const websiteApi = {
 };
 
 export const api = websiteApi;
-

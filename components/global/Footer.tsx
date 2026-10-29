@@ -319,6 +319,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/book-cricketer" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
+                  Book a Cricketer ⭐
+                </Link>
+              </li>
+              <li>
                 <Link href="/hire-experts" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
                   Hire Cricket Experts
                 </Link>

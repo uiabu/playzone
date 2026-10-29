@@ -57,6 +57,11 @@ const CATEGORIES: CategoryItem[] = [
     hasDropdown: false,
   },
   {
+    name: "Book a Cricketer",
+    href: "/book-cricketer",
+    hasDropdown: false,
+  },
+  {
     name: "Hire Experts",
     href: "/hire-experts",
     hasDropdown: false,
@@ -544,16 +549,17 @@ export default function Navbar() {
                 Pre-order
               </Link>
 
-              {/* Hire Experts */}
+              {/* Book a Cricketer */}
               <Link
-                href="/hire-experts"
-                className="text-white hover:text-[#a3e635] font-semibold text-sm transition-colors hidden sm:inline-flex items-center gap-1.5 whitespace-nowrap"
+                href="/book-cricketer"
+                className="text-white hover:text-[#a3e635] font-semibold text-sm transition-colors hidden md:inline-flex items-center gap-1.5 whitespace-nowrap"
               >
-                <span>Hire Experts</span>
+                <span>Book a Cricketer</span>
                 <span className="bg-[#84cc16] text-black text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none uppercase tracking-wider">
-                  New
+                  Star
                 </span>
               </Link>
+
 
               {/* Offers (Vibrant Yellow / Gold) */}
               <Link
@@ -671,6 +677,7 @@ export default function Navbar() {
                 (cat.href !== "/" && pathname.startsWith(cat.href)) ||
                 (cat.name === "Bats" && (pathname.includes("bats") || pathname.includes("cricket-bats"))) ||
                 (cat.name === "Pre-owned Gear" && (pathname.includes("pre-owned") || pathname.includes("used"))) ||
+                (cat.name === "Book a Cricketer" && pathname.includes("book-cricketer")) ||
                 (cat.name === "Hire Experts" && pathname.includes("hire-experts")) ||
                 (cat.name === "Protective Gear" && (pathname.includes("protective") || pathname.includes("pads") || pathname.includes("gloves") || pathname.includes("helmets"))) ||
                 (cat.name === "Cricket Balls" && pathname.includes("balls")) ||
@@ -862,6 +869,13 @@ export default function Navbar() {
               className="p-2 rounded bg-yellow-50 border border-yellow-200 text-center text-yellow-700 font-bold flex items-center justify-center gap-1.5"
             >
               <span>Offers</span>
+            </Link>
+            <Link
+              href="/book-cricketer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded bg-amber-50 border border-amber-300 text-center text-amber-900 font-bold flex items-center justify-center gap-1.5"
+            >
+              <span>⭐ Book Cricketer</span>
             </Link>
             <Link
               href="/hire-experts"

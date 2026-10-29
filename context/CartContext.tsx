@@ -117,9 +117,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     const currentSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    // Try Express Backend API validation first
+    // Try Backend API validation first
     try {
-      const res = await fetch("http://localhost:5000/api/coupons/validate", {
+      const res = await fetch("/api/coupons/validate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: trimmed, subtotal: currentSubtotal }),

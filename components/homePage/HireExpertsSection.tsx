@@ -215,16 +215,6 @@ export default function HireExpertsSection() {
           );
         })}
 
-        {/* 12. JOIN AS EXPERT PILL */}
-        <button
-          type="button"
-          onClick={() => setIsJoinModalOpen(true)}
-          className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-black whitespace-nowrap bg-[#84cc16] hover:bg-[#74d600] text-zinc-950 transition-all duration-200 shadow-xs hover:shadow active:scale-95 cursor-pointer ml-1"
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>+ Join as Expert</span>
-        </button>
-
         {/* View All Link */}
         <Link
           href="/hire-experts"

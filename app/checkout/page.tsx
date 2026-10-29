@@ -23,6 +23,7 @@ import {
   Package,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { websiteApi } from "@/lib/api";
 
 const BD_DISTRICTS = [
   "Dhaka",
@@ -198,6 +199,32 @@ export default function CheckoutPage() {
       } catch {
         // localStorage fallback
       }
+
+      // Asynchronously record into API
+      websiteApi
+        .createOrder({
+          customerName: newOrder.customer.fullName,
+          customerPhone: newOrder.customer.phone,
+          customerEmail: altPhone || undefined,
+          shippingAddress: newOrder.customer.deliveryAddress,
+          city: newOrder.customer.district,
+          items: newOrder.items.map((it) => ({
+            productId: it.id,
+            productName: it.name,
+            productImage: it.image,
+            price: it.price,
+            quantity: it.quantity,
+          })),
+          subtotal: newOrder.financials.subtotal,
+          deliveryFee: newOrder.financials.deliveryFee,
+          discount: newOrder.financials.discount,
+          totalAmount: newOrder.financials.totalAmount,
+          paymentMethod: paymentMethod === "cod" ? "cod" : "bkash",
+          notes: newOrder.customer.orderNotes,
+        })
+        .catch((apiErr) => {
+          console.warn("Backend order sync fallback:", apiErr);
+        });
 
       clearCart();
       setIsSubmitting(false);
