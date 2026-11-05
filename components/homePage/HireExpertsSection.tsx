@@ -14,6 +14,7 @@ import ExpertCard from "@/components/hireExperts/ExpertCard";
 import ProfileModal from "@/components/hireExperts/ProfileModal";
 import BookingModal from "@/components/hireExperts/BookingModal";
 import JoinExpertModal from "@/components/hireExperts/JoinExpertModal";
+import { useLanguage } from "@/context/LanguageContext";
 
 type ExpertFilterId =
   | "all"
@@ -61,6 +62,7 @@ const EXPERT_TABS: TabItem[] = [
 ];
 
 export default function HireExpertsSection() {
+  const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<ExpertFilterId>("all");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -145,8 +147,8 @@ export default function HireExpertsSection() {
       {/* 1. SECTION HEADER: "Hire Cricket Experts" + Action & Carousel Controls */}
       <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
         <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight inline-flex items-center gap-2">
-          <span className="text-zinc-950">Hire</span>
-          <span className="text-[#84cc16]">Cricket Experts</span>
+          <span className="text-zinc-950">{t("Hire", "ভাড়া করুন")}</span>
+          <span className="text-[#84cc16]">{t("Cricket Experts", "ক্রিকেট এক্সপার্ট")}</span>
         </h2>
 
         {/* Action: Join as Expert Button + Carousel Controls */}
@@ -157,7 +159,7 @@ export default function HireExpertsSection() {
             className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs font-black bg-[#84cc16] hover:bg-[#74d600] active:scale-95 text-zinc-950 transition-all duration-200 shadow-xs cursor-pointer"
           >
             <UserPlus className="w-3.5 h-3.5" />
-            <span>Join as Expert</span>
+            <span>{t("Join as Expert", "এক্সপার্ট হিসেবে যোগ দিন")}</span>
           </button>
 
           {/* Carousel Arrow Buttons */}
@@ -210,7 +212,7 @@ export default function HireExpertsSection() {
                   : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 hover:text-zinc-900 font-medium"
               }`}
             >
-              {tab.label}
+              {t(tab.label)}
             </button>
           );
         })}
@@ -220,7 +222,7 @@ export default function HireExpertsSection() {
           href="/hire-experts"
           className="inline-flex items-center gap-1 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap bg-zinc-100 text-zinc-700 hover:bg-zinc-900 hover:text-white transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ml-1"
         >
-          <span>View All</span>
+          <span>{t("View All", "সবগুলো দেখুন")}</span>
           <ChevronRight className="w-4 h-4" />
         </Link>
       </div>
@@ -271,12 +273,12 @@ export default function HireExpertsSection() {
             <div className="w-14 h-14 rounded-full bg-[#84cc16]/15 text-[#84cc16] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <Users className="w-7 h-7" />
             </div>
-            <h3 className="font-bold text-white text-base">Explore All Experts</h3>
+            <h3 className="font-bold text-white text-base">{t("Explore All Experts", "সব এক্সপার্ট দেখুন")}</h3>
             <p className="text-zinc-400 text-xs mt-1.5 mb-5 max-w-[200px]">
-              Browse registered cricket coaches, trainers & match specialists
+              {t("Browse registered cricket coaches, trainers & match specialists", "নিবন্ধিত সকল ক্রিকেট কোচ, ট্রেইনার ও ম্যাচ স্পেশালিস্ট খুঁজুন")}
             </p>
             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#84cc16] text-white text-xs font-bold group-hover:bg-[#73b512] transition-colors shadow-xs">
-              <span>View All</span>
+              <span>{t("View All", "সবগুলো দেখুন")}</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </span>
           </Link>

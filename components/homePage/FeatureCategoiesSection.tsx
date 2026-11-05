@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CategoryItem {
   id: string;
@@ -107,6 +108,7 @@ const ROW_1_CATEGORIES: CategoryItem[] = CRICKET_CATEGORIES.slice(0, 6);
 const ROW_2_CATEGORIES: CategoryItem[] = CRICKET_CATEGORIES.slice(6, 12);
 
 function CategoryCard({ category }: { category: CategoryItem }) {
+  const { t } = useLanguage();
   return (
     <Link
       href={category.href}
@@ -125,13 +127,14 @@ function CategoryCard({ category }: { category: CategoryItem }) {
 
       {/* Category Label */}
       <span className="text-[11px] sm:text-xs md:text-sm lg:text-[15px] font-bold text-zinc-900 group-hover:text-[#65a30d] transition-colors leading-tight text-center tracking-tight line-clamp-2 min-h-[28px] sm:min-h-[32px] flex items-center justify-center">
-        {category.name}
+        {t(category.name)}
       </span>
     </Link>
   );
 }
 
 export default function FeatureCategoiesSection() {
+  const { t } = useLanguage();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -172,8 +175,8 @@ export default function FeatureCategoiesSection() {
       {/* Section Header: "Featured Categories" + Carousel Arrow Buttons */}
       <div className="flex items-center justify-between gap-4 mb-4 sm:mb-6">
         <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight inline-flex items-center gap-2">
-          <span className="text-zinc-950">Featured</span>
-          <span className="text-[#84cc16]">Categories</span>
+          <span className="text-zinc-950">{t("Featured", "জনপ্রিয়")}</span>
+          <span className="text-[#84cc16]">{t("Categories", "ক্যাটাগরি")}</span>
         </h2>
 
         {/* Carousel Arrow Buttons for Mobile / Tablet Slider */}

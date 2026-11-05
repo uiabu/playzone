@@ -3,14 +3,17 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, Sun, ChevronDown, CheckCircle } from "lucide-react";
+import { ArrowRight, Check, Sun, ChevronDown, CheckCircle, Globe } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("Dark Mode");
+  const { language, setLanguage, t } = useLanguage();
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,7 +126,7 @@ export default function Footer() {
 
             {/* Brand Bio */}
             <p className="mt-4 text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-xs font-normal">
-              Gear up for every innings. New and pre-owned cricket equipment for every player in Bangladesh.
+              {t("footer.brandBio", "প্রতিটি ইনিংসের জন্য সেরা প্রস্তুতি। বাংলাদেশের সকল ক্রিকেটারের জন্য নতুন ও প্রি-ওউনড ক্রিকেট সরঞ্জাম।")}
             </p>
 
             {/* Social Icons */}
@@ -200,41 +203,146 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
+
+            {/* Theme & Language Selectors (Moved here under Brand & Socials) */}
+            <div className="mt-6 flex items-center gap-2.5 flex-wrap">
+              {/* Theme Selector Pill */}
+              <div className="relative inline-block">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setThemeMenuOpen(!themeMenuOpen);
+                    setLangMenuOpen(false);
+                  }}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#121215] border border-zinc-800 text-xs text-zinc-300 hover:border-zinc-700 hover:text-white transition-all cursor-pointer shadow-2xs"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Sun className="w-3.5 h-3.5 text-zinc-400" />
+                    <span className="font-medium text-[11px]">{t("footer.theme", "থিম")}</span>
+                  </div>
+                  <span className="text-zinc-600">|</span>
+                  <div className="flex items-center gap-1 text-zinc-200">
+                    <span className="text-[11px]">{t(currentTheme)}</span>
+                    <ChevronDown className="w-3 h-3 text-zinc-400 ml-0.5" />
+                  </div>
+                </button>
+
+                {themeMenuOpen && (
+                  <div className="absolute left-0 bottom-full mb-2 w-36 rounded-xl bg-[#18181b] border border-zinc-700 shadow-xl py-1 z-30">
+                    {["Dark Mode", "Light Mode", "System Default"].map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => {
+                          setCurrentTheme(item);
+                          setThemeMenuOpen(false);
+                        }}
+                        className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                          currentTheme === item
+                            ? "text-[#a3e635] font-semibold bg-zinc-800/60"
+                            : "text-zinc-300 hover:bg-zinc-800"
+                        }`}
+                      >
+                        <span>{t(item)}</span>
+                        {currentTheme === item && <Check className="w-3 h-3" />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Language Selector Pill (English & বাংলা) */}
+              <div className="relative inline-block">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLangMenuOpen(!langMenuOpen);
+                    setThemeMenuOpen(false);
+                  }}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#121215] border border-zinc-800 text-xs text-zinc-300 hover:border-zinc-700 hover:text-white transition-all cursor-pointer shadow-2xs"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Globe className="w-3.5 h-3.5 text-[#84cc16]" />
+                    <span className="font-medium text-[11px]">{t("footer.language", "ভাষা")}</span>
+                  </div>
+                  <span className="text-zinc-600">|</span>
+                  <div className="flex items-center gap-1 text-zinc-200">
+                    <span className="text-[11px]" suppressHydrationWarning>{language === "en" ? "English" : "বাংলা"}</span>
+                    <ChevronDown className="w-3 h-3 text-zinc-400 ml-0.5" />
+                  </div>
+                </button>
+
+                {langMenuOpen && (
+                  <div className="absolute left-0 bottom-full mb-2 w-36 rounded-xl bg-[#18181b] border border-zinc-700 shadow-xl py-1 z-30">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLanguage("en");
+                        setLangMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                        language === "en"
+                          ? "text-[#a3e635] font-semibold bg-zinc-800/60"
+                          : "text-zinc-300 hover:bg-zinc-800"
+                      }`}
+                    >
+                      <span>English</span>
+                      {language === "en" && <Check className="w-3 h-3" />}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLanguage("bn");
+                        setLangMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                        language === "bn"
+                          ? "text-[#a3e635] font-semibold bg-zinc-800/60"
+                          : "text-zinc-300 hover:bg-zinc-800"
+                      }`}
+                    >
+                      <span>বাংলা (Bangla)</span>
+                      {language === "bn" && <Check className="w-3 h-3" />}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* 2. COMPANY COLUMN */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">COMPANY</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t("footer.company", "কোম্পানি")}</h4>
             <div className="w-6 h-0.5 bg-[#a3e635] mt-1.5 mb-4 rounded-full" />
             <ul className="space-y-2 text-xs sm:text-sm text-zinc-400">
               <li>
                 <Link href="/about" className="hover:text-white transition-colors block py-0.5">
-                  About PLAYZONE
+                  {t("About PLAYZONE", "প্লেজোন পরিচিতি")}
                 </Link>
               </li>
               <li>
                 <Link href="/our-story" className="hover:text-white transition-colors block py-0.5">
-                  Our Story
+                  {t("Our Story", "আমাদের গল্প")}
                 </Link>
               </li>
               <li>
                 <Link href="/blog" className="hover:text-white transition-colors block py-0.5">
-                  Blog
+                  {t("Blog", "ব্লগ")}
                 </Link>
               </li>
               <li>
                 <Link href="/careers" className="hover:text-white transition-colors block py-0.5">
-                  Careers
+                  {t("Careers", "ক্যারিয়ার")}
                 </Link>
               </li>
               <li>
                 <Link href="/pre-owned" className="hover:text-white transition-colors block py-0.5">
-                  Pre-Owned Gear
+                  {t("Pre-Owned Gear", "ব্যবহৃত গিয়ার")}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors block py-0.5">
-                  Contact Us
+                  {t("Contact Us", "যোগাযোগ করুন")}
                 </Link>
               </li>
             </ul>
@@ -242,37 +350,37 @@ export default function Footer() {
 
           {/* 3. CUSTOMER SERVICE COLUMN */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">CUSTOMER SERVICE</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t("footer.customerService", "কাস্টমার সার্ভিস")}</h4>
             <div className="w-6 h-0.5 bg-[#a3e635] mt-1.5 mb-4 rounded-full" />
             <ul className="space-y-2 text-xs sm:text-sm text-zinc-400">
               <li>
                 <Link href="/help" className="hover:text-white transition-colors block py-0.5">
-                  Help Center
+                  {t("Help Center", "সহায়তা কেন্দ্র")}
                 </Link>
               </li>
               <li>
                 <Link href="/track-order" className="hover:text-white transition-colors block py-0.5">
-                  Track Order
+                  {t("Track Order", "অর্ডার ট্র্যাক")}
                 </Link>
               </li>
               <li>
                 <Link href="/shipping" className="hover:text-white transition-colors block py-0.5">
-                  Shipping & Delivery
+                  {t("Shipping & Delivery", "শিপিং ও ডেলিভারি")}
                 </Link>
               </li>
               <li>
                 <Link href="/returns" className="hover:text-white transition-colors block py-0.5">
-                  Returns & Refunds
+                  {t("Returns & Refunds", "রিটার্ন ও রিফান্ড")}
                 </Link>
               </li>
               <li>
                 <Link href="/size-guide" className="hover:text-white transition-colors block py-0.5">
-                  Size Guide
+                  {t("Size Guide", "সাইজ গাইড")}
                 </Link>
               </li>
               <li>
                 <Link href="/faqs" className="hover:text-white transition-colors block py-0.5">
-                  FAQs
+                  {t("FAQs", "সাধারণ জিজ্ঞাসা")}
                 </Link>
               </li>
             </ul>
@@ -280,62 +388,42 @@ export default function Footer() {
 
           {/* 4. SHOP CATEGORIES COLUMN */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">SHOP CATEGORIES</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t("footer.shopCategories", "শপ ক্যাটাগরি")}</h4>
             <div className="w-6 h-0.5 bg-[#a3e635] mt-1.5 mb-4 rounded-full" />
             <ul className="space-y-2 text-xs sm:text-sm text-zinc-400">
               <li>
                 <Link href="/category/cricket-bats" className="hover:text-white transition-colors block py-0.5">
-                  Cricket Bats
+                  {t("Cricket Bats", "ক্রিকেট ব্যাট")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/batting-gear" className="hover:text-white transition-colors block py-0.5">
-                  Batting Gear
+                  {t("Batting Gear", "ব্যাটিং সরঞ্জাম")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/bowling-gear" className="hover:text-white transition-colors block py-0.5">
-                  Bowling Gear
+                  {t("Bowling Gear", "বোলিং সরঞ্জাম")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/wicketkeeping" className="hover:text-white transition-colors block py-0.5">
-                  Wicketkeeping
+                  {t("Wicketkeeping", "উইকেটকিপিং")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/cricket-shoes" className="hover:text-white transition-colors block py-0.5">
-                  Cricket Shoes
+                  {t("Cricket Shoes", "ক্রিকেট জুতো")}
                 </Link>
               </li>
               <li>
                 <Link href="/category/accessories" className="hover:text-white transition-colors block py-0.5">
-                  Accessories
+                  {t("Accessories", "আনুষাঙ্গিক")}
                 </Link>
               </li>
               <li>
                 <Link href="/offers" className="hover:text-white transition-colors block py-0.5">
-                  Special Offers
-                </Link>
-              </li>
-              <li>
-                <Link href="/book-cricketer" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
-                  Book a Cricketer ⭐
-                </Link>
-              </li>
-              <li>
-                <Link href="/hire-experts" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
-                  Hire Cricket Experts
-                </Link>
-              </li>
-              <li>
-                <Link href="/cricket-academies" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
-                  Cricket Academies
-                </Link>
-              </li>
-              <li>
-                <Link href="/foundation" className="text-[#a3e635] hover:text-white transition-colors block py-0.5 font-semibold">
-                  PLAYZONE Foundation
+                  {t("Special Offers", "বিশেষ অফার")}
                 </Link>
               </li>
             </ul>
@@ -343,10 +431,10 @@ export default function Footer() {
 
           {/* 5. NEWSLETTER COLUMN */}
           <div className="sm:col-span-2 md:col-span-3 lg:col-span-4 xl:col-span-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">NEWSLETTER</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t("footer.newsletter", "নিউজলেটার")}</h4>
             <div className="w-6 h-0.5 bg-[#a3e635] mt-1.5 mb-4 rounded-full" />
             <p className="text-xs sm:text-sm text-zinc-400 mb-3.5 leading-relaxed">
-              Get exclusive deals, new arrivals and cricket updates.
+              {t("footer.newsletterDesc", "এক্সক্লুসিভ অফার, নতুন কালেকশন এবং ক্রিকেট আপডেটের জন্য সাবস্ক্রাইব করুন।")}
             </p>
 
             {/* Subscription Form */}
@@ -356,7 +444,7 @@ export default function Footer() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address"
+                  placeholder={t("Enter your email address", "আপনার ইমেইল এড্রেস লিখুন")}
                   required
                   className="w-full bg-transparent text-xs sm:text-sm text-white placeholder-zinc-500 outline-none pr-2 font-normal"
                 />
@@ -372,7 +460,7 @@ export default function Footer() {
               {subscribed && (
                 <div className="absolute left-0 -bottom-6 flex items-center gap-1.5 text-xs text-[#a3e635] animate-fade-in">
                   <CheckCircle className="w-3.5 h-3.5" />
-                  <span>Thank you for subscribing!</span>
+                  <span>{t("footer.subscribed", "সাবস্ক্রাইব করার জন্য ধন্যবাদ!")}</span>
                 </div>
               )}
             </form>
@@ -390,50 +478,8 @@ export default function Footer() {
                 {consent && <Check className="w-3 h-3 stroke-[3]" />}
               </div>
               <span className="text-[11px] sm:text-xs text-zinc-400 group-hover:text-zinc-300 transition-colors leading-snug">
-                Yes, I&apos;d like to receive updates and offers from PLAYZONE.
+                {t("footer.consent", "হ্যাঁ, আমি প্লেজোন থেকে নিয়মিত অফার ও আপডেট পেতে চাই।")}
               </span>
-            </div>
-
-            {/* Theme Selector Pill */}
-            <div className="mt-5 relative inline-block">
-              <button
-                type="button"
-                onClick={() => setThemeMenuOpen(!themeMenuOpen)}
-                className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#121215] border border-zinc-800 text-xs text-zinc-300 hover:border-zinc-700 hover:text-white transition-all cursor-pointer"
-              >
-                <div className="flex items-center gap-1.5">
-                  <Sun className="w-3.5 h-3.5 text-zinc-400" />
-                  <span className="font-medium">Theme</span>
-                </div>
-                <span className="text-zinc-600">|</span>
-                <div className="flex items-center gap-1 text-zinc-200">
-                  <span>{currentTheme}</span>
-                  <ChevronDown className="w-3 h-3 text-zinc-400 ml-0.5" />
-                </div>
-              </button>
-
-              {themeMenuOpen && (
-                <div className="absolute left-0 bottom-full mb-2 w-36 rounded-xl bg-[#18181b] border border-zinc-700 shadow-xl py-1 z-30">
-                  {["Dark Mode", "Light Mode", "System Default"].map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => {
-                        setCurrentTheme(t);
-                        setThemeMenuOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center justify-between ${
-                        currentTheme === t
-                          ? "text-[#a3e635] font-semibold bg-zinc-800/60"
-                          : "text-zinc-300 hover:bg-zinc-800"
-                      }`}
-                    >
-                      <span>{t}</span>
-                      {currentTheme === t && <Check className="w-3 h-3" />}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -442,7 +488,7 @@ export default function Footer() {
         <div className="border-t border-zinc-900 mt-12 pt-6 flex flex-col md:flex-row items-center justify-between gap-5 text-xs text-zinc-400">
           {/* Left: Copyright */}
           <div className="font-normal text-zinc-400 tracking-wide text-center md:text-left">
-            © 2026 PLAYZONE. All rights reserved.
+            {t("footer.copyright", "© ২০২৬ প্লেজোন। সর্বস্বত্ব সংরক্ষিত।")}
           </div>
 
           {/* Right Group: Payment Badges + Legal Links */}
@@ -464,15 +510,15 @@ export default function Footer() {
             {/* Legal Links */}
             <div className="flex items-center gap-2 sm:gap-3 text-xs">
               <Link href="/terms" className="hover:text-white transition-colors">
-                Terms of Service
+                {t("Terms of Service", "ব্যবহারের শর্তাবলী")}
               </Link>
               <span className="text-zinc-700 select-none">|</span>
               <Link href="/privacy" className="hover:text-white transition-colors">
-                Privacy Policy
+                {t("Privacy Policy", "গোপনীয়তা নীতি")}
               </Link>
               <span className="text-zinc-700 select-none">|</span>
               <Link href="/returns-policy" className="hover:text-white transition-colors">
-                Return Policy
+                {t("Return Policy", "রিটার্ন নীতি")}
               </Link>
             </div>
           </div>

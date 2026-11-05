@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Star, Eye } from "lucide-react";
 import { getProductViews } from "@/lib/productsData";
 import { useProducts } from "@/context/ProductsContext";
 import ProductCardMedia from "@/components/products/ProductCardMedia";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface BatProduct {
   id: string;
@@ -170,6 +171,7 @@ const FILTER_TABS: { id: FilterCategory; label: string }[] = [
 ];
 
 export default function ExclusiveProductsSection() {
+  const { t } = useLanguage();
   const { getProductBySlugOrId } = useProducts();
   const [activeFilter, setActiveFilter] = useState<FilterCategory>("top-picks");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -246,8 +248,8 @@ export default function ExclusiveProductsSection() {
       <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
         {/* Title */}
         <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight inline-flex items-center gap-2">
-          <span className="text-zinc-950">Bats</span>
-          <span className="text-[#84cc16]">for Every Innings</span>
+          <span className="text-zinc-950">{t("Bats", "ব্যাট")}</span>
+          <span className="text-[#84cc16]">{t("for Every Innings", "প্রতিটি ইনিংসের জন্য")}</span>
         </h2>
 
         {/* Carousel Arrow Buttons */}
@@ -299,7 +301,7 @@ export default function ExclusiveProductsSection() {
                   : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 hover:text-zinc-900 font-medium"
               }`}
             >
-              {tab.label}
+              {t(tab.label)}
             </button>
           );
         })}

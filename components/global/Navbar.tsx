@@ -21,8 +21,11 @@ import {
   ShieldCheck,
   Truck,
   Zap,
+  Globe,
+  Check,
 } from "lucide-react";
 import { websiteApi } from "@/lib/api";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface MegaMenuPromo {
   title: string;
@@ -57,7 +60,7 @@ const CATEGORIES: CategoryItem[] = [
     hasDropdown: false,
   },
   {
-    name: "Book a Cricketer",
+    name: "Invite a Cricketer",
     href: "/book-cricketer",
     hasDropdown: false,
   },
@@ -353,6 +356,8 @@ export default function Navbar() {
   const isMegaOpen = Boolean(activeMegaCategory && activeCategoryData);
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
   const [announcementText, setAnnouncementText] = useState(
     "⚡ FREE Express Delivery across Dhaka on orders over ৳5,000! Pre-orders open for 2026 English Willow bats."
   );
@@ -393,6 +398,7 @@ export default function Navbar() {
   }, []);
 
   const desktopSearchRef = useRef<HTMLDivElement>(null);
+  const desktopSearchDropdownRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
 
   // Live search results on-type
@@ -403,10 +409,9 @@ export default function Navbar() {
   // Handle click outside to close dropdowns
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        desktopSearchRef.current &&
-        !desktopSearchRef.current.contains(event.target as Node)
-      ) {
+      const clickedDesktopInput = desktopSearchRef.current?.contains(event.target as Node);
+      const clickedDesktopDropdown = desktopSearchDropdownRef.current?.contains(event.target as Node);
+      if (!clickedDesktopInput && !clickedDesktopDropdown) {
         setIsSearchOpenDesktop(false);
       }
       if (
@@ -443,7 +448,7 @@ export default function Navbar() {
         <div className="relative bg-[#84cc16] text-black text-[11px] sm:text-xs font-black tracking-wide py-1.5 px-8 sm:px-10 text-center flex items-center justify-center gap-2 select-none shadow-xs transition-all duration-200">
           <div className="flex items-center justify-center gap-2 max-w-[1300px] mx-auto">
             <Megaphone className="w-3.5 h-3.5 text-black shrink-0 hidden sm:inline" />
-            <span className="leading-snug">{announcementText}</span>
+            <span className="leading-snug" suppressHydrationWarning>{t(announcementText)}</span>
           </div>
           <button
             type="button"
@@ -458,7 +463,7 @@ export default function Navbar() {
       )}
 
       {/* 1. TOP MAIN BAR (Deep Solid Black) */}
-      <div className="bg-[#000000] text-white">
+      <div className="bg-[#000000] text-white relative">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-18 py-2 gap-3 lg:gap-8">
             {/* Logo: Playzone Brand Logo */}
@@ -479,7 +484,7 @@ export default function Navbar() {
             </div>
 
             {/* Search Input Bar with Search Icon on the RIGHT */}
-            <div ref={desktopSearchRef} className="flex-1 max-w-2xl hidden md:block relative">
+            <div ref={desktopSearchRef} className="flex-1 max-w-3xl lg:max-w-4xl hidden md:block relative">
               <form onSubmit={handleSearchSubmit} className="relative w-full">
                 <input
                   type="text"
@@ -494,7 +499,7 @@ export default function Navbar() {
                   onKeyDown={(e) => {
                     if (e.key === "Escape") setIsSearchOpenDesktop(false);
                   }}
-                  placeholder="Search for cricket bats, shoes, gloves..."
+                  placeholder={t("nav.searchPlaceholder", "Search for cricket bats, shoes, gloves...")}
                   className="w-full bg-[#1c1c1f] text-white placeholder-zinc-400 text-sm rounded-full pl-5 pr-16 py-2.5 outline-none border border-zinc-800 focus:border-zinc-500 focus:bg-[#232326] transition-all"
                 />
                 {searchQuery && (
@@ -518,17 +523,6 @@ export default function Navbar() {
                   <Search className="w-5 h-5" />
                 </button>
               </form>
-
-              {/* Live Search Dropdown On-Type */}
-              <LiveSearchDropdown
-                query={searchQuery}
-                products={liveResults.products}
-                experts={liveResults.experts}
-                totalCount={liveResults.totalCount}
-                isOpen={isSearchOpenDesktop && !!searchQuery.trim()}
-                onClose={() => setIsSearchOpenDesktop(false)}
-                onSelectResult={() => setIsSearchOpenDesktop(false)}
-              />
             </div>
 
             {/* Right Action Links: Blog, Track Order, Deals (Yellow), Compare, Cart, User */}
@@ -538,7 +532,7 @@ export default function Navbar() {
                 href="/blog"
                 className="text-white hover:text-yellow-400 font-medium text-sm transition-colors hidden sm:inline-block"
               >
-                Blog
+                {t("Blog", "ব্লগ")}
               </Link>
 
               {/* Pre-order */}
@@ -546,17 +540,17 @@ export default function Navbar() {
                 href="/pre-order"
                 className="text-white hover:text-yellow-400 font-medium text-sm transition-colors hidden sm:inline-block whitespace-nowrap"
               >
-                Pre-order
+                {t("Pre-order", "প্রি-অর্ডার")}
               </Link>
 
-              {/* Book a Cricketer */}
+              {/* Invite a Cricketer */}
               <Link
                 href="/book-cricketer"
                 className="text-white hover:text-[#a3e635] font-semibold text-sm transition-colors hidden md:inline-flex items-center gap-1.5 whitespace-nowrap"
               >
-                <span>Book a Cricketer</span>
+                <span>{t("Invite a Cricketer", "ক্রিকেটার ইনভাইট করুন")}</span>
                 <span className="bg-[#84cc16] text-black text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none uppercase tracking-wider">
-                  Star
+                  {t("Star", "স্টার")}
                 </span>
               </Link>
 
@@ -566,8 +560,57 @@ export default function Navbar() {
                 href="/offers"
                 className="text-[#facc15] hover:text-[#fde047] font-bold text-sm transition-colors"
               >
-                Offers
+                {t("Offers", "অফার")}
               </Link>
+
+              {/* Language Switcher (EN / বাংলা) */}
+              <div className="relative hidden sm:inline-block">
+                <button
+                  type="button"
+                  onClick={() => setLangMenuOpen(!langMenuOpen)}
+                  aria-label="Change Language"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-700 hover:border-zinc-500 bg-zinc-900/90 text-xs font-semibold text-zinc-200 hover:text-white transition-all cursor-pointer shadow-2xs"
+                >
+                  <Globe className="w-3.5 h-3.5 text-[#84cc16]" />
+                  <span suppressHydrationWarning>{language === "en" ? "EN" : "বাং"}</span>
+                  <ChevronDown className="w-3 h-3 text-zinc-400" />
+                </button>
+
+                {langMenuOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-32 rounded-xl bg-[#18181b] border border-zinc-700 shadow-xl py-1 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLanguage("en");
+                        setLangMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                        language === "en"
+                          ? "text-[#a3e635] font-bold bg-zinc-800"
+                          : "text-zinc-300 hover:bg-zinc-800"
+                      }`}
+                    >
+                      <span>English</span>
+                      {language === "en" && <Check className="w-3 h-3 text-[#84cc16]" />}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLanguage("bn");
+                        setLangMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-1.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                        language === "bn"
+                          ? "text-[#a3e635] font-bold bg-zinc-800"
+                          : "text-zinc-300 hover:bg-zinc-800"
+                      }`}
+                    >
+                      <span>বাংলা</span>
+                      {language === "bn" && <Check className="w-3 h-3 text-[#84cc16]" />}
+                    </button>
+                  </div>
+                )}
+              </div>
 
               {/* Shopping Cart Button (Bordered Circle with Neon Green Badge) */}
               <button
@@ -625,7 +668,7 @@ export default function Navbar() {
                 onKeyDown={(e) => {
                   if (e.key === "Escape") setIsSearchOpenMobile(false);
                 }}
-                placeholder="Search for cricket bats, shoes, gloves..."
+                placeholder={t("nav.searchPlaceholder", "Search for cricket bats, shoes, gloves...")}
                 className="w-full bg-[#1c1c1f] text-white placeholder-zinc-400 text-sm rounded-full pl-4 pr-16 py-2 outline-none border border-zinc-800 focus:border-zinc-500 transition-all"
               />
               {searchQuery && (
@@ -659,9 +702,23 @@ export default function Navbar() {
               isOpen={isSearchOpenMobile && !!searchQuery.trim()}
               onClose={() => setIsSearchOpenMobile(false)}
               onSelectResult={() => setIsSearchOpenMobile(false)}
+              isMobile={true}
             />
           </div>
         </div>
+
+        {/* Desktop Full-Width Live Search Dropdown */}
+        <LiveSearchDropdown
+          ref={desktopSearchDropdownRef}
+          query={searchQuery}
+          products={liveResults.products}
+          experts={liveResults.experts}
+          totalCount={liveResults.totalCount}
+          isOpen={isSearchOpenDesktop && !!searchQuery.trim()}
+          onClose={() => setIsSearchOpenDesktop(false)}
+          onSelectResult={() => setIsSearchOpenDesktop(false)}
+          isMobile={false}
+        />
       </div>
 
       {/* 2. BOTTOM CATEGORY BAR (White Background - Desktop with Smooth Mega Menu) */}
@@ -677,7 +734,7 @@ export default function Navbar() {
                 (cat.href !== "/" && pathname.startsWith(cat.href)) ||
                 (cat.name === "Bats" && (pathname.includes("bats") || pathname.includes("cricket-bats"))) ||
                 (cat.name === "Pre-owned Gear" && (pathname.includes("pre-owned") || pathname.includes("used"))) ||
-                (cat.name === "Book a Cricketer" && pathname.includes("book-cricketer")) ||
+                ((cat.name === "Invite a Cricketer" || cat.name === "Book a Cricketer") && (pathname.includes("book-cricketer") || pathname.includes("invite-cricketer"))) ||
                 (cat.name === "Hire Experts" && pathname.includes("hire-experts")) ||
                 (cat.name === "Protective Gear" && (pathname.includes("protective") || pathname.includes("pads") || pathname.includes("gloves") || pathname.includes("helmets"))) ||
                 (cat.name === "Cricket Balls" && pathname.includes("balls")) ||
@@ -701,7 +758,7 @@ export default function Navbar() {
                       : "text-zinc-800 hover:text-[#65a30d] font-semibold"
                       }`}
                   >
-                    <span>{cat.name}</span>
+                    <span>{t(cat.name)}</span>
                     {cat.hasDropdown && (
                       <ChevronDown
                         className={`w-3.5 h-3.5 transition-all duration-200 ${isHovered ? "rotate-180" : ""
@@ -746,7 +803,7 @@ export default function Navbar() {
                       <div key={idx} className="space-y-3">
                         <div className="flex items-center justify-between pb-2 border-b border-zinc-100">
                           <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900">
-                            {sub.title}
+                            {t(sub.title)}
                           </h4>
                           <span className="w-1.5 h-1.5 rounded-full bg-[#74d600]" />
                         </div>
@@ -759,7 +816,7 @@ export default function Navbar() {
                                 className="group/link flex items-center justify-between py-1.5 px-2.5 rounded-xl text-xs font-medium text-zinc-600 hover:text-[#549900] hover:bg-lime-50/70 hover:translate-x-1 transition-all duration-200 ease-out"
                               >
                                 <span className="group-hover/link:text-[#549900] transition-colors duration-200">
-                                  {item}
+                                  {t(item)}
                                 </span>
                                 <ArrowRight className="w-3.5 h-3.5 text-[#549900] opacity-0 -translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all duration-200 ease-out" />
                               </Link>
@@ -790,21 +847,21 @@ export default function Navbar() {
                             />
                             {promo.badge && (
                               <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-zinc-950 text-[#84cc16] border border-zinc-800 shadow-xs">
-                                {promo.badge}
+                                {t(promo.badge)}
                               </span>
                             )}
                           </div>
 
                           <h5 className="text-xs font-black text-zinc-950 group-hover/promo:text-[#549900] transition-colors duration-200 leading-tight mb-1">
-                            {promo.title}
+                            {t(promo.title)}
                           </h5>
                           <p className="text-[11px] text-zinc-500 line-clamp-2 leading-relaxed">
-                            {promo.subtitle}
+                            {t(promo.subtitle)}
                           </p>
                         </div>
 
                         <div className="mt-3 pt-2.5 border-t border-zinc-100 flex items-center justify-between text-[11px] font-extrabold text-[#549900]">
-                          <span>Explore Collection</span>
+                          <span>{t("Explore Collection", "কালেকশন দেখুন")}</span>
                           <ArrowRight className="w-3.5 h-3.5 group-hover/promo:translate-x-1 transition-transform duration-200" />
                         </div>
                       </Link>
@@ -817,15 +874,15 @@ export default function Navbar() {
                   <div className="flex items-center gap-6">
                     <span className="flex items-center gap-1.5 font-medium hover:text-zinc-700 transition-colors">
                       <ShieldCheck className="w-4 h-4 text-[#74d600]" />
-                      100% Genuine Gear
+                      {t("100% Genuine Gear", "১০০% খাঁটি পণ্য")}
                     </span>
                     <span className="flex items-center gap-1.5 font-medium hover:text-zinc-700 transition-colors">
                       <Truck className="w-4 h-4 text-[#74d600]" />
-                      24h Dhaka Delivery (৳80)
+                      {t("24h Dhaka Delivery (৳80)", "২৪ ঘণ্টায় ঢাকায় ডেলিভারি (৳৮০)")}
                     </span>
                     <span className="flex items-center gap-1.5 font-medium hover:text-zinc-700 transition-colors">
                       <Zap className="w-4 h-4 text-[#74d600]" />
-                      Cash on Delivery Across Bangladesh
+                      {t("Cash on Delivery Across Bangladesh", "সারাদেশে ক্যাশ অন ডেলিভারি")}
                     </span>
                   </div>
 
@@ -834,7 +891,7 @@ export default function Navbar() {
                     onClick={() => setActiveMegaCategory(null)}
                     className="text-xs font-black text-zinc-900 hover:text-[#549900] flex items-center gap-1.5 transition-colors"
                   >
-                    <span>Browse All {displayedCategoryData.name}</span>
+                    <span>{t("Browse All", "সবগুলো দেখুন")} {t(displayedCategoryData.name)}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -854,42 +911,42 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded bg-white border border-zinc-200 text-center text-zinc-800 hover:text-yellow-600"
             >
-              Blog
+              {t("Blog", "ব্লগ")}
             </Link>
             <Link
               href="/pre-order"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded bg-white border border-zinc-200 text-center text-zinc-800 hover:text-yellow-600"
             >
-              Pre-order
+              {t("Pre-order", "প্রি-অর্ডার")}
             </Link>
             <Link
               href="/offers"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded bg-yellow-50 border border-yellow-200 text-center text-yellow-700 font-bold flex items-center justify-center gap-1.5"
             >
-              <span>Offers</span>
+              <span>{t("Offers", "অফার")}</span>
             </Link>
             <Link
               href="/book-cricketer"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded bg-amber-50 border border-amber-300 text-center text-amber-900 font-bold flex items-center justify-center gap-1.5"
             >
-              <span>⭐ Book Cricketer</span>
+              <span>⭐ {t("Invite Cricketer", "ইনভাইট ক্রিকেটার")}</span>
             </Link>
             <Link
               href="/hire-experts"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded bg-lime-50 border border-lime-300 text-center text-lime-800 font-bold flex items-center justify-center gap-1.5"
             >
-              <span>🏏 Hire Experts</span>
+              <span>🏏 {t("Hire Experts", "হায়ার এক্সপার্টস")}</span>
             </Link>
             <Link
               href="/cricket-academies"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded bg-emerald-50 border border-emerald-300 text-center text-emerald-900 font-bold flex items-center justify-center gap-1.5"
             >
-              <span>🏟️ Academies</span>
+              <span>🏟️ {t("Cricket Academies", "একাডেমি")}</span>
             </Link>
             <button
               type="button"
@@ -900,7 +957,7 @@ export default function Navbar() {
               className="p-2 rounded bg-zinc-900 border border-zinc-800 text-center text-white hover:text-[#74d600] flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <ShoppingCart className="w-4 h-4" />
-              <span>Cart ({itemCount})</span>
+              <span>{t("Cart", "কার্ট")} ({itemCount})</span>
             </button>
             <button
               type="button"
@@ -911,14 +968,24 @@ export default function Navbar() {
               className="p-2.5 rounded-xl bg-[#74d600] text-zinc-950 font-bold text-center hover:bg-[#65c200] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
               <User className="w-4 h-4" />
-              <span>Sign In</span>
+              <span>{t("Sign In", "সাইন ইন")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setLanguage(language === "en" ? "bn" : "en");
+              }}
+              className="col-span-2 p-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-zinc-800 font-bold text-center transition-colors flex items-center justify-center gap-2 cursor-pointer text-xs"
+            >
+              <Globe className="w-4 h-4 text-[#65a30d]" />
+              <span>{language === "en" ? "Language: English (Switch to বাংলা)" : "ভাষা: বাংলা (Switch to English)"}</span>
             </button>
           </div>
 
           {/* Categories Accordion */}
           <div className="py-2 px-4 divide-y divide-zinc-100">
             <p className="text-xs font-bold uppercase tracking-wider text-zinc-400 py-2">
-              Cricket Categories
+              {t("Cricket Categories", "ক্রিকেট ক্যাটাগরি")}
             </p>
             {CATEGORIES.map((cat) => {
               const isExpanded = activeCategory === cat.name;
@@ -930,7 +997,7 @@ export default function Navbar() {
                       onClick={() => setMobileMenuOpen(false)}
                       className="text-sm font-semibold text-zinc-800 hover:text-[#65a30d] transition-colors flex-1"
                     >
-                      {cat.name}
+                      {t(cat.name)}
                     </Link>
                     {cat.hasDropdown && cat.subcategories && (
                       <button
@@ -951,7 +1018,7 @@ export default function Navbar() {
                       {cat.subcategories.map((sub, sIdx) => (
                         <div key={sIdx} className="space-y-1">
                           <p className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wide">
-                            {sub.title}
+                            {t(sub.title)}
                           </p>
                           {sub.items.map((item, itemIdx) => (
                             <Link
@@ -960,7 +1027,7 @@ export default function Navbar() {
                               onClick={() => setMobileMenuOpen(false)}
                               className="block text-xs text-zinc-600 hover:text-[#65a30d] hover:translate-x-1 transition-all duration-200 py-0.5"
                             >
-                              {item}
+                              {t(item)}
                             </Link>
                           ))}
                         </div>

@@ -12,6 +12,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { Cricketer } from "./cricketersData";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CricketerCardProps {
   cricketer: Cricketer;
@@ -24,6 +25,7 @@ export default function CricketerCard({
   onViewProfile,
   onRequestBooking,
 }: CricketerCardProps) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleShare = (e: React.MouseEvent) => {
@@ -219,7 +221,7 @@ export default function CricketerCard({
               className="w-full py-2.5 px-3 rounded-xl bg-zinc-950 hover:bg-black text-[#84cc16] hover:text-[#9ae630] text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Book Now</span>
+              <span>{t("Invite Now", "ইনভাইট করুন")}</span>
             </button>
           </div>
         </div>

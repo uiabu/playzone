@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Star, Eye } from "lucide-react";
 import { getProductViews } from "@/lib/productsData";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface BowlingProduct {
   id: string;
@@ -153,6 +154,7 @@ const FILTER_TABS: { id: FilterCategory; label: string }[] = [
 ];
 
 export default function BowlingFieldingSection() {
+  const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<FilterCategory>("all");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -224,8 +226,8 @@ export default function BowlingFieldingSection() {
       {/* 1. SECTION HEADER: "Bowling & Fielding" + Navigation Controls */}
       <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
         <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight inline-flex items-center gap-2">
-          <span className="text-zinc-950">Bowling &</span>
-          <span className="text-[#84cc16]">Fielding</span>
+          <span className="text-zinc-950">{t("Bowling &", "বোলিং ও")}</span>
+          <span className="text-[#84cc16]">{t("Fielding", "ফিল্ডিং")}</span>
         </h2>
 
         {/* Carousel Arrow Buttons */}
@@ -277,7 +279,7 @@ export default function BowlingFieldingSection() {
                   : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 hover:text-zinc-900 font-medium"
               }`}
             >
-              {tab.label}
+              {t(tab.label)}
             </button>
           );
         })}

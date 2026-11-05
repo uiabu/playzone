@@ -216,7 +216,7 @@ export default function CricketerProfileModal({
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[#84cc16]" />
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-                  How PLAYZONE Booking Works
+                  How PLAYZONE Invitation Works
                 </h4>
               </div>
               <p className="text-xs text-zinc-300 leading-relaxed">
@@ -228,7 +228,7 @@ export default function CricketerProfileModal({
               <div className="flex items-center gap-4 pt-1 text-[11px] text-zinc-400">
                 <span className="flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#84cc16]" />
-                  কোনো অগ্রিম পেমেন্ট নেই
+                  টাইম ফিক্সের পর অ্যাডভান্স পেমেন্ট
                 </span>
                 <span className="flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#84cc16]" />
@@ -258,7 +258,7 @@ export default function CricketerProfileModal({
             className="flex-1 py-3 px-5 rounded-xl bg-zinc-950 hover:bg-black text-[#84cc16] hover:text-[#9fe832] font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95 cursor-pointer"
           >
             <Send className="w-4 h-4" />
-            <span>Request Booking with {cricketer.name}</span>
+            <span>Invite {cricketer.name}</span>
           </button>
         </div>
       </div>

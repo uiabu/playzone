@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { api } from "@/lib/api";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface HeroSlide {
   id: string;
@@ -79,6 +80,7 @@ const CRICKET_SLIDES: HeroSlide[] = [
 ];
 
 export default function HeroSection() {
+  const { t } = useLanguage();
   const [slides, setSlides] = useState<HeroSlide[]>(CRICKET_SLIDES);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -291,7 +293,7 @@ export default function HeroSection() {
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                Facebook Page
+                {t("Facebook Page", "ফেসবুক পেজ")}
               </h4>
               <p className="text-xs text-zinc-500 font-medium truncate">
                 @playzone.cricket
@@ -341,10 +343,10 @@ export default function HeroSection() {
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                Cricket Group
+                {t("Cricket Group", "ক্রিকেট গ্রুপ")}
               </h4>
               <p className="text-xs text-zinc-500 font-medium truncate">
-                Join Community
+                {t("Join Community", "গ্রুপে যুক্ত হন")}
               </p>
             </div>
           </a>
@@ -382,7 +384,7 @@ export default function HeroSection() {
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                Instagram
+                {t("Instagram", "ইনস্টাগ্রাম")}
               </h4>
               <p className="text-xs text-zinc-500 font-medium truncate">
                 @playzone.cricket
@@ -416,7 +418,7 @@ export default function HeroSection() {
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                TikTok
+                {t("TikTok", "টিকটক")}
               </h4>
               <p className="text-xs text-zinc-500 font-medium truncate">
                 @playzone.cricket
@@ -462,7 +464,7 @@ export default function HeroSection() {
             </div>
             <div className="min-w-0">
               <h4 className="text-zinc-900 font-bold text-sm tracking-tight leading-snug group-hover:text-[#65a30d] transition-colors">
-                YouTube Channel
+                {t("YouTube Channel", "ইউটিউব চ্যানেল")}
               </h4>
               <p className="text-xs text-zinc-500 font-medium truncate">
                 @playzone.cricket

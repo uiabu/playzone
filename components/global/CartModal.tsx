@@ -7,9 +7,11 @@ import { useRouter } from "next/navigation";
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, CheckCircle2, AlertCircle } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { websiteApi } from "@/lib/api";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function CartModal() {
   const router = useRouter();
+  const { t } = useLanguage();
   const {
     items,
     itemCount,
@@ -80,7 +82,7 @@ export default function CartModal() {
         {/* 1. HEADER: "Your Cart" + Close Button */}
         <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
           <h2 className="text-xl sm:text-2xl font-black text-zinc-900 tracking-tight">
-            Your Cart
+            {t("cart.title", "আপনার ক্রিকেট ব্যাগ")}
           </h2>
           <button
             type="button"
@@ -94,14 +96,14 @@ export default function CartModal() {
 
         {/* 2. SUBHEADER: "{N} Items" + "Clear All" */}
         <div className="flex items-center justify-between py-3 text-xs sm:text-sm font-semibold text-zinc-800">
-          <span>{itemCount} Items</span>
+          <span>{itemCount} {t("cart.items", "টি পণ্য")}</span>
           {itemCount > 0 && (
             <button
               type="button"
               onClick={clearCart}
               className="text-xs font-semibold text-zinc-400 hover:text-red-500 transition-colors cursor-pointer"
             >
-              Clear All
+              {t("Clear All", "সব মুছুন")}
             </button>
           )}
         </div>
@@ -113,9 +115,9 @@ export default function CartModal() {
               <div className="w-16 h-16 rounded-full bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-300 mb-3">
                 <ShoppingBag className="w-8 h-8 stroke-[1.5]" />
               </div>
-              <p className="text-sm font-bold text-zinc-700">Your cart is empty</p>
+              <p className="text-sm font-bold text-zinc-700">{t("cart.empty", "আপনার শপিং ব্যাগটি খালি রয়েছে")}</p>
               <p className="text-xs text-zinc-400 mt-1 max-w-[240px]">
-                Explore authentic cricket bats, safety gear, and pre-owned essentials.
+                {t("cart.emptyDesc", "আসল ক্রিকেট ব্যাট, সুরক্ষা গিয়ার ও ব্যবহৃত সরঞ্জাম দেখুন।")}
               </p>
               <div className="mt-4 flex flex-col sm:flex-row items-center gap-2">
                 <button
@@ -126,7 +128,7 @@ export default function CartModal() {
                   }}
                   className="px-4 py-2 rounded-full bg-zinc-900 hover:bg-black text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
                 >
-                  Shop Cricket Gear
+                  {t("Shop Cricket Gear", "ক্রিকেট পণ্য কিনুন")}
                 </button>
                 <button
                   type="button"
@@ -216,7 +218,7 @@ export default function CartModal() {
         {/* 4. ORDER SUMMARY */}
         <div className="pt-3 border-t border-zinc-100">
           <h3 className="text-sm font-bold text-zinc-900 mb-2.5">
-            Order Summary
+            {t("Order Summary", "অর্ডার বিবরণী")}
           </h3>
 
           {/* Coupon Input Pill Form */}
@@ -226,14 +228,14 @@ export default function CartModal() {
                 type="text"
                 value={inputCoupon}
                 onChange={(e) => setInputCoupon(e.target.value)}
-                placeholder="Apply Coupon (e.g. PLAYZONE10)"
+                placeholder={t("Apply Coupon (e.g. PLAYZONE10)", "কুপন কোড লিখুন (যেমন PLAYZONE10)")}
                 className="w-full bg-transparent outline-none placeholder:text-zinc-400 text-xs pr-2"
               />
               <button
                 type="submit"
                 className="px-4 py-1.5 rounded-full bg-zinc-900 hover:bg-black text-white text-[11px] font-bold shrink-0 transition-colors cursor-pointer"
               >
-                Apply Coupon
+                {t("Apply", "প্রয়োগ করুন")}
               </button>
             </div>
 
@@ -242,14 +244,14 @@ export default function CartModal() {
               <div className="mt-1.5 flex items-center justify-between text-[11px] text-[#4d8c00] bg-lime-50 px-3 py-1 rounded-lg border border-lime-200 font-semibold">
                 <span className="flex items-center gap-1">
                   <Tag className="w-3 h-3" />
-                  <span>Coupon {couponCode} applied</span>
+                  <span>{t("Coupon", "কুপন")} {couponCode} {t("applied", "প্রযুক্ত হয়েছে")}</span>
                 </span>
                 <button
                   type="button"
                   onClick={removeCoupon}
                   className="text-red-500 hover:underline cursor-pointer"
                 >
-                  Remove
+                  {t("Remove", "বাতিল")}
                 </button>
               </div>
             )}
@@ -272,19 +274,19 @@ export default function CartModal() {
           {/* Financial Totals */}
           <div className="space-y-1.5 text-xs text-zinc-600 mb-3">
             <div className="flex items-center justify-between">
-              <span>Sub Total ({itemCount} items)</span>
+              <span>{t("cart.subtotal", "সাবটোটাল")} ({itemCount} {t("cart.items", "টি পণ্য")})</span>
               <span className="font-semibold text-zinc-900">
                 ৳{subtotal.toLocaleString()}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span>Discount</span>
+              <span>{t("cart.discount", "ছাড়")}</span>
               <span className="font-semibold text-zinc-900">
                 ৳{discount.toLocaleString()}
               </span>
             </div>
             <div className="pt-2 border-t border-zinc-100 flex items-center justify-between text-sm font-black text-zinc-950">
-              <span>Total Amount</span>
+              <span>{t("cart.total", "মোট প্রদেয় মূল্য")}</span>
               <span className="text-base text-[#4d8c00] font-black">
                 ৳{total.toLocaleString()}
               </span>
@@ -295,7 +297,7 @@ export default function CartModal() {
           {checkoutSuccess && (
             <div className="mb-2.5 p-2 bg-lime-50 border border-lime-200 rounded-xl text-xs text-[#4d8c00] font-bold text-center animate-fade-in flex items-center justify-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-[#74d600]" />
-              <span>Order placed successfully! Thank you.</span>
+              <span>{t("Order placed successfully! Thank you.", "অর্ডার সফলভাবে সম্পন্ন হয়েছে! ধন্যবাদ।")}</span>
             </div>
           )}
 
@@ -306,7 +308,7 @@ export default function CartModal() {
             disabled={itemCount === 0}
             className="w-full py-3.5 rounded-full bg-[#74d600] hover:bg-[#65c200] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed text-zinc-950 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-md shadow-lime-500/25 cursor-pointer"
           >
-            <span>Proceed to Checkout</span>
+            <span>{t("cart.checkout", "চেকআউটে যান")}</span>
             <ArrowRight className="w-4 h-4 stroke-[2.5]" />
           </button>
         </div>

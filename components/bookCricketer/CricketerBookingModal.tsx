@@ -159,7 +159,7 @@ export default function CricketerBookingModal({
             <Trophy className="w-5 h-5 text-[#84cc16]" />
             <div>
               <h3 className="text-base font-black text-zinc-900 leading-tight">
-                Book a Cricketer — Booking Request
+                Invite a Cricketer — Invitation Request
               </h3>
               <p className="text-[11px] text-zinc-500">
                 PLAYZONE Coordination & Verification Platform
@@ -191,7 +191,7 @@ export default function CricketerBookingModal({
                 রিকোয়েস্ট সফলভাবে জমা হয়েছে!
               </h4>
               <p className="text-xs text-zinc-500 mt-1">
-                Booking Reference ID:{" "}
+                Invitation Reference ID:{" "}
                 <strong className="text-zinc-900 font-mono text-sm">
                   {requestId}
                 </strong>
@@ -283,16 +283,16 @@ export default function CricketerBookingModal({
             <div className="p-3 rounded-2xl bg-lime-50/80 border border-lime-200 flex items-center gap-2 text-xs text-lime-900">
               <Sparkles className="w-4 h-4 text-lime-700 shrink-0" />
               <p className="leading-relaxed">
-                <strong>কোনো অগ্রিম পেমেন্ট নেই!</strong> এটি কেবল একটি বুকিং
-                রিকোয়েস্ট। আমাদের টিম ক্রিকেটারের প্রাপ্যতা নিশ্চিত করে আপনাকে
-                অফিসিয়াল কোটেশন পাঠাবে।
+                <strong>রিকোয়েস্ট সাবমিটে ফি নেই!</strong> আমাদের টিম ক্রিকেটারের প্রাপ্যতা
+                ও সুবিধাজনক টাইম ফিক্স করে কোটেশন পাঠাবে। এরপর অ্যাডভান্স পেমেন্ট সম্পন্ন করে
+                ইনভাইটেশন নিশ্চিত করতে হবে।
               </p>
             </div>
 
             {/* 1. Cricketer Selection */}
             <div>
               <label className="block text-xs font-bold text-zinc-700 uppercase tracking-wider mb-2">
-                ১. কোন ক্রিকেটারকে বুক করতে চান? *
+                ১. কোন ক্রিকেটারকে আমন্ত্রণ জানাতে চান? *
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <select
@@ -586,7 +586,7 @@ export default function CricketerBookingModal({
                 <span>
                   {isSubmitting
                     ? "Submitting Request..."
-                    : "Submit Booking Request (ধাপ ২ সম্পন্ন করুন)"}
+                    : "Submit Invitation Request (ধাপ ২ সম্পন্ন করুন)"}
                 </span>
               </button>
             </div>

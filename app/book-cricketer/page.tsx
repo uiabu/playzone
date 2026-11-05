@@ -106,7 +106,7 @@ export default function BookCricketerPage() {
             </Link>
             <ChevronRight className="w-3.5 h-3.5 text-zinc-600" />
             <span className="text-[#84cc16] font-semibold">
-              Book a Cricketer
+              Invite a Cricketer
             </span>
           </nav>
 
@@ -121,19 +121,19 @@ export default function BookCricketerPage() {
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
                 PLAYZONE —{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#84cc16] via-[#a3e635] to-amber-400">
-                  Book a Cricketer
+                  Invite a Cricketer
                 </span>
               </h1>
 
               <p className="text-base sm:text-lg text-zinc-300 font-medium max-w-2xl leading-relaxed">
-                বাংলাদেশী জাতীয় ক্রিকেটার ও লিজেন্ডদের বুকিং এবং অফিসিয়াল
+                বাংলাদেশী জাতীয় ক্রিকেটার ও লিজেন্ডদের আমন্ত্রণ এবং অফিসিয়াল
                 ইভেন্ট কোঅর্ডিনেশন প্ল্যাটফর্ম।
               </p>
 
               <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
-                PLAYZONE হলো একটি নির্ভরযোগ্য বুকিং রিকোয়েস্ট ও কোঅর্ডিনেশন
+                PLAYZONE হলো একটি নির্ভরযোগ্য আমন্ত্রণ রিকোয়েস্ট ও কোঅর্ডিনেশন
                 প্ল্যাটফর্ম। ক্রিকেটারদের ব্যস্ত আন্তর্জাতিক ও ঘরোয়া ম্যাচ
-                শিডিউল থাকায় কোনো রিয়েল-টাইম ক্যালেন্ডার নয়—আপনি রিকোয়েস্ট
+                শিডিউল থাকায় কোনো রিয়েল-টাইম ক্যালেন্ডার নয়—আপনি আমন্ত্রণ রিকোয়েস্ট
                 পাঠাবেন, আমাদের টিম সরাসরি ক্রিকেটারের সাথে যোগাযোগ করে সময় ও
                 সম্মানী নিশ্চিত করবে।
               </p>
@@ -142,7 +142,7 @@ export default function BookCricketerPage() {
               <div className="pt-2 flex flex-wrap gap-4 text-xs text-zinc-300 font-semibold">
                 <span className="flex items-center gap-1.5 bg-zinc-900/90 border border-zinc-800 px-3 py-1.5 rounded-xl">
                   <ShieldCheck className="w-4 h-4 text-[#84cc16]" />
-                  কোনো অগ্রিম পেমেন্ট নেই (Zero Upfront)
+                  টাইম ফিক্স করার পর অ্যাডভান্স পেমেন্ট
                 </span>
                 <span className="flex items-center gap-1.5 bg-zinc-900/90 border border-zinc-800 px-3 py-1.5 rounded-xl">
                   <PhoneCall className="w-4 h-4 text-[#84cc16]" />
@@ -210,7 +210,7 @@ export default function BookCricketerPage() {
 
               <p className="text-xs text-zinc-400 leading-relaxed">
                 কর্পোরেট গালা, টুর্নামেন্টের প্রধান অতিথি, ব্র্যান্ড ক্যাম্পেইন,
-                কিংবা ক্রিকেট ক্লিনিকের জন্য সেরা আইকনদের বুক করুন।
+                কিংবা ক্রিকেট ক্লিনিকের জন্য সেরা আইকনদের আমন্ত্রণ জানান।
               </p>
 
               <button
@@ -218,7 +218,7 @@ export default function BookCricketerPage() {
                 onClick={() => setIsGeneralBookingOpen(true)}
                 className="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                <span>Request Any Bangladeshi Cricketer</span>
+                <span>Invite Any Bangladeshi Cricketer</span>
                 <ArrowRight className="w-3.5 h-3.5 text-[#84cc16]" />
               </button>
             </div>
@@ -231,10 +231,10 @@ export default function BookCricketerPage() {
         <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-zinc-200">
           <div className="text-center max-w-2xl mx-auto mb-8">
             <span className="text-xs font-black uppercase tracking-wider text-[#65a30d] bg-lime-50 px-3 py-1 rounded-full border border-lime-200">
-              The Playzone Booking Model
+              The Playzone Invitation Model
             </span>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-zinc-950 mt-2">
-              বুকিং কীভাবে কাজ করে? (৪টি সহজ ধাপ)
+              আমন্ত্রণ কীভাবে কাজ করে? (৪টি সহজ ধাপ)
             </h2>
             <p className="text-xs sm:text-sm text-zinc-500 mt-1">
               সরাসরি যোগাযোগ ও স্বচ্ছ প্রক্রিয়ায় আপনার পছন্দের ক্রিকেটারকে ইভেন্টে
@@ -280,16 +280,16 @@ export default function BookCricketerPage() {
                   </span>
                 </div>
                 <h3 className="text-base font-black text-zinc-900 leading-tight">
-                  Submit Booking Request
+                  Submit Invitation Request
                 </h3>
                 <p className="text-xs text-zinc-600 mt-2 leading-relaxed">
                   Event type, তারিখ, স্থান, আনুমানিক বাজেট ও যোগাযোগের তথ্য দিয়ে
-                  রিকোয়েস্ট সাবমিট করুন।
+                  আমন্ত্রণ রিকোয়েস্ট সাবমিট করুন।
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-zinc-200/60 text-[11px] font-bold text-zinc-700 flex items-center gap-1">
                 <FileText className="w-3.5 h-3.5 text-[#84cc16]" />
-                <span>কোনো ফি ছাড়াই রিকোয়েস্ট</span>
+                <span>কোনো ফি ছাড়াই আমন্ত্রণ রিকোয়েস্ট</span>
               </div>
             </div>
 
@@ -330,11 +330,11 @@ export default function BookCricketerPage() {
                   </span>
                 </div>
                 <h3 className="text-base font-black text-zinc-900 leading-tight">
-                  Quote & Payment
+                  Quote & Advance Payment
                 </h3>
                 <p className="text-xs text-zinc-600 mt-2 leading-relaxed">
-                  Customer-কে final quotation পাঠাবে। সম্মতিতে payment সম্পন্ন
-                  করলে booking confirmed হবে।
+                  Customer-কে final quotation পাঠানো হবে। ক্রিকেটার ও আপনার সুবিধাজনক
+                  টাইম ফিক্স করার পর অ্যাডভান্স পেমেন্ট করলে invitation confirmed হবে।
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-zinc-200/60 text-[11px] font-bold text-zinc-700 flex items-center gap-1">
@@ -532,7 +532,7 @@ export default function BookCricketerPage() {
               className="px-6 py-3.5 rounded-2xl bg-[#84cc16] hover:bg-[#74d600] text-zinc-950 font-black text-sm transition-all duration-200 shadow-xl active:scale-95 inline-flex items-center gap-2 cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Submit Custom Request (কাস্টম রিকোয়েস্ট)</span>
+              <span>Submit Invitation Request (কাস্টম আমন্ত্রণ রিকোয়েস্ট)</span>
             </button>
           </div>
         </div>
@@ -567,12 +567,12 @@ export default function BookCricketerPage() {
             <div className="p-4.5 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-1.5">
               <h4 className="font-bold text-zinc-950 flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-[#84cc16] shrink-0" />
-                <span>বুকিং রিকোয়েস্ট সাবমিট করার পর কী ঘটে?</span>
+                <span>আমন্ত্রণ রিকোয়েস্ট সাবমিট করার পর কী ঘটে?</span>
               </h4>
               <p className="text-zinc-600 leading-relaxed text-xs">
                 প্লেজোন টিম ২৪-৪৮ ঘণ্টার মধ্যে ক্রিকেটারের সাথে সভা, ইমেইল বা ফোনে
                 যোগাযোগ করে সম্মানী ও শিডিউল নিশ্চিত করে। এরপর আপনাকে চূড়ান্ত
-                কোটেশন পাঠানো হয়। আপনি সম্মত হলে পেমেন্ট প্রসেস সম্পন্ন করে বুকিং চূড়ান্ত
+                কোটেশন পাঠানো হয়। আপনি সম্মত হলে পেমেন্ট প্রসেস সম্পন্ন করে আমন্ত্রণ চূড়ান্ত
                 করা হয়।
               </p>
             </div>
@@ -592,12 +592,12 @@ export default function BookCricketerPage() {
             <div className="p-4.5 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-1.5">
               <h4 className="font-bold text-zinc-950 flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-[#84cc16] shrink-0" />
-                <span>কোনো অগ্রিম ফি বা গোপন খরচ আছে কি?</span>
+                <span>পেমেন্ট ও ইনভাইটেশন কীভাবে নিশ্চিত হয়?</span>
               </h4>
               <p className="text-zinc-600 leading-relaxed text-xs">
-                না! বুকিং রিকোয়েস্ট সাবমিট করার জন্য কোনো ফি নেওয়া হয় না। আপনি
-                কোটেশন পছন্দ করে সম্মতি দেওয়ার পরই কেবল অফিসিয়াল চুক্তি ও পেমেন্ট
-                গ্রহণ করা হয়।
+                আমন্ত্রণ রিকোয়েস্ট সাবমিটের সময় কোনো ফি নেওয়া হয় না। এরপর ক্রিকেটারের
+                সাথে সরাসরি কথা বলে সময় ও শিডিউল (Time & Schedule) ফিক্স করার পর
+                অ্যাডভান্স পেমেন্ট সম্পন্ন করে আমন্ত্রণ নিশ্চিত করতে হয়।
               </p>
             </div>
           </div>

@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Play, X } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PlayerReview {
   id: string;
@@ -57,6 +58,7 @@ const PLAYER_REVIEWS: PlayerReview[] = [
 ];
 
 export default function VideoReviewSection() {
+  const { t } = useLanguage();
   const [activePlayer, setActivePlayer] = useState<PlayerReview | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -131,14 +133,14 @@ export default function VideoReviewSection() {
         {/* 1. SECTION HEADER: "Trusted by Bangladesh's Top Cricketers" */}
         <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-14">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-            <span>Trusted by </span>
-            <span className="text-[#84cc16]">Bangladesh&apos;s </span>
-            <span>Top Cricketers</span>
+            <span>{t("Trusted by", "বাংলাদেশের")} </span>
+            <span className="text-[#84cc16]">{t("Bangladesh's", "সেরা ক্রিকেটারদের")} </span>
+            <span>{t("Top Cricketers", "পছন্দের প্লেজোন")}</span>
           </h2>
           <p className="mt-3 sm:mt-4 text-zinc-300 text-xs sm:text-sm md:text-base leading-relaxed">
-            See what Bangladesh&apos;s cricket stars say about PLAYZONE gear.
+            {t("See what Bangladesh's cricket stars say about PLAYZONE gear.", "প্লেজোন গিয়ার সম্পর্কে বাংলাদেশের ক্রিকেট তারকাদের মতামত দেখুন।")}
             <br className="hidden sm:inline" />
-            <span className="text-zinc-400 font-medium"> Real players. Real reviews. Real performance.</span>
+            <span className="text-zinc-400 font-medium"> {t("Real players. Real reviews. Real performance.", "আসল খেলোয়াড়। বিশ্বস্ত রিভিউ। সেরা পারফরম্যান্স।")}</span>
           </p>
         </div>
 
