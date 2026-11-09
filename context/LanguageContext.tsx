@@ -251,6 +251,16 @@ const WORD_MAP_BN: Record<string, string> = {
   "browse available cricketers": "উপলব্ধ ক্রিকেটারদের তালিকা",
   "request other cricketer": "অন্য ক্রিকেটার রিকোয়েস্ট",
   "all event types": "সকল ইভেন্ট ক্যাটাগরি",
+  "corporate annual gala & awards": "কর্পোরেট বার্ষিক গালা ও পুরস্কার বিতরণী",
+  "tournament chief guest & trophy unveiling": "টুর্নামেন্টের প্রধান অতিথি ও ট্রফি উন্মোচন",
+  "brand ambassador & commercial shoot": "ব্র্যান্ড অ্যাম্বাসেডর ও বাণিজ্যিক শুটিং",
+  "youth masterclass & cricket clinic": "যুব মাস্টারক্লাস ও ক্রিকেট প্রশিক্ষণ ক্লিনিক",
+  "school / college sports day chief guest": "স্কুল/কলেজ ক্রীড়া দিবসের প্রধান অতিথি",
+  "exhibition & friendly match appearance": "প্রীতি ম্যাচ ও প্রদর্শনী ম্যাচে উপস্থিতি",
+  "keynote motivational speech": "অনুপ্রেরণামূলক বক্তব্য (Motivational Speech)",
+  "private meet & greet session": "প্রাইভেট মিট অ্যান্ড গ্রিট সেশন",
+  "product launch & endorsement": "পণ্য উদ্বোধন ও শুভেচ্ছা বার্তা",
+  "other custom event": "অন্যান্য কাস্টম ইভেন্ট",
   "national legend": "ন্যাশনাল লিজেন্ড",
   "active international": "অ্যাক্টিভ ইন্টারন্যাশনাল",
   "domestic / bpl icon": "ঘরোয়া / বিপিএল আইকন",
@@ -537,7 +547,8 @@ function translateTree(root: Node, tFn: (text: string) => string) {
         tag === "style" ||
         tag === "noscript" ||
         tag === "code" ||
-        parent.hasAttribute("data-no-translate")
+        parent.hasAttribute("data-no-translate") ||
+        parent.closest("[data-no-translate]")
       ) {
         return NodeFilter.FILTER_REJECT;
       }
@@ -555,7 +566,8 @@ function translateTree(root: Node, tFn: (text: string) => string) {
       trimmed &&
       !/^\d+([.,]\d+)?(\s*(৳|%|kg|g|cm|in|mm|lbs))?$/.test(trimmed)
     ) {
-      if (!originalTextMap.has(current)) {
+      // ONLY save to originalTextMap if it contains English letters
+      if (!originalTextMap.has(current) && /[a-zA-Z]/.test(raw)) {
         originalTextMap.set(current, raw);
       }
       const orig = originalTextMap.get(current) || raw;
@@ -577,7 +589,8 @@ function translateTree(root: Node, tFn: (text: string) => string) {
       HTMLInputElement | HTMLTextAreaElement
     >("input[placeholder], textarea[placeholder]");
     inputs.forEach((input) => {
-      if (!originalPlaceholderMap.has(input)) {
+      if (input.closest("[data-no-translate]")) return;
+      if (!originalPlaceholderMap.has(input) && /[a-zA-Z]/.test(input.placeholder)) {
         originalPlaceholderMap.set(input, input.placeholder);
       }
       const orig = originalPlaceholderMap.get(input) || input.placeholder;
@@ -599,7 +612,10 @@ function restoreTree(root: Node) {
   let current: Node | null = walker.nextNode();
   while (current) {
     if (originalTextMap.has(current)) {
-      current.textContent = originalTextMap.get(current)!;
+      const orig = originalTextMap.get(current);
+      if (orig && /[a-zA-Z]/.test(orig)) {
+        current.textContent = orig;
+      }
     }
     current = walker.nextNode();
   }

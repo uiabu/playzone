@@ -80,7 +80,7 @@ export default function InviteCricketerPage() {
   }, [selectedTier, selectedEvent, searchQuery]);
 
   return (
-    <main className="min-h-screen bg-zinc-50 pb-20">
+    <main className="min-h-screen bg-zinc-50 pb-20" data-no-translate="true">
       {/* ================= 1. HERO SECTION ================= */}
       <section className="relative w-full bg-zinc-950 text-white overflow-hidden py-12 sm:py-16 md:py-20 border-b border-zinc-900">
         {/* Ambient Glows */}
