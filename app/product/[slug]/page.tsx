@@ -24,6 +24,7 @@ import {
 import { getProductBySlug, getRelatedProducts, Product, isPreOwnedProduct } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
 import { useProducts } from "@/context/ProductsContext";
+import { useLanguage } from "@/context/LanguageContext";
 import ProductImageGallery from "@/components/productDetails/ProductImageGallery";
 import ProductReviewsSection from "@/components/productDetails/ProductReviewsSection";
 import RelatedProductsSection from "@/components/productDetails/RelatedProductsSection";
@@ -31,6 +32,7 @@ import RelatedProductsSection from "@/components/productDetails/RelatedProductsS
 type ActiveTab = "specs" | "description" | "care" | "reviews";
 
 function ProductDetailContent() {
+  const { t, language } = useLanguage();
   const params = useParams();
   const router = useRouter();
   const slug = (params?.slug as string) || "";

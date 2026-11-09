@@ -23,6 +23,7 @@ import {
 import { ALL_PRODUCTS, Product, getProductViews } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
 import { useProducts } from "@/context/ProductsContext";
+import { useLanguage } from "@/context/LanguageContext";
 import ProductCardMedia from "./ProductCardMedia";
 
 export interface CatalogFilterState {
@@ -79,6 +80,7 @@ export default function ProductCatalogView({
   bannerImage = "/images/banners/pre_owned_cta_banner.png",
   bannerAlt = "Shop Authentic Cricket Gear in Bangladesh",
 }: ProductCatalogViewProps) {
+  const { t, language } = useLanguage();
   const { addItem, openCart } = useCart();
   const { products: contextProducts } = useProducts();
   const sourceProducts =

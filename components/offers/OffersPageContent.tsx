@@ -22,6 +22,7 @@ import {
 import { ALL_PRODUCTS, Product, getProductViews } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
 import { useProducts } from "@/context/ProductsContext";
+import { useLanguage } from "@/context/LanguageContext";
 import ProductCardMedia from "@/components/products/ProductCardMedia";
 
 type OfferTab = "all" | "flash" | "pre-owned" | "bats" | "gear";
@@ -51,6 +52,7 @@ const COUPONS = [
 ];
 
 export default function OffersPageContent() {
+  const { t, language } = useLanguage();
   const { addItem, openCart, applyCoupon } = useCart();
   const { products: contextProducts } = useProducts();
   const sourceProducts =
@@ -253,11 +255,10 @@ export default function OffersPageContent() {
                     <button
                       type="button"
                       onClick={() => handleCopyCoupon(coupon.code)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                        isCopied
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${isCopied
                           ? "bg-[#84cc16] text-white"
                           : "bg-zinc-900 hover:bg-black text-white"
-                      }`}
+                        }`}
                     >
                       {isCopied ? (
                         <>
@@ -293,11 +294,10 @@ export default function OffersPageContent() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as OfferTab)}
-                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
-                  isActive
+                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${isActive
                     ? "bg-zinc-950 text-white shadow-xs"
                     : "bg-white text-zinc-700 hover:bg-zinc-100 border border-zinc-200"
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>
@@ -348,11 +348,10 @@ export default function OffersPageContent() {
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-3 h-3 ${
-                              i < Math.floor(product.rating)
+                            className={`w-3 h-3 ${i < Math.floor(product.rating)
                                 ? "fill-[#84cc16] text-[#84cc16]"
                                 : "text-zinc-300"
-                            }`}
+                              }`}
                           />
                         ))}
                       </div>

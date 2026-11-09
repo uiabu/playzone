@@ -61,7 +61,7 @@ const CATEGORIES: CategoryItem[] = [
   },
   {
     name: "Invite a Cricketer",
-    href: "/book-cricketer",
+    href: "/invite-cricketer",
     hasDropdown: false,
   },
   {
@@ -545,7 +545,7 @@ export default function Navbar() {
 
               {/* Invite a Cricketer */}
               <Link
-                href="/book-cricketer"
+                href="/invite-cricketer"
                 className="text-white hover:text-[#a3e635] font-semibold text-sm transition-colors hidden md:inline-flex items-center gap-1.5 whitespace-nowrap"
               >
                 <span>{t("Invite a Cricketer", "ক্রিকেটার ইনভাইট করুন")}</span>
@@ -928,7 +928,7 @@ export default function Navbar() {
               <span>{t("Offers", "অফার")}</span>
             </Link>
             <Link
-              href="/book-cricketer"
+              href="/invite-cricketer"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded bg-amber-50 border border-amber-300 text-center text-amber-900 font-bold flex items-center justify-center gap-1.5"
             >

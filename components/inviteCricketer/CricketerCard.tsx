@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import {
   ShieldCheck,
-  Award,
   ChevronRight,
   Share2,
   CheckCircle,
@@ -25,7 +24,7 @@ export default function CricketerCard({
   onViewProfile,
   onRequestBooking,
 }: CricketerCardProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleShare = (e: React.MouseEvent) => {
@@ -76,7 +75,7 @@ export default function CricketerCard({
               cricketer.tier
             )}`}
           >
-            {cricketer.tier}
+            {t(cricketer.tier)}
           </span>
 
           {/* Share Button */}
@@ -98,10 +97,10 @@ export default function CricketerCard({
         {/* Bottom Banner inside Image: Bangladeshi Name & Primary Tag */}
         <div className="absolute bottom-3 left-3 right-3 text-white z-10">
           <p className="text-xs font-semibold text-lime-400 font-sans tracking-wide">
-            {cricketer.bengaliName}
+            {language === "bn" ? cricketer.name : cricketer.bengaliName}
           </p>
           <h3 className="text-lg sm:text-xl font-black text-white leading-tight drop-shadow-sm">
-            {cricketer.name}
+            {language === "bn" ? cricketer.bengaliName : cricketer.name}
           </h3>
         </div>
       </div>
@@ -112,14 +111,14 @@ export default function CricketerCard({
           {/* Role & Verification */}
           <div className="flex items-center gap-1.5 text-zinc-600 text-xs font-semibold">
             <ShieldCheck className="w-4 h-4 text-[#84cc16] shrink-0" />
-            <span className="line-clamp-1">{cricketer.role}</span>
+            <span className="line-clamp-1">{t(cricketer.role)}</span>
           </div>
 
           {/* Quick Stats Pill Strip */}
           <div className="grid grid-cols-3 gap-2 mt-3 p-2.5 rounded-xl bg-zinc-50 border border-zinc-100 text-center">
             <div>
               <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">
-                Matches
+                {t("Matches", "ম্যাচ")}
               </p>
               <p className="text-xs sm:text-sm font-black text-zinc-900">
                 {cricketer.stats.matches}
@@ -128,7 +127,7 @@ export default function CricketerCard({
             {cricketer.stats.runs ? (
               <div>
                 <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">
-                  Runs
+                  {t("Runs", "রান")}
                 </p>
                 <p className="text-xs sm:text-sm font-black text-zinc-900">
                   {cricketer.stats.runs}
@@ -137,7 +136,7 @@ export default function CricketerCard({
             ) : cricketer.stats.wickets ? (
               <div>
                 <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">
-                  Wickets
+                  {t("Wickets", "উইকেট")}
                 </p>
                 <p className="text-xs sm:text-sm font-black text-zinc-900">
                   {cricketer.stats.wickets}
@@ -146,18 +145,18 @@ export default function CricketerCard({
             ) : (
               <div>
                 <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">
-                  Impact
+                  {t("Impact", "ইমপ্যাক্ট")}
                 </p>
-                <p className="text-xs sm:text-sm font-black text-zinc-900">Elite</p>
+                <p className="text-xs sm:text-sm font-black text-zinc-900">{t("Elite", "এলিট")}</p>
               </div>
             )}
             <div>
               <p className="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">
                 {cricketer.stats.centuries !== undefined
-                  ? "100s"
+                  ? t("100s", "শতক")
                   : cricketer.stats.bestBowling
-                  ? "Best"
-                  : "Experience"}
+                  ? t("Best", "সেরা")
+                  : t("Experience", "অভিজ্ঞতা")}
               </p>
               <p className="text-xs sm:text-sm font-black text-amber-600">
                 {cricketer.stats.centuries !== undefined
@@ -169,7 +168,7 @@ export default function CricketerCard({
 
           {/* Short Bio */}
           <p className="mt-3 text-xs text-zinc-600 line-clamp-2 leading-relaxed">
-            {cricketer.shortBio}
+            {t(cricketer.shortBio)}
           </p>
 
           {/* Suitable Events Tags */}
@@ -180,12 +179,12 @@ export default function CricketerCard({
                 className="inline-flex items-center gap-1 text-[10px] font-semibold text-zinc-700 bg-zinc-100 px-2 py-0.5 rounded-md"
               >
                 <Sparkles className="w-2.5 h-2.5 text-amber-500" />
-                <span className="line-clamp-1">{evt}</span>
+                <span className="line-clamp-1">{t(evt)}</span>
               </span>
             ))}
             {cricketer.suitableEvents.length > 2 && (
               <span className="text-[10px] font-semibold text-zinc-400 px-1 py-0.5">
-                +{cricketer.suitableEvents.length - 2} more
+                +{cricketer.suitableEvents.length - 2} {t("more", "আরও")}
               </span>
             )}
           </div>
@@ -197,10 +196,10 @@ export default function CricketerCard({
           <div className="flex items-center justify-between text-[11px] text-zinc-500 font-medium">
             <span className="flex items-center gap-1 text-zinc-700">
               <Trophy className="w-3.5 h-3.5 text-[#84cc16]" />
-              <strong>PLAYZONE</strong> Coordination
+              <strong>PLAYZONE</strong> {t("Coordination", "কোঅর্ডিনেশন")}
             </span>
             <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              On-Demand Fee & Schedule
+              {t("On-Demand Fee & Schedule", "শিডিউল ও সম্মানী আলোচনা সাপেক্ষে")}
             </span>
           </div>
 
@@ -211,7 +210,7 @@ export default function CricketerCard({
               onClick={() => onViewProfile(cricketer)}
               className="w-full py-2.5 px-3 rounded-xl border border-zinc-200 hover:border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-800 text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
             >
-              <span>Profile & Stats</span>
+              <span>{t("Profile & Stats", "প্রোফাইল ও পরিসংখ্যান")}</span>
               <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
             </button>
 
@@ -229,4 +228,3 @@ export default function CricketerCard({
     </div>
   );
 }
-

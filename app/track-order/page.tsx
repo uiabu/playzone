@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Search,
   Truck,
@@ -21,6 +22,7 @@ import {
 import type { PlayzoneOrder } from "../checkout/page";
 
 function TrackOrderContent() {
+  const { t, language } = useLanguage();
   const searchParams = useSearchParams();
   const initialId = searchParams.get("id") || "";
 

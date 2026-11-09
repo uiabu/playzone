@@ -15,6 +15,20 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/book-cricketer",
+        destination: "/invite-cricketer",
+        permanent: true,
+      },
+      {
+        source: "/book-a-cricketer",
+        destination: "/invite-cricketer",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

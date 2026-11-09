@@ -32,8 +32,10 @@ import {
 import AcademyCard from "@/components/academies/AcademyCard";
 import AdmissionInquiryModal from "@/components/academies/AdmissionInquiryModal";
 import ContactAcademyModal from "@/components/academies/ContactAcademyModal";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function CricketAcademiesDirectoryPage() {
+  const { t, language } = useLanguage();
   const [academies, setAcademies] = useState<Academy[]>(INITIAL_ACADEMIES);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");

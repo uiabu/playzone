@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Star, MapPin, Heart, Check, Eye, Share2 } from "lucide-react";
 import { Expert, getExpertProfileViews } from "./expertsData";
 import ShareExpertModal from "./ShareExpertModal";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ExpertCardProps {
   expert: Expert;
@@ -17,6 +18,7 @@ export default function ExpertCard({
   onViewProfile,
   onBook,
 }: ExpertCardProps) {
+  const { t } = useLanguage();
   const [isLiked, setIsLiked] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
 

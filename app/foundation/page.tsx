@@ -28,6 +28,7 @@ import {
 import ApplySupportModal from "@/components/foundation/ApplySupportModal";
 import CaseDetailsModal from "@/components/foundation/CaseDetailsModal";
 import LearnMoreModal from "@/components/foundation/LearnMoreModal";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Custom icons matching the reference screenshot exactly
 function KneeJointIcon({ className = "w-7 h-7" }: { className?: string }) {
@@ -130,6 +131,7 @@ function MedicalKitSurgeryIcon({ className = "w-7 h-7" }: { className?: string }
 }
 
 export default function PlayzoneFoundationPage() {
+  const { t, language } = useLanguage();
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [isLearnMoreModalOpen, setIsLearnMoreModalOpen] = useState(false);
   const [selectedCricketer, setSelectedCricketer] =

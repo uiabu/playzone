@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 
 export type Language = "en" | "bn";
 
@@ -158,23 +158,23 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     "footer.blog": "ব্লগ",
     "footer.careers": "ক্যারিয়ার",
     "footer.preOwned": "ব্যবহৃত গিয়ার (Pre-Owned)",
-    "footer.contact": "যোগাযোগ করুন",
+    "footer.contact": "যোগাযোগ",
 
     "footer.customerService": "কাস্টমার সার্ভিস",
     "footer.help": "সহায়তা কেন্দ্র",
-    "footer.trackOrder": "অর্ডার ট্র্যাক করুন",
+    "footer.trackOrder": "অর্ডার ট্র্যাক",
     "footer.shipping": "শিপিং ও ডেলিভারি",
     "footer.returns": "রিটার্ন ও রিফান্ড",
     "footer.sizeGuide": "সাইজ গাইড",
-    "footer.faqs": "সাধারণ জিজ্ঞাসা (FAQs)",
+    "footer.faqs": "সাধারণ জিজ্ঞাসা",
 
     "footer.shopCategories": "শপ ক্যাটাগরি",
     "footer.cricketBats": "ক্রিকেট ব্যাট",
     "footer.battingGear": "ব্যাটিং সরঞ্জাম",
     "footer.bowlingGear": "বোলিং সরঞ্জাম",
-    "footer.wicketkeeping": "উইকেটকিপিং গিয়ার",
+    "footer.wicketkeeping": "উইকেটকিপিং",
     "footer.cricketShoes": "ক্রিকেট জুতো",
-    "footer.accessories": "এক্সেসরিজ ও ব্যাগ",
+    "footer.accessories": "আনুষাঙ্গিক",
     "footer.specialOffers": "বিশেষ অফার",
 
     "footer.newsletter": "নিউজলেটার",
@@ -226,9 +226,11 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
   },
 };
 
-// Normalized direct word translations for fallback
+// Normalized direct word translations for fallback across ALL pages
 const WORD_MAP_BN: Record<string, string> = {
   // Navigation & General
+  "home": "হোম",
+  "shop": "শপ",
   "new gear": "নতুন গিয়ার",
   "pre-owned gear": "ব্যবহৃত গিয়ার",
   "pre-owned": "ব্যবহৃত পণ্য",
@@ -239,6 +241,30 @@ const WORD_MAP_BN: Record<string, string> = {
   "book a cricketer": "ক্রিকেটার ইনভাইট করুন",
   "book cricketer": "ইনভাইট ক্রিকেটার",
   "book now": "ইনভাইট করুন",
+  "playzone official cricket concierge": "প্লেজোন অফিসিয়াল ক্রিকেট কনসিয়ার্জ",
+  "browse cricketers": "ক্রিকেটারদের তালিকা দেখুন",
+  "browse cricketers (step 1)": "ক্রিকেটারদের তালিকা দেখুন (১ম ধাপ)",
+  "submit custom request": "কাস্টম রিকোয়েস্ট পাঠান",
+  "featured cricket icons": "ফিচার্ড ক্রিকেট আইকন",
+  "the playzone invitation model": "প্লেজোন ইনভাইটেশন মডেল",
+  "how invitation works (4 easy steps)": "আমন্ত্রণ কীভাবে কাজ করে? (৪টি সহজ ধাপ)",
+  "browse available cricketers": "উপলব্ধ ক্রিকেটারদের তালিকা",
+  "request other cricketer": "অন্য ক্রিকেটার রিকোয়েস্ট",
+  "all event types": "সকল ইভেন্ট ক্যাটাগরি",
+  "national legend": "ন্যাশনাল লিজেন্ড",
+  "active international": "অ্যাক্টিভ ইন্টারন্যাশনাল",
+  "domestic / bpl icon": "ঘরোয়া / বিপিএল আইকন",
+  "rising talent": "উদীয়মান তারকা",
+  "advance payment after schedule confirmation": "টাইম ফিক্স করার পর অ্যাডভান্স পেমেন্ট",
+  "advance payment after fixing time": "টাইম ফিক্স করার পর অ্যাডভান্স পেমেন্ট",
+  "direct player coordination": "সরাসরি প্লেয়ার কোঅর্ডিনেশন",
+  "official quotation & invoice": "অফিসিয়াল কোটেশন ও ইনভয়েস",
+  "custom coordination": "কাস্টম কোঅর্ডিনেশন",
+  "clarification & faqs": "সাধারণ জিজ্ঞাসা ও উত্তর",
+  "frequently asked questions": "সাধারণ জিজ্ঞাসা (FAQs)",
+  "profile & stats": "প্রোফাইল ও পরিসংখ্যান",
+  "quote & advance payment": "কোটেশন ও অ্যাডভান্স পেমেন্ট",
+  "submit invitation request": "আমন্ত্রণ রিকোয়েস্ট সাবমিট করুন",
   "hire experts": "হায়ার এক্সপার্টস",
   "hire cricket experts": "ক্রিকেট এক্সপার্ট ভাড়া করুন",
   "cricket academies": "ক্রিকেট একাডেমি",
@@ -259,8 +285,8 @@ const WORD_MAP_BN: Record<string, string> = {
   cart: "কার্ট",
   "sign in": "সাইন ইন",
   "explore collection": "কালেকশন দেখুন",
-  "star": "স্টার",
-  "new": "নতুন",
+  star: "স্টার",
+  new: "নতুন",
   "cricket categories": "ক্রিকেট ক্যাটাগরি",
   "search for cricket bats, shoes, gloves...": "ক্রিকেট ব্যাট, জুতো, গ্লাভস ইত্যাদি খুঁজুন...",
   "⚡ free express delivery across dhaka on orders over ৳5,000! pre-orders open for 2026 english willow bats.":
@@ -284,7 +310,7 @@ const WORD_MAP_BN: Record<string, string> = {
   "batting legguards & pads": "ব্যাটিং প্যাড",
   "batting pads": "ব্যাটিং প্যাড",
   "cricket helmets": "ক্রিকেট হেলমেট",
-  "helmets": "হেলমেট",
+  helmets: "হেলমেট",
   "dual thigh guards": "থাই গার্ড",
   "thigh guards": "থাই গার্ড",
   "chest & arm guards": "চেস্ট ও আর্ম গার্ড",
@@ -304,8 +330,131 @@ const WORD_MAP_BN: Record<string, string> = {
   "full metal spikes (turf)": "ফুল মেটাল স্পাইকস",
   "rubber studs (matting/hard ground)": "রাবার স্টাডস",
   "kit bags": "কিট ব্যাগ",
-  "stumps": "স্টাম্পস ও বেলস",
+  stumps: "স্টাম্পস ও বেলস",
   "training gear": "প্রশিক্ষণ সরঞ্জাম",
+
+  // Product Card & Details
+  "add to cart": "কার্টে যোগ করুন",
+  "add to bag": "ব্যাগে যোগ করুন",
+  "add to cricket bag": "ক্রিকেট ব্যাগে যোগ করুন",
+  "buy now": "এখনই কিনুন",
+  "order now": "এখনই অর্ডার করুন",
+  "in stock": "স্টকে আছে",
+  "out of stock": "স্টক শেষ",
+  "pre-order now": "প্রি-অর্ডার করুন",
+  "view details": "বিস্তারিত দেখুন",
+  "specifications": "স্পেসিফিকেশন",
+  "description": "পণ্যের বিবরণ",
+  "product description": "পণ্যের বিবরণ",
+  "highlights": "মূল আকর্ষণ",
+  "key highlights": "মূল আকর্ষণ",
+  "care & maintenance": "যত্ন ও রক্ষণাবেক্ষণ",
+  "customer reviews": "গ্রাহকদের রিভিউ",
+  "ratings & reviews": "রেটিং ও রিভিউ",
+  "rating": "রেটিং",
+  "reviews": "রিভিউ",
+  "views": "ভিউ",
+  "verified purchase": "যাচাইকৃত ক্রেতা",
+  "related products": "সম্পর্কিত পণ্যসমূহ",
+  "you may also like": "আপনার আরও পছন্দ হতে পারে",
+  "select size": "সাইজ নির্বাচন করুন",
+  "select weight": "ওজন নির্বাচন করুন",
+  "quantity": "পরিমাণ",
+  "total price": "মোট মূল্য",
+  "free delivery": "ফ্রি ডেলিভারি",
+  "cash on delivery": "ক্যাশ অন ডেলিভারি",
+  "easy returns": "সহজ রিটার্ন",
+  "7 days return": "৭ দিনের রিটার্ন সুবিধা",
+  "100% genuine": "১০০% খাঁটি পণ্য",
+  "100% authentic": "১০০% আসল পণ্য",
+  "ready to play": "রেডি টু প্লে",
+  "knocked": "নক করা",
+  "free knocking": "ফ্রি নকিং সুবিধা",
+  "short handle": "শর্ট হ্যান্ডেল",
+  "long handle": "লং হ্যান্ডেল",
+  "english willow": "ইংলিশ উইলো",
+  "kashmir willow": "কাশ্মীর উইলো",
+  "grade 1": "গ্রেড ১",
+  "grade 2": "গ্রেড ২",
+  "grade 3": "গ্রেড ৩",
+
+  // Filters & Catalog View
+  filters: "ফিল্টার",
+  "filter products": "পণ্য ফিল্টার",
+  "filter by": "ফিল্টার করুন",
+  "sort by": "সাজান",
+  default: "ডিফল্ট",
+  "price: low to high": "দাম: কম থেকে বেশি",
+  "price: high to low": "দাম: বেশি থেকে কম",
+  "top rated": "টপ রেটেড",
+  newest: "নতুন আগমন",
+  "new arrivals": "নতুন কালেকশন",
+  "best sellers": "সর্বাধিক বিক্রিত",
+  "all products": "সকল পণ্য",
+  showing: "প্রদর্শিত হচ্ছে",
+  results: "টি ফলাফল",
+  matches: "টি মিল",
+  "price range": "দামের পরিসীমা",
+  "min price": "সর্বনিম্ন দাম",
+  "max price": "সর্বোচ্চ দাম",
+  "condition": "পণ্যের অবস্থা",
+  brand: "ব্র্যান্ড",
+  "all brands": "সকল ব্র্যান্ড",
+  "in stock only": "শুধুমাত্র স্টকে আছে",
+  "reset filters": "ফিল্টার রিসেট",
+  "clear all": "সব মুছুন",
+  "view all results": "সকল ফলাফল দেখুন",
+  "no products found": "কোনো পণ্য পাওয়া যায়নি",
+
+  // Checkout & Cart
+  checkout: "চেকআউট",
+  "shopping bag": "শপিং ব্যাগ",
+  "your cricket bag": "আপনার ক্রিকেট ব্যাগ",
+  "your shopping bag is empty": "আপনার শপিং ব্যাগটি খালি রয়েছে",
+  "proceed to checkout": "চেকআউটে যান",
+  "billing details": "বিলিং তথ্য",
+  "delivery details": "ডেলিভারি তথ্য",
+  "shipping address": "ডেলিভারি ঠিকানা",
+  "full name": "পূর্ণ নাম",
+  "phone number": "ফোন নম্বর",
+  "email address": "ইমেইল এড্রেস",
+  district: "জেলা",
+  "select district": "জেলা নির্বাচন করুন",
+  "delivery area": "ডেলিভারি এলাকা",
+  address: "ঠিকানা",
+  "full address": "পূর্ণ ঠিকানা",
+  "order notes": "অর্ডার নোট",
+  "payment method": "পেমেন্ট মাধ্যম",
+  "cash on delivery (cod)": "ক্যাশ অন ডেলিভারি (সিওডি)",
+  "online payment": "অনলাইন পেমেন্ট",
+  "order summary": "অর্ডার সামারি",
+  subtotal: "সাবটোটাল",
+  "delivery fee": "ডেলিভারি চার্জ",
+  discount: "ছাড়",
+  "coupon code": "কুপন কোড",
+  "apply coupon": "কুপন কোড প্রয়োগ করুন",
+  "total amount": "মোট প্রদেয় মূল্য",
+  "place order": "অর্ডার নিশ্চিত করুন",
+  "order placed successfully": "আপনার অর্ডারটি সফলভাবে সম্পন্ন হয়েছে!",
+  "continue shopping": "কেনাকাটা চালিয়ে যান",
+
+  // Track Order
+  "track order": "অর্ডার ট্র্যাক",
+  "track your order": "আপনার অর্ডার ট্র্যাক করুন",
+  "enter your order id": "আপনার অর্ডার আইডি দিন",
+  "order id": "অর্ডার আইডি",
+  "track": "ট্র্যাক করুন",
+  "status": "অবস্থা",
+  "order status": "অর্ডার অবস্থা",
+
+  // Offers & Deals
+  "special offers": "বিশেষ অফার",
+  "top deals": "সেরা অফার",
+  "flash sale": "ফ্ল্যাশ সেল",
+  "claim offer": "অফার নিন",
+  "copy code": "কোড কপি করুন",
+  "copied": "কপি হয়েছে!",
+  "valid till": "মেয়াদ",
 
   // Footer & Links
   "about playzone": "প্লেজোন পরিচিতি",
@@ -313,12 +462,10 @@ const WORD_MAP_BN: Record<string, string> = {
   careers: "ক্যারিয়ার",
   "contact us": "যোগাযোগ",
   "help center": "সহায়তা কেন্দ্র",
-  "track order": "অর্ডার ট্র্যাক",
   "shipping & delivery": "শিপিং ও ডেলিভারি",
   "returns & refunds": "রিটার্ন ও রিফান্ড",
   "size guide": "সাইজ গাইড",
   faqs: "সাধারণ জিজ্ঞাসা",
-  "special offers": "বিশেষ অফার",
   "terms of service": "ব্যবহারের শর্তাবলী",
   "privacy policy": "গোপনীয়তা নীতি",
   "return policy": "রিটার্ন নীতি",
@@ -327,20 +474,20 @@ const WORD_MAP_BN: Record<string, string> = {
   "dark mode": "ডার্ক মোড",
   "light mode": "লাইট মোড",
   "system default": "সিস্টেম ডিফল্ট",
-  "company": "কোম্পানি",
+  company: "কোম্পানি",
   "customer service": "কাস্টমার সার্ভিস",
   "shop categories": "শপ ক্যাটাগরি",
-  "newsletter": "নিউজলেটার",
+  newsletter: "নিউজলেটার",
   "enter your email address": "আপনার ইমেইল এড্রেস লিখুন",
-  "subscribe": "সাবস্ক্রাইব",
+  subscribe: "সাবস্ক্রাইব",
 
   // Sections & Tabs
-  "featured": "জনপ্রিয়",
-  "categories": "ক্যাটাগরি",
-  "hire": "ভাড়া করুন",
+  featured: "জনপ্রিয়",
+  categories: "ক্যাটাগরি",
+  hire: "ভাড়া করুন",
   "join as expert": "এক্সপার্ট হিসেবে যোগ দিন",
   "top picks": "জনপ্রিয় পছন্দ",
-  "coaches": "কোচ",
+  coaches: "কোচ",
   "net bowlers & throwers": "নেট বোলার ও থ্রোয়ার",
   "fitness & physio": "ফিটনেস ও ফিজিও",
   "match officials": "আম্পায়ার ও স্কোরার",
@@ -351,28 +498,123 @@ const WORD_MAP_BN: Record<string, string> = {
   "explore all experts": "সব এক্সপার্ট দেখুন",
   "book session": "সেশন বুক করুন",
   "view profile": "প্রোফাইল দেখুন",
-  "add to cart": "কার্টে যোগ করুন",
-  "in stock": "স্টকে আছে",
-  "out of stock": "স্টক শেষ",
-  "pre-order now": "প্রি-অর্ডার করুন",
   "bats for every innings": "প্রতিটি ইনিংসের জন্য ব্যাট",
   "batting essentials": "ব্যাটিং সরঞ্জাম",
   "bowling & fielding gear": "বোলিং ও ফিল্ডিং গিয়ার",
   "shoes & kit bags": "জুতো ও কিট ব্যাগ",
   "featured cricket gear": "সেরা ক্রিকেট গিয়ার",
-  "best sellers": "সর্বাধিক বিক্রিত",
-  "new arrivals": "নতুন কালেকশন",
-  "top deals": "সেরা অফার",
-  "top rated": "টপ রেটেড",
 
   // Social Channels in Hero
   "facebook page": "ফেসবুক পেজ",
   "cricket group": "ক্রিকেট গ্রুপ",
   "join community": "গ্রুপে যুক্ত হন",
-  "instagram": "ইনস্টাগ্রাম",
-  "tiktok": "টিকটক",
+  instagram: "ইনস্টাগ্রাম",
+  tiktok: "টিকটক",
   "youtube channel": "ইউটিউব চ্যানেল",
 };
+
+// Original text caches to restore perfectly when switching back to English
+const originalTextMap = new WeakMap<Node, string>();
+const originalPlaceholderMap = new WeakMap<
+  HTMLInputElement | HTMLTextAreaElement,
+  string
+>();
+
+/**
+ * Global DOM text translator:
+ * Scans DOM text nodes and replaces matching English strings with Bengali equivalents.
+ */
+function translateTree(root: Node, tFn: (text: string) => string) {
+  if (!root || typeof document === "undefined") return;
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement;
+      if (!parent) return NodeFilter.FILTER_REJECT;
+      const tag = parent.tagName.toLowerCase();
+      if (
+        tag === "script" ||
+        tag === "style" ||
+        tag === "noscript" ||
+        tag === "code" ||
+        parent.hasAttribute("data-no-translate")
+      ) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+
+  let current: Node | null = walker.nextNode();
+  while (current) {
+    const raw = current.textContent || "";
+    const trimmed = raw.trim();
+
+    // Skip pure numbers, prices (৳ 5000), symbols, or empty spaces
+    if (
+      trimmed &&
+      !/^\d+([.,]\d+)?(\s*(৳|%|kg|g|cm|in|mm|lbs))?$/.test(trimmed)
+    ) {
+      if (!originalTextMap.has(current)) {
+        originalTextMap.set(current, raw);
+      }
+      const orig = originalTextMap.get(current) || raw;
+      const origTrimmed = orig.trim();
+      const translated = tFn(origTrimmed);
+
+      if (translated && translated !== origTrimmed) {
+        const leadingSpace = orig.match(/^\s*/)?.[0] || "";
+        const trailingSpace = orig.match(/\s*$/)?.[0] || "";
+        current.textContent = leadingSpace + translated + trailingSpace;
+      }
+    }
+    current = walker.nextNode();
+  }
+
+  // Translate input and textarea placeholders
+  if ((root as Element).querySelectorAll) {
+    const inputs = (root as Element).querySelectorAll<
+      HTMLInputElement | HTMLTextAreaElement
+    >("input[placeholder], textarea[placeholder]");
+    inputs.forEach((input) => {
+      if (!originalPlaceholderMap.has(input)) {
+        originalPlaceholderMap.set(input, input.placeholder);
+      }
+      const orig = originalPlaceholderMap.get(input) || input.placeholder;
+      const translated = tFn(orig.trim());
+      if (translated && translated !== orig.trim()) {
+        input.placeholder = translated;
+      }
+    });
+  }
+}
+
+/**
+ * Restores original English text on all previously translated text nodes and placeholders
+ */
+function restoreTree(root: Node) {
+  if (!root || typeof document === "undefined") return;
+
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let current: Node | null = walker.nextNode();
+  while (current) {
+    if (originalTextMap.has(current)) {
+      current.textContent = originalTextMap.get(current)!;
+    }
+    current = walker.nextNode();
+  }
+
+  if ((root as Element).querySelectorAll) {
+    const inputs = (root as Element).querySelectorAll<
+      HTMLInputElement | HTMLTextAreaElement
+    >("input[placeholder], textarea[placeholder]");
+    inputs.forEach((input) => {
+      if (originalPlaceholderMap.has(input)) {
+        input.placeholder = originalPlaceholderMap.get(input)!;
+      }
+    });
+  }
+}
 
 const LanguageContext = createContext<LanguageContextType>({
   language: "en",
@@ -386,38 +628,59 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [language, setLanguageState] = useState<Language>("en");
   const [isMounted, setIsMounted] = useState(false);
+  const observerRef = useRef<MutationObserver | null>(null);
 
+  // Initialize from localStorage on client mount
   useEffect(() => {
     setIsMounted(true);
     try {
       const saved = localStorage.getItem("playzone_language") as Language | null;
       if (saved === "en" || saved === "bn") {
         setLanguageState(saved);
+        document.documentElement.lang = saved;
+        document.documentElement.setAttribute("data-lang", saved);
       }
     } catch {
       // ignore storage access errors
     }
+
+    // Listen to cross-window or internal language change events
+    const handleLangEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<Language>;
+      if (customEvent.detail === "en" || customEvent.detail === "bn") {
+        setLanguageState(customEvent.detail);
+      }
+    };
+    window.addEventListener("playzone_language_change", handleLangEvent);
+    return () => {
+      window.removeEventListener("playzone_language_change", handleLangEvent);
+    };
   }, []);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     try {
       localStorage.setItem("playzone_language", lang);
+      document.documentElement.lang = lang;
+      document.documentElement.setAttribute("data-lang", lang);
+      window.dispatchEvent(
+        new CustomEvent("playzone_language_change", { detail: lang })
+      );
     } catch {
       // ignore storage access errors
     }
   };
 
   const toggleLanguage = () => {
-    const nextLang = (isMounted ? language : "en") === "en" ? "bn" : "en";
+    const current = isMounted ? language : "en";
+    const nextLang: Language = current === "en" ? "bn" : "en";
     setLanguage(nextLang);
   };
 
   const t = (keyOrEnglish: string, banglaFallback?: string): string => {
     if (!keyOrEnglish) return "";
 
-    // During SSR and the very first client hydration render, always use 'en'
-    // so server and client output match 100% identically with zero hydration mismatch.
+    // During SSR and initial hydration, strictly match English to prevent mismatch
     const effectiveLanguage = isMounted ? language : "en";
 
     if (effectiveLanguage === "bn") {
@@ -439,6 +702,54 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({
     if (TRANSLATIONS.en[keyOrEnglish]) return TRANSLATIONS.en[keyOrEnglish];
     return keyOrEnglish;
   };
+
+  // GLOBAL AUTOMATIC DOM TRANSLATION EFFECT
+  // Translates ALL pages dynamically whenever language is 'bn' or pathname changes
+  useEffect(() => {
+    if (!isMounted || typeof document === "undefined") return;
+
+    const effectiveLang = language;
+    const rootEl = document.querySelector("main") || document.body;
+
+    const applyDOMTranslation = () => {
+      if (effectiveLang === "bn") {
+        translateTree(rootEl, (text) => t(text));
+      } else {
+        restoreTree(rootEl);
+      }
+    };
+
+    // Run immediately and after a short render delay
+    applyDOMTranslation();
+    const timeoutId = setTimeout(applyDOMTranslation, 120);
+
+    // Watch for dynamic page updates, modals, or loaded elements
+    if (effectiveLang === "bn" && typeof MutationObserver !== "undefined") {
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new MutationObserver(() => {
+        applyDOMTranslation();
+      });
+
+      observerRef.current.observe(rootEl, {
+        childList: true,
+        subtree: true,
+        characterData: false,
+      });
+    } else if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    window.addEventListener("popstate", applyDOMTranslation);
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("popstate", applyDOMTranslation);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [language, isMounted]);
 
   return (
     <LanguageContext.Provider

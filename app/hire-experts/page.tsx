@@ -24,6 +24,7 @@ import HireExpertsSidebar, {
 import BookingModal from "@/components/hireExperts/BookingModal";
 import ProfileModal from "@/components/hireExperts/ProfileModal";
 import JoinExpertModal from "@/components/hireExperts/JoinExpertModal";
+import { useLanguage } from "@/context/LanguageContext";
 
 const INITIAL_FILTERS: FilterState = {
   categories: [],
@@ -39,6 +40,7 @@ const INITIAL_FILTERS: FilterState = {
 };
 
 export default function HireExpertsPage() {
+  const { t, language } = useLanguage();
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [sortBy, setSortBy] = useState<string>("recommended");
   const [currentPage, setCurrentPage] = useState<number>(1);

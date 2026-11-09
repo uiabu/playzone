@@ -23,6 +23,7 @@ import {
   Package,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { websiteApi } from "@/lib/api";
 
 const BD_DISTRICTS = [
@@ -85,6 +86,7 @@ export interface PlayzoneOrder {
 }
 
 export default function CheckoutPage() {
+  const { t, language } = useLanguage();
   const router = useRouter();
   const { items, itemCount, subtotal, discount, total, couponCode, clearCart } = useCart();
 

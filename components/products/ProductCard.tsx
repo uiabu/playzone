@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Star, Eye, ShoppingCart } from "lucide-react";
 import { Product, getProductViews } from "@/lib/productsData";
 import ProductCardMedia from "./ProductCardMedia";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +20,7 @@ export default function ProductCard({
   className = "",
   priority = false,
 }: ProductCardProps) {
+  const { t } = useLanguage();
   const imageSrc =
     product.images && product.images.length > 0
       ? product.images[0]

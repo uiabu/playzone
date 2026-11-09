@@ -12,6 +12,7 @@ import {
   Clock,
 } from "lucide-react";
 import { Academy, calculateYearsOfOperation } from "@/lib/academiesData";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface AcademyCardProps {
   academy: Academy;
@@ -22,6 +23,7 @@ interface AcademyCardProps {
 export default function AcademyCard({
   academy,
 }: AcademyCardProps) {
+  const { t } = useLanguage();
   const yearsActive = calculateYearsOfOperation(academy.establishedYear);
 
   const coachPhoto =
