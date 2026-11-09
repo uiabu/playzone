@@ -282,7 +282,7 @@ export default function ProductCatalogView({
 
         {/* 3. Heading & Subtitle */}
         <div className="mt-3">
-          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black tracking-tight text-zinc-950 font-serif md:font-sans">
+          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black tracking-tight text-zinc-950">
             {displayTitle}
           </h1>
           <p className="mt-1 text-xs sm:text-sm text-zinc-500 max-w-3xl">

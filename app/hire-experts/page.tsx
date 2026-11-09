@@ -181,7 +181,7 @@ export default function HireExpertsPage() {
         {/* 3. Heading & Subtitle + Join as Expert Action */}
         <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black tracking-tight text-zinc-950 font-serif md:font-sans">
+            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black tracking-tight text-zinc-950">
               Hire Cricket Experts in Bangladesh
             </h1>
             <p className="mt-1 text-xs sm:text-sm text-zinc-500">
