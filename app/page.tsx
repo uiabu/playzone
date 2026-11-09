@@ -1,6 +1,7 @@
 import {
   HeroSection,
   FeatureCategoiesSection,
+  ShortVideosSection,
   HireExpertsSection,
   ExclusiveProductsSection,
   BattingEssentialsSection,
@@ -20,7 +21,10 @@ export default function Home() {
       {/* 2. Featured Categories Section (12 Categories) */}
       <FeatureCategoiesSection />
 
-      {/* 3. Hire Cricket Experts Section */}
+      {/* 3. Short Videos Section */}
+      <ShortVideosSection />
+
+      {/* 4. Hire Cricket Experts Section */}
       <HireExpertsSection />
 
       {/* 4. Bats for Every Innings Section */}
