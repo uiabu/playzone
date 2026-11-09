@@ -60,11 +60,6 @@ const CATEGORIES: CategoryItem[] = [
     hasDropdown: false,
   },
   {
-    name: "Invite a Cricketer",
-    href: "/invite-cricketer",
-    hasDropdown: false,
-  },
-  {
     name: "Hire Experts",
     href: "/hire-experts",
     hasDropdown: false,
@@ -734,7 +729,6 @@ export default function Navbar() {
                 (cat.href !== "/" && pathname.startsWith(cat.href)) ||
                 (cat.name === "Bats" && (pathname.includes("bats") || pathname.includes("cricket-bats"))) ||
                 (cat.name === "Pre-owned Gear" && (pathname.includes("pre-owned") || pathname.includes("used"))) ||
-                ((cat.name === "Invite a Cricketer" || cat.name === "Book a Cricketer") && (pathname.includes("book-cricketer") || pathname.includes("invite-cricketer"))) ||
                 (cat.name === "Hire Experts" && pathname.includes("hire-experts")) ||
                 (cat.name === "Protective Gear" && (pathname.includes("protective") || pathname.includes("pads") || pathname.includes("gloves") || pathname.includes("helmets"))) ||
                 (cat.name === "Cricket Balls" && pathname.includes("balls")) ||
