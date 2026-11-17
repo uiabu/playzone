@@ -65,7 +65,15 @@ export async function GET(request: Request) {
       count: products.length,
       data: products,
     });
-  } catch (err) {
+  } catch (err: unknown) {
+    if (
+      err &&
+      typeof err === "object" &&
+      "digest" in err &&
+      (err as { digest?: string }).digest === "NEXT_PRERENDER_INTERRUPTED"
+    ) {
+      throw err;
+    }
     console.error("GET /api/products error:", err);
     return NextResponse.json(
       { success: false, message: "Failed to fetch products" },

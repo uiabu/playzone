@@ -142,7 +142,7 @@ const BATS_DATA: BatProduct[] = [
   {
     id: "mrf-grand-edition-preowned",
     name: "MRF Grand Edition Cricket Bat (Grade A Pre-Owned)",
-    imageSrc: "/images/products/bats/mrf_bat.png",
+    imageSrc: "/images/products/bats/mrf.png",
     rating: 4.8,
     reviewsCount: 76,
     price: "৳ 4,200",

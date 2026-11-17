@@ -93,6 +93,7 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Common Cart & Checkout
     "cart.title": "Your Cricket Bag",
     "cart.empty": "Your shopping bag is empty",
+    "cart.emptyDesc": "Explore genuine bats, protective gear and pre-owned gear.",
     "cart.subtotal": "Subtotal",
     "cart.total": "Total Amount",
     "cart.checkout": "Proceed to Checkout",
@@ -199,6 +200,7 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Common Cart & Checkout
     "cart.title": "আপনার ক্রিকেট ব্যাগ",
     "cart.empty": "আপনার শপিং ব্যাগটি খালি রয়েছে",
+    "cart.emptyDesc": "আসল ক্রিকেট ব্যাট, সুরক্ষা গিয়ার ও ব্যবহৃত সরঞ্জাম দেখুন।",
     "cart.subtotal": "সাবটোটাল",
     "cart.total": "মোট প্রদেয় মূল্য",
     "cart.checkout": "চেকআউটে যান",

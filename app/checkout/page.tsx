@@ -659,11 +659,10 @@ export default function CheckoutPage() {
                 {/* Option 1: Cash on Delivery (Primary Active) */}
                 <label
                   onClick={() => setPaymentMethod("cod")}
-                  className={`block p-4 rounded-2xl border cursor-pointer transition-all ${
-                    paymentMethod === "cod"
+                  className={`block p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === "cod"
                       ? "bg-zinc-900/90 border-[#74d600] shadow-md shadow-lime-500/10"
                       : "bg-zinc-900/40 border-zinc-800 hover:border-zinc-700"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <input
@@ -691,11 +690,10 @@ export default function CheckoutPage() {
                 {/* Option 2: bKash / Nagad Gateway Notice */}
                 <label
                   onClick={() => setPaymentMethod("digital")}
-                  className={`block p-4 rounded-2xl border cursor-pointer transition-all ${
-                    paymentMethod === "digital"
+                  className={`block p-4 rounded-2xl border cursor-pointer transition-all ${paymentMethod === "digital"
                       ? "bg-zinc-900/90 border-amber-500/60"
                       : "bg-zinc-900/40 border-zinc-800 hover:border-zinc-700"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <input

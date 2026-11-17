@@ -1609,6 +1609,1304 @@ export const ALL_PRODUCTS: Product[] = [
     deliveryDaysNationwide: "2 - 3 Days",
     reviews: [],
   },
+
+  // ==================== HOMEPAGE SYNCED PRODUCTS (24 PREVIOUSLY MISSING ITEMS) ====================
+  {
+    "id": "mrf-grand-edition-preowned",
+    "slug": "mrf-grand-edition-preowned",
+    "name": "MRF Grand Edition Cricket Bat (Grade A Pre-Owned)",
+    "brand": "MRF Cricket",
+    "category": "Cricket Bats",
+    "categorySlug": "cricket-bats",
+    "price": 4200,
+    "originalPrice": 6500,
+    "discountPercent": 35,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.8,
+    "reviewsCount": 76,
+    "inStock": true,
+    "stockCount": 4,
+    "images": [
+      "/images/products/bats/mrf.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned MRF Grand Edition English Willow bat. Thoroughly inspected, cleaned, and machine-tested for structural integrity.",
+    "description": "The MRF Grand Edition pre-owned cricket bat offers premium English willow performance at a fraction of the original price. Carefully graded and inspected by PLAYZONE experts to ensure zero cracks, optimal ping, and maximum spine resilience for club and league matches.",
+    "highlights": [
+      "Grade A Pre-Owned certified with structural integrity guarantee",
+      "Massive edges and authentic Virat Kohli profile sweet spot",
+      "Clean face with minimal surface scuffs and intact toe",
+      "Original handle intact with freshly applied chevron grip",
+      "7-Day PlayZone Money Back Guarantee"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned (Excellent Ping)"
+      },
+      {
+        "label": "Willow Grade",
+        "value": "Grade 1 English Willow"
+      },
+      {
+        "label": "Weight",
+        "value": "2.8 lbs (1160g)"
+      },
+      {
+        "label": "Edge Thickness",
+        "value": "39mm"
+      },
+      {
+        "label": "Spine Profile",
+        "value": "64mm"
+      },
+      {
+        "label": "Origin",
+        "value": "India"
+      }
+    ],
+    "sizes": [
+      "Short Handle (SH)"
+    ],
+    "weights": [
+      "2.8 lbs (1160g)"
+    ],
+    "warranty": "30-Day PLAYZONE Structural Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Tahmid Hasan",
+        "verified": true,
+        "rating": 5,
+        "date": "October 20, 2026",
+        "title": "Incredible value for an authentic MRF bat!",
+        "comment": "Was skeptical about pre-owned at first, but this bat feels brand new. Fantastic rebound off the blade.",
+        "location": "Mirpur, Dhaka"
+      }
+    ]
+  },
+  {
+    "id": "kookaburra-kahuna-preowned",
+    "slug": "kookaburra-kahuna-preowned",
+    "name": "Kookaburra Kahuna Pro Bat (Grade A Pre-Owned)",
+    "brand": "Kookaburra",
+    "category": "Cricket Bats",
+    "categorySlug": "cricket-bats",
+    "price": 4800,
+    "originalPrice": 7500,
+    "discountPercent": 36,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.7,
+    "reviewsCount": 68,
+    "inStock": true,
+    "stockCount": 3,
+    "images": [
+      "/images/products/bats/kookaburra_bat.png"
+    ],
+    "shortDescription": "Iconic lime-green Kookaburra Kahuna Pro pre-owned cricket bat. Hand-verified cleft with powerful mid-blade stroke sweet spot.",
+    "description": "The Kookaburra Kahuna has been an iconic choice for world-class stroke players for decades. This certified Grade A pre-owned edition features an explosive sweet spot and smooth pickup, ideal for high-scoring T20 and 50-over matches.",
+    "highlights": [
+      "Grade A Pre-Owned certified with rigorous rebound verification",
+      "High spine profile with maximum wood concentrated behind the sweet spot",
+      "Dynamic power handle with exceptional shock damping",
+      "Includes protective face sheet and reinforced toe guard"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Willow",
+        "value": "English Willow"
+      },
+      {
+        "label": "Weight",
+        "value": "2.85 lbs (1175g)"
+      },
+      {
+        "label": "Edge Profile",
+        "value": "38mm"
+      },
+      {
+        "label": "Origin",
+        "value": "Australia / India"
+      }
+    ],
+    "sizes": [
+      "Short Handle (SH)"
+    ],
+    "weights": [
+      "2.85 lbs (1175g)"
+    ],
+    "warranty": "30-Day PLAYZONE Structural Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Zubair Ahmed",
+        "verified": true,
+        "rating": 5,
+        "date": "November 2, 2026",
+        "title": "Punches like a cannon",
+        "comment": "Excellent pre-owned quality. Bat pickup is very light and ping is top tier.",
+        "location": "Uttara, Dhaka"
+      }
+    ]
+  },
+  {
+    "id": "dsc-split-44-batting-pads",
+    "slug": "dsc-split-44-batting-pads",
+    "name": "DSC Split 44 Lightweight Batting Pads",
+    "brand": "DSC Cricket",
+    "category": "Batting Gear",
+    "categorySlug": "batting",
+    "price": 4600,
+    "originalPrice": 5400,
+    "discountPercent": 15,
+    "badge": "15% OFF",
+    "rating": 4.7,
+    "reviewsCount": 94,
+    "inStock": true,
+    "stockCount": 12,
+    "images": [
+      "/images/products/batting_essentials/dsc_pads.png"
+    ],
+    "shortDescription": "Ultra-lightweight multi-split cane batting legguards engineered for rapid running between wickets and elite impact defense.",
+    "description": "DSC Split 44 batting pads combine traditional cane front bars with high-density foam filling for unmatched protection against pace bowling. Ergonomically shaped knee bolster provides close contouring and natural flex when pivoting or driving.",
+    "highlights": [
+      "High-density feather-light foam with reinforced cane rods",
+      "Contoured knee cup with breathable moisture-wicking lining",
+      "Wide padded calf and ankle straps for secure wrap-around fit",
+      "Reinforced instep with synthetic leather piping"
+    ],
+    "specs": [
+      {
+        "label": "Material",
+        "value": "PU & High-Density Foam"
+      },
+      {
+        "label": "Facing",
+        "value": "Split Cane & Foam Rods"
+      },
+      {
+        "label": "Knee Roll",
+        "value": "Pre-moulded ergonomic cup"
+      },
+      {
+        "label": "Straps",
+        "value": "3 Padded Velcro Straps"
+      }
+    ],
+    "sizes": [
+      "Men's Standard",
+      "Youth"
+    ],
+    "warranty": "Official DSC Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Shakil Chowdhury",
+        "verified": true,
+        "rating": 5,
+        "date": "October 18, 2026",
+        "title": "Super light and very comfortable",
+        "comment": "Running between wickets feels effortless. Stopped 135 kmph yorkers with zero pain.",
+        "location": "Chattogram"
+      }
+    ]
+  },
+  {
+    "id": "ss-ton-reserve-preowned",
+    "slug": "ss-ton-reserve-preowned",
+    "name": "SS TON Reserve Edition Bat (Grade A)",
+    "brand": "SS Cricket",
+    "category": "Cricket Bats",
+    "categorySlug": "cricket-bats",
+    "price": 4800,
+    "originalPrice": 8500,
+    "discountPercent": 44,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.6,
+    "reviewsCount": 98,
+    "inStock": true,
+    "stockCount": 5,
+    "images": [
+      "/images/products/bats/ss_ton.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned SS TON Reserve Edition. Renowned for its enormous edge profile and feather-light pickup balance.",
+    "description": "The SS TON Reserve Edition represents elite Indian bat craftsmanship. This certified pre-owned bat features massive 40mm contoured edges, minimal concaving, and exceptional wood density, verified for long innings in tournament cricket.",
+    "highlights": [
+      "Grade A Pre-Owned certified by PLAYZONE master bat-maker",
+      "40mm edges with substantial spine elevation",
+      "Sarawak cane handle delivering supreme vibration dampening",
+      "Freshly serviced with anti-scuff sheet and premium grip"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Willow",
+        "value": "Grade 1 English Willow"
+      },
+      {
+        "label": "Weight",
+        "value": "2.78 lbs (1145g)"
+      },
+      {
+        "label": "Handle",
+        "value": "Round Sarawak Cane"
+      }
+    ],
+    "sizes": [
+      "Short Handle (SH)"
+    ],
+    "weights": [
+      "2.78 lbs (1145g)"
+    ],
+    "warranty": "30-Day PLAYZONE Structural Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Mehedi Hasan",
+        "verified": true,
+        "rating": 5,
+        "date": "September 29, 2026",
+        "title": "Unreal hitting power",
+        "comment": "This bat feels so balanced. The pre-owned grading was spot on, not a single flaw.",
+        "location": "Rajshahi"
+      }
+    ]
+  },
+  {
+    "id": "sf-stanford-players-preowned",
+    "slug": "sf-stanford-players-preowned",
+    "name": "SF Stanford Players Edition Bat (Grade A)",
+    "brand": "SF Stanford",
+    "category": "Cricket Bats",
+    "categorySlug": "cricket-bats",
+    "price": 3600,
+    "originalPrice": 6500,
+    "discountPercent": 45,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.5,
+    "reviewsCount": 52,
+    "inStock": true,
+    "stockCount": 4,
+    "images": [
+      "/images/products/bats/sf_bat.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned SF Stanford Players Edition. Superbly balanced blade designed for punchy counter-attacking batsmen.",
+    "description": "Engineered by SF Stanford for dynamic players who demand quick hands and effortless drives. Tested by PLAYZONE experts to guarantee zero internal fractures and supreme sweet spot resonance.",
+    "highlights": [
+      "Grade A Pre-Owned certified with structural warranty",
+      "Generous mid-sweet spot suitable for all-round strokeplay",
+      "Factory toe guard and anti-scuff protection included",
+      "Unbeatable price-to-performance ratio"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Willow",
+        "value": "English Willow"
+      },
+      {
+        "label": "Weight",
+        "value": "2.8 lbs (1155g)"
+      },
+      {
+        "label": "Edge",
+        "value": "38mm"
+      }
+    ],
+    "sizes": [
+      "Short Handle (SH)"
+    ],
+    "weights": [
+      "2.8 lbs (1155g)"
+    ],
+    "warranty": "30-Day PLAYZONE Structural Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Nayeem Islam",
+        "verified": true,
+        "rating": 4,
+        "date": "October 12, 2026",
+        "title": "Solid bat, great value",
+        "comment": "Excellent balance and sound. Delighted with the pre-owned condition.",
+        "location": "Sylhet"
+      }
+    ]
+  },
+  {
+    "id": "gray-nicolls-elite-helmet-preowned",
+    "slug": "gray-nicolls-elite-helmet-preowned",
+    "name": "Gray-Nicolls Elite Cricket Helmet (Grade A)",
+    "brand": "Gray-Nicolls",
+    "category": "Batting Gear",
+    "categorySlug": "batting",
+    "price": 3600,
+    "originalPrice": 6000,
+    "discountPercent": 40,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.9,
+    "reviewsCount": 128,
+    "inStock": true,
+    "stockCount": 6,
+    "images": [
+      "/images/products/batting_essentials/gray_nicolls_helmet.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned Gray-Nicolls cricket helmet with steel grille and high-impact ABS outer shell.",
+    "description": "Superior head protection meeting strict cricket safety standards. Sanitized, professionally certified, and inspected for full shell integrity and grille tightness.",
+    "highlights": [
+      "Reinforced ABS outer shell with EPS shock-absorbing liner",
+      "Steel face grille with micro-adjustable chin strap",
+      "Internal air channels for active cooling in hot weather",
+      "Sanitized and safety-certified by PLAYZONE technicians"
+    ],
+    "specs": [
+      {
+        "label": "Safety Standard",
+        "value": "BS 7928:2013 Compliant"
+      },
+      {
+        "label": "Grille",
+        "value": "High-Tensile Steel"
+      },
+      {
+        "label": "Shell",
+        "value": "Moulded ABS with EPS Foam"
+      },
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned (Sanitized)"
+      }
+    ],
+    "sizes": [
+      "Medium (57-58cm)",
+      "Large (59-60cm)"
+    ],
+    "warranty": "PLAYZONE Safety Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Farhan Tanvir",
+        "verified": true,
+        "rating": 5,
+        "date": "November 5, 2026",
+        "title": "Clean as new and fits perfectly",
+        "comment": "Came in pristine sanitized packaging. Very sturdy steel grille.",
+        "location": "Dhaka"
+      }
+    ]
+  },
+  {
+    "id": "new-balance-tc-pads-preowned",
+    "slug": "new-balance-tc-pads-preowned",
+    "name": "New Balance TC 1260 Batting Pads (Grade A)",
+    "brand": "New Balance",
+    "category": "Batting Gear",
+    "categorySlug": "batting",
+    "price": 2900,
+    "originalPrice": 4800,
+    "discountPercent": 40,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.8,
+    "reviewsCount": 86,
+    "inStock": true,
+    "stockCount": 5,
+    "images": [
+      "/images/products/batting_essentials/new_balance_pads.png"
+    ],
+    "shortDescription": "Grade A pre-owned New Balance TC 1260 legguards. Premium lightweight protection used by professional league cricketers.",
+    "description": "The New Balance TC series is built for modern players needing unhindered footwork and top-level knee protection. Fully cleaned and inspected with intact straps and clean white facing.",
+    "highlights": [
+      "Grade A pre-owned condition with clean face and intact velcro straps",
+      "High-density foam face with cane inserts for ball deflection",
+      "Padded 3-strap system with quick-release velcro buckles",
+      "Reinforced instep with heavy-duty PU piping"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Series",
+        "value": "New Balance TC 1260"
+      },
+      {
+        "label": "Facing",
+        "value": "Premium PU & Cane"
+      }
+    ],
+    "sizes": [
+      "Men's Standard"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "gray-nicolls-thigh-guard-preowned",
+    "slug": "gray-nicolls-thigh-guard-preowned",
+    "name": "Gray-Nicolls All-in-One Thigh Guard (Grade A)",
+    "brand": "Gray-Nicolls",
+    "category": "Batting Gear",
+    "categorySlug": "batting",
+    "price": 1800,
+    "originalPrice": 2800,
+    "discountPercent": 36,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.6,
+    "reviewsCount": 72,
+    "inStock": true,
+    "stockCount": 7,
+    "images": [
+      "/images/products/batting_essentials/gray_nicolls_thigh_guard_upscaled.png"
+    ],
+    "shortDescription": "Dual-layer inner and outer thigh protection unit. Sanitized and certified Grade A pre-owned.",
+    "description": "All-in-one combo guard safeguarding both the outer and inner thigh from rising deliveries. Soft elastic waist strap ensures a snug, slip-free position throughout long batting sessions.",
+    "highlights": [
+      "Dual-protection system (main thigh + inner thigh shield)",
+      "High-density EVA foam backing for maximum force absorption",
+      "Wide adjustable elastic waistband with hook-and-loop closure",
+      "Sanitized and checked for zero foam compression"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned (Sanitized)"
+      },
+      {
+        "label": "Style",
+        "value": "Dual Combo (Inner + Outer)"
+      },
+      {
+        "label": "Handedness",
+        "value": "Right Hand / Left Hand universal"
+      }
+    ],
+    "sizes": [
+      "Adult Standard",
+      "Youth"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "playzone-pro-wheelie-preowned-gear",
+    "slug": "playzone-pro-wheelie-preowned-gear",
+    "name": "PLAYZONE Pro Tractor Wheelie Kit Bag (Grade A)",
+    "brand": "PLAYZONE",
+    "category": "Kit Bags",
+    "categorySlug": "shoes",
+    "price": 4600,
+    "originalPrice": 8500,
+    "discountPercent": 46,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.8,
+    "reviewsCount": 31,
+    "inStock": true,
+    "stockCount": 3,
+    "images": [
+      "/images/products/shoes_bags/playzone_wheelie_bag.png"
+    ],
+    "shortDescription": "Heavy-duty tractor wheelie bag capable of holding full individual tournament gear. Grade A pre-owned.",
+    "description": "Spacious heavy-duty cordura nylon kit bag equipped with all-terrain tractor wheels, padded bat compartments, and separate ventilated footwear chamber.",
+    "highlights": [
+      "Grade A pre-owned with clean zippers and flawless tractor wheels",
+      "Accommodates up to 3 full-sized bats in dedicated padded sleeve",
+      "Heavy-duty waterproof bottom with scuff protection rails",
+      "Ventilated shoe pocket keeping dirty spikes separate"
+    ],
+    "specs": [
+      {
+        "label": "Dimensions",
+        "value": "98cm x 40cm x 38cm"
+      },
+      {
+        "label": "Wheels",
+        "value": "Heavy-Duty Dual Tractor Wheels"
+      },
+      {
+        "label": "Material",
+        "value": "1680D Ballistic Cordura"
+      },
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      }
+    ],
+    "sizes": [
+      "Extra Large (Full Kit)"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "batting-protection-master-combo",
+    "slug": "batting-protection-master-combo",
+    "name": "PLAYZONE Complete Batting Protection Combo (Pads + Gloves + Helmet)",
+    "brand": "PLAYZONE",
+    "category": "Batting Gear",
+    "categorySlug": "batting",
+    "price": 11800,
+    "originalPrice": 14500,
+    "discountPercent": 19,
+    "badge": "COMBO SAVE 19%",
+    "rating": 4.9,
+    "reviewsCount": 67,
+    "inStock": true,
+    "stockCount": 8,
+    "images": [
+      "/images/categories/batting_pads.png"
+    ],
+    "shortDescription": "All-in-one tournament package including match batting pads, sausage-finger leather batting gloves, and safety-certified helmet.",
+    "description": "The complete batting protection solution for serious cricketers entering club or league matches. Specially curated by PLAYZONE to deliver international-standard safety, comfort, and uniform aesthetics at bundle savings.",
+    "highlights": [
+      "Save 19% compared to purchasing items separately",
+      "Includes Grade 1 Batting Pads + Pro Leather Gloves + Certified Helmet",
+      "Available in multiple sizing configurations with custom fitting guarantee",
+      "Comes with complimentary PLAYZONE accessories bundle"
+    ],
+    "specs": [
+      {
+        "label": "Bundle Items",
+        "value": "Pads + Gloves + Helmet"
+      },
+      {
+        "label": "Safety Level",
+        "value": "Club & Premier League Standard"
+      },
+      {
+        "label": "Warranty",
+        "value": "Official PLAYZONE Combo Warranty"
+      }
+    ],
+    "sizes": [
+      "Adult Standard (Men's)",
+      "Youth"
+    ],
+    "warranty": "1 Year Official Warranty",
+    "deliveryDaysDhaka": "24 Hours (Free Delivery)",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Asif Rahman",
+        "verified": true,
+        "rating": 5,
+        "date": "October 10, 2026",
+        "title": "Best investment for our cricket season",
+        "comment": "Saved money and got everything we needed in one box. Quality is outstanding.",
+        "location": "Gulshan, Dhaka"
+      }
+    ]
+  },
+  {
+    "id": "master-bat-knocking-combo",
+    "slug": "master-bat-knocking-combo",
+    "name": "English Willow Bat Care & Linseed Knocking Combo Pack",
+    "brand": "PLAYZONE",
+    "category": "Accessories",
+    "categorySlug": "accessories",
+    "price": 1450,
+    "originalPrice": 1950,
+    "discountPercent": 26,
+    "badge": "COMBO SAVE 26%",
+    "rating": 4.8,
+    "reviewsCount": 84,
+    "inStock": true,
+    "stockCount": 25,
+    "images": [
+      "/images/categories/batting_pads.png"
+    ],
+    "shortDescription": "Essential bat preparation kit with hardwood knocking mallet, raw linseed oil bottle, and clear anti-scuff sheet with edge tape.",
+    "description": "Prepare and maintain your new English willow or Kashmir willow bat like a professional. Hardwood mallet condenses the willow fibres to prevent surface cracks and ensure longevity.",
+    "highlights": [
+      "Heavy hardwood knocking mallet with curved striking head",
+      "100ml Cold-Pressed Raw Linseed Oil bottle",
+      "Full-blade Clear Extratec Scuff Sheet with reinforced edge tape",
+      "Step-by-step knocking instructions card included"
+    ],
+    "specs": [
+      {
+        "label": "Contents",
+        "value": "Mallet + Scuff Sheet + 100ml Linseed Oil"
+      },
+      {
+        "label": "Application",
+        "value": "All English & Kashmir Willow Bats"
+      },
+      {
+        "label": "Origin",
+        "value": "India / Bangladesh"
+      }
+    ],
+    "warranty": "Standard Manufacturer Specification",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "cricket-training-agility-set",
+    "slug": "cricket-training-agility-set",
+    "name": "Cricket Training Agility Set (Cones + Ladder + Speed Hurdles)",
+    "brand": "PLAYZONE",
+    "category": "Accessories",
+    "categorySlug": "accessories",
+    "price": 2600,
+    "originalPrice": 3400,
+    "discountPercent": 24,
+    "badge": "COMBO SAVE 24%",
+    "rating": 4.7,
+    "reviewsCount": 52,
+    "inStock": true,
+    "stockCount": 15,
+    "images": [
+      "/images/categories/training_gear.png"
+    ],
+    "shortDescription": "Comprehensive fielding and bowling conditioning kit featuring 6m speed agility ladder, 10 space marker cones, and 4 mini hurdles.",
+    "description": "Designed for cricket coaches, academies, and fast bowlers seeking explosive first-step quickness, lateral agility, and run-up deceleration stability.",
+    "highlights": [
+      "Heavy-duty 6m agility ladder with adjustable non-slip rungs",
+      "10 high-visibility flexible marker cones with carry handle",
+      "4 lightweight shatter-proof speed training hurdles",
+      "Includes compact nylon draw-string carry bag"
+    ],
+    "specs": [
+      {
+        "label": "Ladder Length",
+        "value": "6 Meters (12 Rungs)"
+      },
+      {
+        "label": "Cones",
+        "value": "10 Flexible Space Markers"
+      },
+      {
+        "label": "Hurdles",
+        "value": "4 Speed Hurdles (6-inch)"
+      }
+    ],
+    "warranty": "Official PLAYZONE 6-Month Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "wicketkeeper-pro-combo-set",
+    "slug": "wicketkeeper-pro-combo-set",
+    "name": "Pro Wicketkeeping Kit (Gloves + Padded Inners + Legguards)",
+    "brand": "PLAYZONE",
+    "category": "Wicketkeeping",
+    "categorySlug": "wicketkeeping",
+    "price": 7900,
+    "originalPrice": 9900,
+    "discountPercent": 20,
+    "badge": "COMBO SAVE 20%",
+    "rating": 4.8,
+    "reviewsCount": 46,
+    "inStock": true,
+    "stockCount": 7,
+    "images": [
+      "/images/categories/batting_pads.png"
+    ],
+    "shortDescription": "Complete wicketkeeper match kit with octopus-grip aniline leather gloves, chamois padded inners, and compact lightweight pads.",
+    "description": "Tailored specifically for modern wicketkeepers standing up to the stumps and standing back to express pacers. Combines supreme palm cushioning with flexible short-shin legguards.",
+    "highlights": [
+      "Octopus rubber web facing for supreme ball grip and catch retention",
+      "High-density foam padded chamois palm inner gloves included",
+      "Compact lightweight legguards allowing instant crouching and mobility",
+      "Compliant with international MCC Law 27 wicketkeeping specifications"
+    ],
+    "specs": [
+      {
+        "label": "Gloves",
+        "value": "Full Aniline Leather with Webbing"
+      },
+      {
+        "label": "Inners",
+        "value": "Chamois Padded Palm Inners"
+      },
+      {
+        "label": "Pads",
+        "value": "Short-Shin Ultra-Lightweight Legguards"
+      }
+    ],
+    "sizes": [
+      "Men's Standard (Adult)",
+      "Youth"
+    ],
+    "warranty": "1 Year Official Brand Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "leather-match-balls-pack-6",
+    "slug": "leather-match-balls-pack-6",
+    "name": "Regulation 4-Piece Leather Match Balls (Box of 6)",
+    "brand": "SG Cricket",
+    "category": "Bowling Gear",
+    "categorySlug": "bowling",
+    "price": 4800,
+    "originalPrice": 6000,
+    "discountPercent": 20,
+    "badge": "BOX COMBO",
+    "rating": 4.8,
+    "reviewsCount": 88,
+    "inStock": true,
+    "stockCount": 18,
+    "images": [
+      "/images/categories/cricket_balls.png"
+    ],
+    "shortDescription": "Box of 6 regulation 4-piece alum-tanned leather cricket match balls. Hand-stitched with prominent seam for swing and seam bowlers.",
+    "description": "Standard regulation 156g cricket match balls ideal for tournament play, premier league fixtures, and academy turf matches. Features Portuguese cork core and waterproof polish.",
+    "highlights": [
+      "Box of 6 match balls (156g standard adult match weight)",
+      "Grade 1 alum-tanned leather with prominent hand-stitched seam",
+      "75-80 overs shape retention guarantee under subcontinental conditions",
+      "Available in Classic Red or White Day/Night specifications"
+    ],
+    "specs": [
+      {
+        "label": "Quantity",
+        "value": "Box of 6 Balls"
+      },
+      {
+        "label": "Construction",
+        "value": "4-Piece Hand Stitched"
+      },
+      {
+        "label": "Core",
+        "value": "Portuguese Compressed Cork & Worsted Yarn"
+      },
+      {
+        "label": "Weight",
+        "value": "156g per ball"
+      }
+    ],
+    "colors": [
+      "Red",
+      "White"
+    ],
+    "warranty": "Shape Retention Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "sg-tournament-white-ball",
+    "slug": "sg-tournament-white-ball",
+    "name": "SG Tournament Special White Match Ball",
+    "brand": "SG Cricket",
+    "category": "Bowling Gear",
+    "categorySlug": "bowling",
+    "price": 2400,
+    "originalPrice": 2800,
+    "discountPercent": 14,
+    "badge": "NEW",
+    "rating": 4.8,
+    "reviewsCount": 64,
+    "inStock": true,
+    "stockCount": 20,
+    "images": [
+      "/images/categories/cricket_balls.png"
+    ],
+    "shortDescription": "Single premium white leather cricket match ball for limited-overs and day/night matches with brilliant night-light visibility.",
+    "description": "Engineered specifically for high-intensity T20 and 50-over matches under floodlights. High-visibility white leather finish with pronounced central seam that aids conventional and reverse swing.",
+    "highlights": [
+      "Grade 1 alum-tanned imported white hide",
+      "High visibility under both daylight and floodlit conditions",
+      "Retains hardness and seam prominence for 50+ overs",
+      "Used across regional Bangladesh premier leagues"
+    ],
+    "specs": [
+      {
+        "label": "Pieces",
+        "value": "4-Piece Construction"
+      },
+      {
+        "label": "Weight",
+        "value": "156g Regulation"
+      },
+      {
+        "label": "Color",
+        "value": "White Match Ball"
+      }
+    ],
+    "warranty": "Match Shape Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "speed-agility-ladder-set",
+    "slug": "speed-agility-ladder-set",
+    "name": "Speed Agility Ladder & Hurdle Training Kit",
+    "brand": "PLAYZONE",
+    "category": "Accessories",
+    "categorySlug": "accessories",
+    "price": 1850,
+    "originalPrice": 2400,
+    "discountPercent": 23,
+    "badge": "NEW",
+    "rating": 4.7,
+    "reviewsCount": 49,
+    "inStock": true,
+    "stockCount": 14,
+    "images": [
+      "/images/categories/training_gear.png"
+    ],
+    "shortDescription": "Speed ladder and hurdle set engineered for fast bowler run-ups, footwork drills, and agility training.",
+    "description": "Essential physical conditioning equipment for fast bowlers and outfielders. Develops fast feet, stride rhythm, and knee-drive power.",
+    "highlights": [
+      "Adjustable flat plastic rungs resistant to heavy cleats",
+      "Includes stakes for firm anchoring on grass and turf pitches",
+      "Lightweight travel pouch for easy transport to practice grounds"
+    ],
+    "specs": [
+      {
+        "label": "Length",
+        "value": "4.5 Meters"
+      },
+      {
+        "label": "Rungs",
+        "value": "10 Flat Heavy-Duty PVC Rungs"
+      }
+    ],
+    "warranty": "6-Month Brand Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "adidas-22yds-bowling-spikes",
+    "slug": "adidas-22yds-bowling-spikes",
+    "name": "Adidas 22YDS Metal Spikes (Pre-Owned)",
+    "brand": "Adidas",
+    "category": "Shoes",
+    "categorySlug": "shoes",
+    "price": 4400,
+    "originalPrice": 7200,
+    "discountPercent": 39,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.7,
+    "reviewsCount": 39,
+    "inStock": true,
+    "stockCount": 4,
+    "images": [
+      "/images/products/shoes_bags/adidas_spikes.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned Adidas 22YDS fast bowler metal spikes. Unmatched grip and forefoot protection during delivery stride.",
+    "description": "The Adidas 22YDS line is universally celebrated by fast bowlers for its midfoot torsional stability and impact cushioning. Fully sanitized with intact spike threads and fresh replaceable metal studs.",
+    "highlights": [
+      "Grade A pre-owned condition with 100% clean soleplate and intact studs",
+      "BOUNCE midsole cushioning reducing ground reaction force on bowling stride",
+      "Mid-cut ankle support protecting bowlers on firm outdoor wickets",
+      "Sanitized and verified by PLAYZONE footwear specialists"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Studs",
+        "value": "Full Metal Spikes (Replaceable)"
+      },
+      {
+        "label": "Upper",
+        "value": "Breathable Synthetic Mesh"
+      }
+    ],
+    "sizes": [
+      "UK 7 / EU 41",
+      "UK 8 / EU 42",
+      "UK 9 / EU 43",
+      "UK 10 / EU 44"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "target-stumps-heavy-base",
+    "slug": "target-stumps-heavy-base",
+    "name": "Target Stumps with Spring Return Heavy Base",
+    "brand": "PLAYZONE",
+    "category": "Bowling Gear",
+    "categorySlug": "bowling",
+    "price": 2800,
+    "originalPrice": 3500,
+    "discountPercent": 20,
+    "badge": "NEW",
+    "rating": 4.6,
+    "reviewsCount": 33,
+    "inStock": true,
+    "stockCount": 11,
+    "images": [
+      "/images/categories/stumps.png"
+    ],
+    "shortDescription": "Heavy cast-iron base target stumps with high-tension spring mechanism for target bowling and fielding drills.",
+    "description": "Eliminate the need to hammer wooden stumps into concrete or turf practice nets. Heavy stable base stays upright during direct hits, snapping back automatically after every ball.",
+    "highlights": [
+      "Heavy weighted cast-iron base preventing tipping on hard surfaces",
+      "High-tension zinc-coated dual springs for instant snap-back return",
+      "Hardwood stumps coated with high-visibility weather-resistant varnish",
+      "Suitable for indoor gym, cement turf, or outdoor pitch practice"
+    ],
+    "specs": [
+      {
+        "label": "Base Weight",
+        "value": "6.5 kg Heavy Cast Iron"
+      },
+      {
+        "label": "Stumps",
+        "value": "Regulation 28-inch Wooden Stumps"
+      },
+      {
+        "label": "Mechanism",
+        "value": "Dual Return Springs"
+      }
+    ],
+    "warranty": "1 Year Frame Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "kookaburra-turf-white-preowned",
+    "slug": "kookaburra-turf-white-preowned",
+    "name": "Kookaburra Turf Match Ball 4-Pc (Grade A Pre-Owned)",
+    "brand": "Kookaburra",
+    "category": "Bowling Gear",
+    "categorySlug": "bowling",
+    "price": 1450,
+    "originalPrice": 2200,
+    "discountPercent": 34,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.7,
+    "reviewsCount": 45,
+    "inStock": true,
+    "stockCount": 8,
+    "images": [
+      "/images/categories/cricket_balls.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned Kookaburra Turf white match ball. Tested for seam hardness and true spherical balance.",
+    "description": "Slightly used match balls taken from official premier club games with minimum 40 overs of high-intensity play remaining. Perfect for high-level net practice and academy match simulations.",
+    "highlights": [
+      "Grade A pre-owned condition with clean prominent seam",
+      "Real Kookaburra Turf feel and swing response at a budget price",
+      "Verified for true spherical shape and balance"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Weight",
+        "value": "156g Standard"
+      },
+      {
+        "label": "Color",
+        "value": "White Day/Night Ball"
+      }
+    ],
+    "warranty": "PLAYZONE Quality Assurance",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "puma-spikes-bowler-preowned",
+    "slug": "puma-spikes-bowler-preowned",
+    "name": "Puma Spike 19.1 All-Rounder Shoes (Pre-Owned Grade A)",
+    "brand": "Puma",
+    "category": "Shoes",
+    "categorySlug": "shoes",
+    "price": 3200,
+    "originalPrice": 5500,
+    "discountPercent": 42,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.6,
+    "reviewsCount": 38,
+    "inStock": true,
+    "stockCount": 4,
+    "images": [
+      "/images/products/featured_gear/puma_cricket_spikes.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned Puma Spike 19.1 cricket shoes. Lightweight hybrid spikes suited for pace bowlers and batsmen.",
+    "description": "Engineered for speed, stability, and responsiveness. Features an ultra-light upper and EVA cushioned midsole, thoroughly sanitized and inspected with full stud integrity.",
+    "highlights": [
+      "Grade A pre-owned condition with zero upper tears and fully intact eyelets",
+      "Hybrid spike configuration offering grip on dry and dewy pitches",
+      "Lightweight synthetic leather upper with reinforced toe-drag guard",
+      "Sanitized and deodorized by PLAYZONE"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned (Sanitized)"
+      },
+      {
+        "label": "Sole",
+        "value": "Dual Density TPU with Steel Spikes"
+      }
+    ],
+    "sizes": [
+      "UK 8 / EU 42",
+      "UK 9 / EU 43",
+      "UK 10 / EU 44"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "playzone-pro-wheelie-preowned",
+    "slug": "playzone-pro-wheelie-preowned",
+    "name": "PLAYZONE Pro Wheelie (Grade A Pre-Owned)",
+    "brand": "PLAYZONE",
+    "category": "Kit Bags",
+    "categorySlug": "shoes",
+    "price": 4600,
+    "originalPrice": 8500,
+    "discountPercent": 46,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.8,
+    "reviewsCount": 31,
+    "inStock": true,
+    "stockCount": 3,
+    "images": [
+      "/images/products/shoes_bags/playzone_wheelie_bag.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned PLAYZONE Pro tractor wheelie bag. Pristine zippers, heavy-duty pull handle, and cavernous gear space.",
+    "description": "Tested and graded by PLAYZONE. Holds complete batting and keeping kits with internal foam bat partition and dedicated helmet box.",
+    "highlights": [
+      "Grade A pre-owned condition with clean interior and zero rips",
+      "Heavy-duty tractor wheels rolling smoothly over grass and curbs",
+      "Reinforced carry straps with padded grip handle"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Capacity",
+        "value": "140 Litres"
+      }
+    ],
+    "sizes": [
+      "XL Heavy Duty"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "nb-ck4020-preowned",
+    "slug": "nb-ck4020-preowned",
+    "name": "New Balance CK4020 Turf Spikes (Pre-Owned)",
+    "brand": "New Balance",
+    "category": "Shoes",
+    "categorySlug": "shoes",
+    "price": 3900,
+    "originalPrice": 6900,
+    "discountPercent": 43,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.7,
+    "reviewsCount": 22,
+    "inStock": true,
+    "stockCount": 4,
+    "images": [
+      "/images/products/shoes_bags/nb_cricket_shoes.png"
+    ],
+    "shortDescription": "Certified Grade A pre-owned New Balance CK4020 cricket shoes. Engineered for artificial turf, matting, and hard clay wickets.",
+    "description": "Features New Balance's plush ACTEVA midsole foam for hours of fatigue-free fielding and bowling. Fully cleaned and inspected with intact multi-directional rubber studs.",
+    "highlights": [
+      "Grade A pre-owned condition with spotless upper and minimal tread wear",
+      "ACTEVA cushioning midsole absorbing heel-strike shock on hard turf",
+      "Midfoot saddle strap providing lateral lockdown during sudden turns",
+      "Sanitized and boxed with fresh laces"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Outsole",
+        "value": "Multi-Stud Turf Rubber"
+      },
+      {
+        "label": "Midsole",
+        "value": "ACTEVA Lightweight Foam"
+      }
+    ],
+    "sizes": [
+      "UK 7.5",
+      "UK 8.5",
+      "UK 9.5"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "ss-duffle-preowned",
+    "slug": "ss-duffle-preowned",
+    "name": "SS Duffle Bag (Grade A Pre-Owned)",
+    "brand": "SS Cricket",
+    "category": "Kit Bags",
+    "categorySlug": "shoes",
+    "price": 2400,
+    "originalPrice": 4200,
+    "discountPercent": 43,
+    "badge": "PRE-OWNED - GRADE A",
+    "condition": "pre-owned",
+    "conditionGrade": "Grade A",
+    "rating": 4.5,
+    "reviewsCount": 41,
+    "inStock": true,
+    "stockCount": 5,
+    "images": [
+      "/images/products/shoes_bags/ss_duffle_bag.png"
+    ],
+    "shortDescription": "Grade A pre-owned SS Cricket duffle bag with dual padded backpack straps and external bat holder pockets.",
+    "description": "Compact and easy to transport on motorcycles or public transit. Holds full batting kit with external zip pocket for cricket bats and padded shoulder harness.",
+    "highlights": [
+      "Grade A pre-owned condition with smooth zip runners and no tears",
+      "Comfortable backpack straps with ergonomic lumbar padding",
+      "Side pockets fitting 2 bats securely with velcro locks"
+    ],
+    "specs": [
+      {
+        "label": "Condition",
+        "value": "Grade A Pre-Owned"
+      },
+      {
+        "label": "Carrying Style",
+        "value": "Backpack Duffle"
+      },
+      {
+        "label": "Material",
+        "value": "Heavy-Duty Polyester"
+      }
+    ],
+    "sizes": [
+      "Standard Adult Duffle"
+    ],
+    "warranty": "30-Day PLAYZONE Guarantee",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": []
+  },
+  {
+    "id": "playzone-team-bag",
+    "slug": "playzone-team-bag",
+    "name": "PLAYZONE Team Duffle Bag",
+    "brand": "PLAYZONE",
+    "category": "Kit Bags",
+    "categorySlug": "shoes",
+    "price": 5800,
+    "originalPrice": 6800,
+    "discountPercent": 15,
+    "badge": "POPULAR",
+    "rating": 4.4,
+    "reviewsCount": 54,
+    "inStock": true,
+    "stockCount": 10,
+    "images": [
+      "/images/products/featured_gear/playzone_team_bag.png"
+    ],
+    "shortDescription": "Club team equipment bag designed to hold multiple kits, team balls, and stumps with reinforced base skid rails.",
+    "description": "The ultimate solution for club teams, academy coaches, and touring squads. Constructed with tear-resistant ripstop canvas and reinforced load-bearing webbing straps.",
+    "highlights": [
+      "Massive capacity accommodating shared team gear or dual player kits",
+      "Waterproof reinforced bottom panel with skid-proof rubber feet",
+      "Heavy-duty double industrial zippers with padlock compatibility",
+      "Comfort-padded grab handles on both ends for two-person team carry"
+    ],
+    "specs": [
+      {
+        "label": "Capacity",
+        "value": "160 Litres Extra Large"
+      },
+      {
+        "label": "Material",
+        "value": "Ripstop 1200D Waterproof Canvas"
+      },
+      {
+        "label": "Zippers",
+        "value": "Industrial Grade Heavy-Duty Dual Zips"
+      }
+    ],
+    "sizes": [
+      "Team XL"
+    ],
+    "warranty": "1 Year Official PLAYZONE Warranty",
+    "deliveryDaysDhaka": "24 Hours",
+    "deliveryDaysNationwide": "2 - 3 Days",
+    "reviews": [
+      {
+        "author": "Coach Mahmud",
+        "verified": true,
+        "rating": 5,
+        "date": "October 24, 2026",
+        "title": "Carries our entire academy kit effortlessly",
+        "comment": "Fits 6 bats, 4 sets of pads, and all our match balls. Extremely tough fabric.",
+        "location": "Dhanmondi Cricket Academy"
+      }
+    ]
+  },
 ];
 
 export function getProductBySlug(slug: string): Product | null {
