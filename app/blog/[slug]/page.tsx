@@ -239,7 +239,14 @@ export default function BlogDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { t } = useLanguage();
-  const slug = (params?.slug as string) || "";
+  const rawSlug = (params?.slug as string) || "";
+  const slug = useMemo(() => {
+    try {
+      return decodeURIComponent(rawSlug);
+    } catch {
+      return rawSlug;
+    }
+  }, [rawSlug]);
 
   const article = useMemo(() => {
     if (ARTICLES_MAP[slug]) return ARTICLES_MAP[slug];

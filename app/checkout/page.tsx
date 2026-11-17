@@ -88,7 +88,7 @@ export interface PlayzoneOrder {
 export default function CheckoutPage() {
   const { t, language } = useLanguage();
   const router = useRouter();
-  const { items, itemCount, subtotal, discount, total, couponCode, clearCart } = useCart();
+  const { items, itemCount, subtotal, discount, total, couponCode, clearCart, isLoaded } = useCart();
 
   // Delivery zone state
   const [deliveryZone, setDeliveryZone] = useState<"inside_dhaka" | "outside_dhaka">("inside_dhaka");
@@ -430,6 +430,20 @@ export default function CheckoutPage() {
               <span>Continue Shopping</span>
             </Link>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------------- INITIAL CART LOADING SKELETON ----------------
+  if (!isLoaded) {
+    return (
+      <div className="min-h-[70vh] bg-[#090a0c] text-white flex items-center justify-center px-4 py-16">
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 rounded-full border-2 border-zinc-800 border-t-[#74d600] animate-spin" />
+          <p className="mt-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            Loading Checkout...
+          </p>
         </div>
       </div>
     );

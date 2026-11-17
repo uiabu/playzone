@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Trophy,
   ShieldCheck,
@@ -26,8 +27,9 @@ import CricketerProfileModal from "@/components/inviteCricketer/CricketerProfile
 import CricketerBookingModal from "@/components/inviteCricketer/CricketerBookingModal";
 import { useLanguage } from "@/context/LanguageContext";
 
-export default function InviteCricketerPage() {
+function InviteCricketerContent() {
   const { t, language } = useLanguage();
+  const searchParams = useSearchParams();
   const [selectedTier, setSelectedTier] = useState<string>("All");
   const [selectedEvent, setSelectedEvent] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -39,6 +41,22 @@ export default function InviteCricketerPage() {
     useState<Cricketer | null>(null);
   const [isGeneralBookingOpen, setIsGeneralBookingOpen] =
     useState<boolean>(false);
+
+  // Auto-open modal if ?cricketer= or ?id= param is present in URL
+  useEffect(() => {
+    const q = searchParams.get("cricketer") || searchParams.get("id");
+    if (!q) return;
+    const normalized = q.trim().toLowerCase();
+    const found = CRICKETERS_DATA.find(
+      (c) =>
+        c.id?.toLowerCase() === normalized ||
+        c.name?.toLowerCase() === normalized ||
+        c.bengaliName?.toLowerCase() === normalized
+    );
+    if (found) {
+      setProfileModalCricketer(found);
+    }
+  }, [searchParams]);
 
   // Filter logic
   const filteredCricketers = useMemo(() => {
@@ -676,5 +694,24 @@ export default function InviteCricketerPage() {
         onClose={() => setIsGeneralBookingOpen(false)}
       />
     </main>
+  );
+}
+
+export default function InviteCricketerPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#090a0c] flex items-center justify-center p-8">
+          <div className="flex flex-col items-center">
+            <div className="w-10 h-10 rounded-full border-2 border-zinc-800 border-t-[#74d600] animate-spin" />
+            <p className="mt-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              Loading Cricketer Directory...
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <InviteCricketerContent />
+    </Suspense>
   );
 }

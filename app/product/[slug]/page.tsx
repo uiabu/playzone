@@ -35,12 +35,46 @@ function ProductDetailContent() {
   const { t, language } = useLanguage();
   const params = useParams();
   const router = useRouter();
-  const slug = (params?.slug as string) || "";
-  const { getProductBySlugOrId } = useProducts();
+  const rawSlug = (params?.slug as string) || "";
+  const slug = useMemo(() => {
+    try {
+      return decodeURIComponent(rawSlug);
+    } catch {
+      return rawSlug;
+    }
+  }, [rawSlug]);
+
+  const { getProductBySlugOrId, isLoading: isProductsLoading } = useProducts();
+  const [directProduct, setDirectProduct] = useState<Product | null>(null);
+  const [isFetchingDirect, setIsFetchingDirect] = useState<boolean>(false);
 
   const product = useMemo(() => {
-    return getProductBySlugOrId(slug) || getProductBySlug(slug);
-  }, [slug, getProductBySlugOrId]);
+    return directProduct || getProductBySlugOrId(slug) || getProductBySlug(slug);
+  }, [slug, getProductBySlugOrId, directProduct]);
+
+  // Direct fetch fallback if not in memory (e.g. freshly seeded DB or direct URL access)
+  useEffect(() => {
+    if (product || !slug) return;
+    let isMounted = true;
+    setIsFetchingDirect(true);
+    fetch(`/api/products/${encodeURIComponent(slug)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Product fetch failed");
+        return res.json();
+      })
+      .then((data) => {
+        if (isMounted && data?.data) {
+          setDirectProduct(data.data);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (isMounted) setIsFetchingDirect(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [slug, product]);
 
   const relatedProducts = useMemo(() => {
     return getRelatedProducts(slug, 10);
@@ -60,6 +94,18 @@ function ProductDetailContent() {
   const [quantity, setQuantity] = useState<number>(1);
   const [activeTab, setActiveTab] = useState<ActiveTab>("specs");
   const [addedToast, setAddedToast] = useState<boolean>(false);
+
+  // Sync selected variants when product changes
+  useEffect(() => {
+    if (product) {
+      if (product.sizes?.length && !product.sizes.includes(selectedSize)) {
+        setSelectedSize(product.sizes[0]);
+      }
+      if (product.weights?.length && !product.weights.includes(selectedWeight)) {
+        setSelectedWeight(product.weights[0]);
+      }
+    }
+  }, [product, selectedSize, selectedWeight]);
 
   // Deterministic base views calculation
   const initialBaseViews = useMemo(() => {
@@ -86,20 +132,37 @@ function ProductDetailContent() {
     }
   }, [product, initialBaseViews]);
 
+  // Show skeleton while loading
+  if (!product && (isProductsLoading || isFetchingDirect)) {
+    return <ProductDetailSkeleton />;
+  }
+
+  // Not Found State
   if (!product) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl p-8 max-w-md text-center border border-zinc-200 shadow-md">
-          <h2 className="text-xl font-bold text-zinc-900">Product Not Found</h2>
-          <p className="text-xs text-zinc-500 mt-2">
-            The requested cricket gear is currently unavailable or has been relocated.
+      <main className="min-h-[75vh] bg-[#090a0c] text-white flex items-center justify-center p-6">
+        <div className="bg-[#111216] border border-zinc-800 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+          <div className="w-16 h-16 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-zinc-400 mb-4">
+            <Info className="w-8 h-8 stroke-[1.5] text-zinc-500" />
+          </div>
+          <h2 className="text-xl font-black text-white">Product Not Found</h2>
+          <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+            The requested cricket gear is currently unavailable or has been relocated in our catalog.
           </p>
-          <Link
-            href="/"
-            className="mt-5 inline-block px-5 py-2.5 rounded-xl bg-zinc-950 text-white text-xs font-bold"
-          >
-            Back to Homepage
-          </Link>
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/shop"
+              className="px-5 py-2.5 rounded-full bg-[#74d600] hover:bg-[#65c200] text-black text-xs font-black transition-all shadow-md"
+            >
+              Browse Catalog
+            </Link>
+            <Link
+              href="/"
+              className="px-5 py-2.5 rounded-full bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold border border-zinc-700 transition-all"
+            >
+              Back to Home
+            </Link>
+          </div>
         </div>
       </main>
     );
@@ -726,17 +789,17 @@ function ProductDetailContent() {
 
 function ProductDetailSkeleton() {
   return (
-    <div className="min-h-screen bg-white p-6 sm:p-10">
+    <div className="min-h-screen bg-[#090a0c] p-6 sm:p-10">
       <div className="max-w-[1440px] mx-auto animate-pulse space-y-6">
-        <div className="h-4 bg-zinc-200 rounded w-48" />
+        <div className="h-4 bg-zinc-800 rounded-full w-48" />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-5 aspect-square bg-zinc-200 rounded-3xl" />
+          <div className="lg:col-span-5 aspect-square bg-zinc-900 border border-zinc-800/80 rounded-3xl" />
           <div className="lg:col-span-7 space-y-4">
-            <div className="h-6 bg-zinc-200 rounded w-32" />
-            <div className="h-8 bg-zinc-200 rounded w-3/4" />
-            <div className="h-12 bg-zinc-200 rounded w-48" />
-            <div className="h-20 bg-zinc-200 rounded w-full" />
-            <div className="h-12 bg-zinc-200 rounded w-full" />
+            <div className="h-6 bg-zinc-800 rounded-full w-32" />
+            <div className="h-8 bg-zinc-800 rounded-xl w-3/4" />
+            <div className="h-12 bg-zinc-800/70 rounded-2xl w-48" />
+            <div className="h-20 bg-zinc-900 border border-zinc-800/60 rounded-2xl w-full" />
+            <div className="h-12 bg-zinc-800 rounded-full w-full" />
           </div>
         </div>
       </div>

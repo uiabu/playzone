@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense, useRef } from "react";
+import React, { useState, useEffect, useMemo, Suspense, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -45,12 +45,28 @@ const TABS = [
 
 function AcademyProfileContent() {
   const params = useParams();
-  const slug = params?.slug as string;
+  const rawSlug = (params?.slug as string) || "";
+  const slug = useMemo(() => {
+    try {
+      return decodeURIComponent(rawSlug).trim().toLowerCase();
+    } catch {
+      return rawSlug.trim().toLowerCase();
+    }
+  }, [rawSlug]);
 
-  const [academy, setAcademy] = useState<Academy | null>(() => {
-    return INITIAL_ACADEMIES.find((a) => a.slug === slug) || null;
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  const localMatch = useMemo(() => {
+    if (!slug) return null;
+    return (
+      INITIAL_ACADEMIES.find(
+        (a) =>
+          a.slug?.toLowerCase() === slug ||
+          a.id?.toLowerCase() === slug
+      ) || null
+    );
+  }, [slug]);
+
+  const [academy, setAcademy] = useState<Academy | null>(localMatch);
+  const [isLoading, setIsLoading] = useState<boolean>(!localMatch);
   const [activeTab, setActiveTab] = useState("overview");
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<string | null>(
@@ -85,25 +101,40 @@ function AcademyProfileContent() {
   };
 
   useEffect(() => {
+    if (localMatch) {
+      setAcademy(localMatch);
+      setIsLoading(false);
+    }
+  }, [localMatch]);
+
+  useEffect(() => {
     if (!slug) return;
+    let isMounted = true;
     async function fetchAcademy() {
       try {
-        setIsLoading(true);
-        const res = await fetch(`/api/academies/${slug}`);
+        if (!localMatch) {
+          setIsLoading(true);
+        }
+        const res = await fetch(`/api/academies/${encodeURIComponent(slug)}`);
         if (res.ok) {
           const json = await res.json();
-          if (json.success && json.data) {
+          if (isMounted && json.success && json.data) {
             setAcademy(json.data);
           }
         }
       } catch (err) {
         console.warn("Using local academy fallback:", err);
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     }
     fetchAcademy();
-  }, [slug]);
+    return () => {
+      isMounted = false;
+    };
+  }, [slug, localMatch]);
 
   if (isLoading && !academy) {
     return (

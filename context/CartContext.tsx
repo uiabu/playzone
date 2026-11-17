@@ -23,6 +23,7 @@ interface CartContextType {
   couponCode: string;
   couponDiscount: number;
   isCartOpen: boolean;
+  isLoaded: boolean;
   openCart: () => void;
   closeCart: () => void;
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
@@ -37,6 +38,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponDiscount, setCouponDiscount] = useState(0);
@@ -50,17 +52,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     } catch {
       // Ignore localStorage errors
+    } finally {
+      setIsLoaded(true);
     }
   }, []);
 
   // Sync to localStorage
   useEffect(() => {
+    if (!isLoaded) return;
     try {
       localStorage.setItem("playzone_cart", JSON.stringify(items));
     } catch {
       // Ignore
     }
-  }, [items]);
+  }, [items, isLoaded]);
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);
@@ -183,6 +188,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         couponCode,
         couponDiscount,
         isCartOpen,
+        isLoaded,
         openCart,
         closeCart,
         addItem,

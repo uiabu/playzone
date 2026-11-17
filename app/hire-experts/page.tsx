@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   ChevronRight,
   SlidersHorizontal,
@@ -39,8 +40,9 @@ const INITIAL_FILTERS: FilterState = {
   minRating: null,
 };
 
-export default function HireExpertsPage() {
+function HireExpertsContent() {
   const { t, language } = useLanguage();
+  const searchParams = useSearchParams();
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [sortBy, setSortBy] = useState<string>("recommended");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -52,6 +54,19 @@ export default function HireExpertsPage() {
   const [selectedBookingExpert, setSelectedBookingExpert] =
     useState<Expert | null>(null);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState<boolean>(false);
+
+  // Handle direct link query parameters (?expert=... or ?id=...)
+  useEffect(() => {
+    const expertQuery = searchParams.get("expert") || searchParams.get("id");
+    if (!expertQuery) return;
+    const normalized = expertQuery.trim().toLowerCase();
+    const found = EXPERTS_DATA.find(
+      (e) => e.id.toLowerCase() === normalized || e.name.toLowerCase() === normalized
+    );
+    if (found) {
+      setSelectedProfileExpert(found);
+    }
+  }, [searchParams]);
 
   const handleResetFilters = () => {
     setFilters(INITIAL_FILTERS);
@@ -455,5 +470,24 @@ export default function HireExpertsPage() {
         onClose={() => setIsJoinModalOpen(false)}
       />
     </main>
+  );
+}
+
+export default function HireExpertsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#090a0c] flex items-center justify-center p-8">
+          <div className="flex flex-col items-center">
+            <div className="w-10 h-10 rounded-full border-2 border-zinc-800 border-t-[#74d600] animate-spin" />
+            <p className="mt-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              Loading Cricket Experts...
+            </p>
+          </div>
+        </div>
+      }
+    >
+      <HireExpertsContent />
+    </Suspense>
   );
 }

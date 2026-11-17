@@ -29,6 +29,7 @@ function TrackOrderContent() {
 
   const [query, setQuery] = useState(initialId);
   const [searched, setSearched] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [matchedOrder, setMatchedOrder] = useState<PlayzoneOrder | null>(null);
   const [allOrders, setAllOrders] = useState<PlayzoneOrder[]>([]);
 
@@ -91,15 +92,23 @@ function TrackOrderContent() {
 
     // Fallback: If not found in localStorage or no localStorage, check API
     if (initialId) {
+      setIsSearching(true);
+      setSearched(true);
       websiteApi
         .getOrder(initialId)
         .then((res) => {
           if (res?.data) {
             setMatchedOrder(mapApiOrderToPlayzoneOrder(res.data));
-            setSearched(true);
+          } else {
+            setMatchedOrder(null);
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          setMatchedOrder(null);
+        })
+        .finally(() => {
+          setIsSearching(false);
+        });
     }
   }, [initialId]);
 
@@ -117,10 +126,12 @@ function TrackOrderContent() {
 
     if (localFound) {
       setMatchedOrder(localFound);
+      setIsSearching(false);
       return;
     }
 
     // Try backend API lookup
+    setIsSearching(true);
     try {
       const res = await websiteApi.getOrder(clean);
       if (res?.data) {
@@ -130,6 +141,8 @@ function TrackOrderContent() {
       }
     } catch {
       setMatchedOrder(null);
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -304,8 +317,19 @@ function TrackOrderContent() {
           </div>
         )}
 
+        {/* SEARCHING SPINNER */}
+        {isSearching && (
+          <div className="bg-[#111216] border border-zinc-800 rounded-3xl p-8 text-center max-w-lg mx-auto shadow-xl">
+            <div className="w-10 h-10 rounded-full border-2 border-zinc-800 border-t-[#74d600] animate-spin mx-auto mb-3" />
+            <h3 className="text-sm font-bold text-white">Searching Logistics Records...</h3>
+            <p className="text-xs text-zinc-400 mt-1">
+              Verifying order status with Dhaka dispatch center
+            </p>
+          </div>
+        )}
+
         {/* NO RESULT STATE */}
-        {searched && !matchedOrder && (
+        {searched && !matchedOrder && !isSearching && (
           <div className="bg-[#111216] border border-zinc-800 rounded-3xl p-8 text-center max-w-lg mx-auto shadow-xl">
             <div className="w-14 h-14 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-zinc-400 mb-4">
               <AlertCircle className="w-7 h-7 text-amber-400" />
