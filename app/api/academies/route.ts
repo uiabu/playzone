@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { academiesStore } from "@/lib/academiesStore";
 import { AgeGroup, TrainingType, AdmissionStatus } from "@/lib/academiesData";
+import { verifyAdminAuth, unauthorizedResponse } from "@/lib/adminAuth";
 
 export async function GET(request: Request) {
   try {
@@ -79,6 +80,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (!verifyAdminAuth(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const body = await request.json();
 

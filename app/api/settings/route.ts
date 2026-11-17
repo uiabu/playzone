@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { verifyAdminAuth, unauthorizedResponse } from "@/lib/adminAuth";
 
 // In-memory settings store
 declare global {
@@ -27,6 +28,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!verifyAdminAuth(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const body = await request.json();
     globalThis.__PLAYZONE_SETTINGS__ = {

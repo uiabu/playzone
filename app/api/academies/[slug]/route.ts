@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { academiesStore } from "@/lib/academiesStore";
+import { verifyAdminAuth, unauthorizedResponse } from "@/lib/adminAuth";
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -31,6 +32,10 @@ export async function GET(request: Request, { params }: RouteParams) {
 }
 
 export async function PATCH(request: Request, { params }: RouteParams) {
+  if (!verifyAdminAuth(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const { slug } = await params;
     const updates = await request.json();
@@ -58,6 +63,10 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 }
 
 export async function DELETE(request: Request, { params }: RouteParams) {
+  if (!verifyAdminAuth(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const { slug } = await params;
     const deleted = academiesStore.delete(slug);

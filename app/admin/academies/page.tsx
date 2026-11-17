@@ -48,10 +48,38 @@ import {
 } from "@/lib/academiesData";
 
 export default function AdminAcademiesPage() {
-  // Authorization state: simple secure passkey guard
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(true); // default open in dev
+  // Authorization state: server-verified passkey guard
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [adminToken, setAdminToken] = useState("");
   const [adminPinInput, setAdminPinInput] = useState("");
   const [pinError, setPinError] = useState("");
+  const [isAuthChecking, setIsAuthChecking] = useState(true);
+
+  // Authenticated fetch helper that injects admin token
+  const adminFetch = async (url: string, options: RequestInit = {}) => {
+    const token =
+      adminToken ||
+      (typeof window !== "undefined"
+        ? sessionStorage.getItem("playzone_admin_token")
+        : "") ||
+      "";
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...((options.headers as Record<string, string>) || {}),
+    };
+
+    if (token) {
+      headers["x-admin-token"] = token;
+    }
+
+    const res = await fetch(url, { ...options, headers });
+    if (res.status === 401) {
+      setIsAdminAuthenticated(false);
+      setPinError("Session expired or unauthorized. Please authenticate again.");
+    }
+    return res;
+  };
 
   // Navigation tabs: "academies" | "inquiries"
   const [activeTab, setActiveTab] = useState<"academies" | "inquiries">("academies");
@@ -126,12 +154,22 @@ export default function AdminAcademiesPage() {
   });
 
   // Fetch live academies and inquiries
-  const loadData = async () => {
+  const loadData = async (tokenOverride?: string) => {
     try {
       setIsLoading(true);
+      const token =
+        tokenOverride ||
+        adminToken ||
+        (typeof window !== "undefined"
+          ? sessionStorage.getItem("playzone_admin_token")
+          : "") ||
+        "";
+
+      const headers = token ? { "x-admin-token": token } : undefined;
+
       const [acadRes, inqRes] = await Promise.all([
-        fetch("/api/academies?includeUnpublished=true"),
-        fetch("/api/academies/inquiries"),
+        fetch("/api/academies?includeUnpublished=true", { headers }),
+        fetch("/api/academies/inquiries", { headers }),
       ]);
 
       if (acadRes.ok) {
@@ -155,7 +193,33 @@ export default function AdminAcademiesPage() {
   };
 
   useEffect(() => {
-    loadData();
+    const checkAuth = async () => {
+      try {
+        const savedToken =
+          typeof window !== "undefined"
+            ? sessionStorage.getItem("playzone_admin_token")
+            : null;
+        if (savedToken) {
+          setAdminToken(savedToken);
+          setIsAdminAuthenticated(true);
+          loadData(savedToken);
+          setIsAuthChecking(false);
+          return;
+        }
+
+        const res = await fetch("/api/admin/login");
+        const json = await res.json();
+        if (json.authenticated) {
+          setIsAdminAuthenticated(true);
+          loadData();
+        }
+      } catch {
+        // Fallback silently
+      } finally {
+        setIsAuthChecking(false);
+      }
+    };
+    checkAuth();
   }, []);
 
   const showNotification = (msg: string) => {
@@ -163,24 +227,59 @@ export default function AdminAcademiesPage() {
     setTimeout(() => setFeedbackMsg(""), 3500);
   };
 
-  // Authenticate PIN
-  const handlePinSubmit = (e: React.FormEvent) => {
+  // Authenticate Passkey via backend API
+  const handlePinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (adminPinInput === "playzone2026" || adminPinInput === "admin") {
-      setIsAdminAuthenticated(true);
-      setPinError("");
-    } else {
-      setPinError("Invalid Admin Passkey. Hint: playzone2026");
+    setPinError("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passkey: adminPinInput }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setIsAdminAuthenticated(true);
+        setAdminToken(data.token);
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("playzone_admin_token", data.token);
+        }
+        setPinError("");
+        loadData(data.token);
+      } else {
+        setPinError(data.message || "Invalid Admin Passkey. Please try again.");
+      }
+    } catch {
+      setPinError("Connection error. Could not verify passkey.");
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // Sign out from admin console
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/login", { method: "DELETE" });
+    } catch {
+      // Ignore
+    }
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("playzone_admin_token");
+    }
+    setAdminToken("");
+    setIsAdminAuthenticated(false);
+    setAdminPinInput("");
   };
 
   // Toggle Published
   const handleTogglePublish = async (academy: Academy) => {
     const updatedStatus = !academy.isPublished;
     try {
-      const res = await fetch(`/api/academies/${academy.slug}`, {
+      const res = await adminFetch(`/api/academies/${academy.slug}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isPublished: updatedStatus }),
       });
       if (res.ok) {
@@ -204,9 +303,8 @@ export default function AdminAcademiesPage() {
   const handleToggleVerified = async (academy: Academy) => {
     const updatedStatus = !academy.isVerified;
     try {
-      const res = await fetch(`/api/academies/${academy.slug}`, {
+      const res = await adminFetch(`/api/academies/${academy.slug}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isVerified: updatedStatus }),
       });
       if (res.ok) {
@@ -237,7 +335,7 @@ export default function AdminAcademiesPage() {
     }
 
     try {
-      const res = await fetch(`/api/academies/${academy.slug}`, {
+      const res = await adminFetch(`/api/academies/${academy.slug}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -331,9 +429,8 @@ export default function AdminAcademiesPage() {
     try {
       if (editingAcademy) {
         // PATCH
-        const res = await fetch(`/api/academies/${editingAcademy.slug}`, {
+        const res = await adminFetch(`/api/academies/${editingAcademy.slug}`, {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
         if (res.ok) {
@@ -346,9 +443,8 @@ export default function AdminAcademiesPage() {
         }
       } else {
         // POST
-        const res = await fetch("/api/academies", {
+        const res = await adminFetch("/api/academies", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
         const json = await res.json();
@@ -373,9 +469,8 @@ export default function AdminAcademiesPage() {
     adminNotes?: string
   ) => {
     try {
-      const res = await fetch(`/api/academies/inquiries/${id}`, {
+      const res = await adminFetch(`/api/academies/inquiries/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus, adminNotes }),
       });
       if (res.ok) {
@@ -454,6 +549,15 @@ export default function AdminAcademiesPage() {
     };
   }, [inquiries]);
 
+  // ================= AUTH CHECKING SKELETON =================
+  if (isAuthChecking) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
+        <div className="w-8 h-8 border-2 border-[#84cc16] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   // ================= ADMIN LOGIN SCREEN =================
   if (!isAdminAuthenticated) {
     return (
@@ -478,7 +582,7 @@ export default function AdminAcademiesPage() {
                 required
                 value={adminPinInput}
                 onChange={(e) => setAdminPinInput(e.target.value)}
-                placeholder="Enter passkey (e.g. playzone2026)"
+                placeholder="Enter admin passkey"
                 className="w-full px-4 py-3 text-xs rounded-xl bg-zinc-800 border border-zinc-700 text-white focus:outline-none focus:border-[#84cc16]"
               />
               {pinError && (
@@ -488,9 +592,10 @@ export default function AdminAcademiesPage() {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-[#84cc16] hover:bg-[#74d600] active:scale-95 text-zinc-950 font-black text-xs transition-colors cursor-pointer shadow-md"
+              disabled={isLoading}
+              className="w-full py-3 rounded-xl bg-[#84cc16] hover:bg-[#74d600] active:scale-95 text-zinc-950 font-black text-xs transition-colors cursor-pointer shadow-md disabled:opacity-50"
             >
-              Authenticate & Enter
+              {isLoading ? "Verifying..." : "Authenticate & Enter"}
             </button>
           </form>
         </div>
@@ -530,11 +635,12 @@ export default function AdminAcademiesPage() {
 
             <button
               type="button"
-              onClick={() => setIsAdminAuthenticated(false)}
-              className="p-1.5 rounded-xl bg-zinc-800 text-zinc-400 hover:text-white"
-              title="Lock Admin Console"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-red-950/40 text-zinc-300 hover:text-red-400 border border-zinc-700/60 transition-colors text-xs font-bold cursor-pointer"
+              title="Sign out from Admin Console"
             >
-              <Lock className="w-4 h-4" />
+              <Lock className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
             </button>
           </div>
         </div>

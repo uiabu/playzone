@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { academiesStore } from "@/lib/academiesStore";
+import { verifyAdminAuth, unauthorizedResponse } from "@/lib/adminAuth";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -31,6 +32,10 @@ export async function GET(request: Request, { params }: RouteParams) {
 }
 
 export async function PATCH(request: Request, { params }: RouteParams) {
+  if (!verifyAdminAuth(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const { id } = await params;
     const body = await request.json();
