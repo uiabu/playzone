@@ -624,15 +624,6 @@ export default function AdminAcademiesPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/cricket-academies"
-              target="_blank"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-colors"
-            >
-              <span>View Public Directory</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
-
             <button
               type="button"
               onClick={handleLogout}
@@ -779,14 +770,9 @@ export default function AdminAcademiesPage() {
                                 />
                               </div>
                               <div>
-                                <Link
-                                  href={`/cricket-academies/${acad.slug}`}
-                                  target="_blank"
-                                  className="font-bold text-zinc-900 hover:text-[#65a30d] flex items-center gap-1"
-                                >
-                                  <span>{acad.name}</span>
-                                  <ExternalLink className="w-3 h-3 text-zinc-400" />
-                                </Link>
+                                <span className="font-bold text-zinc-900 block">
+                                  {acad.name}
+                                </span>
                                 <p className="text-[11px] text-zinc-400">
                                   Coach: {acad.headCoachName || "Not assigned"}
                                 </p>

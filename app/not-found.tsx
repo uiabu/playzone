@@ -65,10 +65,10 @@ export default function NotFound() {
               Hire Experts
             </Link>
             <Link
-              href="/cricket-academies"
+              href="/pre-owned"
               className="p-3 rounded-2xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white transition-all text-center"
             >
-              Academies
+              Pre-Owned Gear
             </Link>
             <Link
               href="/track-order"
