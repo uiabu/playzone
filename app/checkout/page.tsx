@@ -205,6 +205,8 @@ export default function CheckoutPage() {
       // Asynchronously record into API
       websiteApi
         .createOrder({
+          id: newOrder.id,
+          orderId: newOrder.id,
           customerName: newOrder.customer.fullName,
           customerPhone: newOrder.customer.phone,
           customerEmail: altPhone || undefined,

@@ -9,12 +9,49 @@ if (!globalThis.__PLAYZONE_ORDERS__) {
   globalThis.__PLAYZONE_ORDERS__ = [];
 }
 
-export async function GET() {
-  return NextResponse.json({
-    success: true,
-    count: (globalThis.__PLAYZONE_ORDERS__ || []).length,
-    data: globalThis.__PLAYZONE_ORDERS__ || [],
-  });
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const search =
+      searchParams.get("id") ||
+      searchParams.get("search") ||
+      searchParams.get("query");
+
+    const orders = globalThis.__PLAYZONE_ORDERS__ || [];
+
+    if (search) {
+      const clean = search.trim().toLowerCase();
+      const matched = orders.find(
+        (o: any) =>
+          o.id?.toLowerCase() === clean ||
+          (o.customerPhone &&
+            o.customerPhone
+              .replace(/\D/g, "")
+              .includes(clean.replace(/\D/g, "")))
+      );
+
+      return NextResponse.json({
+        success: true,
+        data: matched || null,
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      count: orders.length,
+      data: orders,
+    });
+  } catch (err: unknown) {
+    if (
+      err &&
+      typeof err === "object" &&
+      "digest" in err &&
+      (err as { digest?: string }).digest === "NEXT_PRERENDER_INTERRUPTED"
+    ) {
+      throw err;
+    }
+    return NextResponse.json({ success: false, data: [] }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request) {
@@ -38,7 +75,7 @@ export async function POST(request: Request) {
     const timestamp = new Date();
     const dateStr = timestamp.toISOString().slice(0, 10).replace(/-/g, "");
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const orderId = `PZ-${dateStr}-${randomSuffix}`;
+    const orderId = body.id || body.orderId || `PZ-${dateStr}-${randomSuffix}`;
 
     const newOrder = {
       id: orderId,

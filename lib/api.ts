@@ -55,6 +55,8 @@ export const websiteApi = {
 
   // Orders / Checkout
   createOrder: (order: {
+    id?: string;
+    orderId?: string;
     customerName: string;
     customerPhone: string;
     customerEmail?: string;
@@ -81,6 +83,9 @@ export const websiteApi = {
       method: "POST",
       body: JSON.stringify(order),
     }),
+
+  getOrder: (idOrPhone: string) =>
+    request<{ success: boolean; data: any }>(`/orders?id=${encodeURIComponent(idOrPhone)}`),
 
   // Pre-Orders
   submitPreOrder: (preOrder: {

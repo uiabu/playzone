@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
+import { websiteApi } from "@/lib/api";
 import {
   Search,
   Truck,
@@ -31,6 +32,41 @@ function TrackOrderContent() {
   const [matchedOrder, setMatchedOrder] = useState<PlayzoneOrder | null>(null);
   const [allOrders, setAllOrders] = useState<PlayzoneOrder[]>([]);
 
+  const mapApiOrderToPlayzoneOrder = (apiOrder: any): PlayzoneOrder => ({
+    id: apiOrder.id,
+    createdAt: apiOrder.createdAt,
+    customer: {
+      fullName: apiOrder.customerName,
+      phone: apiOrder.customerPhone,
+      deliveryAddress: apiOrder.shippingAddress || "",
+      district: apiOrder.city || "Dhaka",
+    },
+    items: (apiOrder.items || []).map((it: any) => ({
+      id: it.productId || it.id || "gear",
+      name: it.productName || it.name || "Cricket Gear",
+      price: it.price || 0,
+      quantity: it.quantity || 1,
+      image: it.productImage || it.image || "/images/products/bats/ss_ton.png",
+    })),
+    financials: {
+      subtotal: apiOrder.subtotal || 0,
+      deliveryFee: apiOrder.deliveryFee || 0,
+      discount: apiOrder.discount || 0,
+      totalAmount: apiOrder.totalAmount || 0,
+    },
+    payment: {
+      method:
+        apiOrder.paymentMethod === "cod"
+          ? "Cash on Delivery"
+          : "bKash / Nagad (Manual Merchant)",
+      status: "Pending Delivery Payment",
+    },
+    deliveryZone: apiOrder.city?.toLowerCase().includes("dhaka")
+      ? "inside_dhaka"
+      : "outside_dhaka",
+    status: (apiOrder.status as any) || "Order Placed",
+  });
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem("playzone_orders");
@@ -45,26 +81,56 @@ function TrackOrderContent() {
           if (found) {
             setMatchedOrder(found);
             setSearched(true);
+            return;
           }
         }
       }
     } catch {
       // Ignore
     }
+
+    // Fallback: If not found in localStorage or no localStorage, check API
+    if (initialId) {
+      websiteApi
+        .getOrder(initialId)
+        .then((res) => {
+          if (res?.data) {
+            setMatchedOrder(mapApiOrderToPlayzoneOrder(res.data));
+            setSearched(true);
+          }
+        })
+        .catch(() => {});
+    }
   }, [initialId]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const clean = query.trim().toLowerCase();
     if (!clean) return;
 
     setSearched(true);
-    const found = allOrders.find(
+    const localFound = allOrders.find(
       (o) =>
         o.id.toLowerCase() === clean ||
         o.customer.phone.replace(/\D/g, "").includes(clean.replace(/\D/g, ""))
     );
-    setMatchedOrder(found || null);
+
+    if (localFound) {
+      setMatchedOrder(localFound);
+      return;
+    }
+
+    // Try backend API lookup
+    try {
+      const res = await websiteApi.getOrder(clean);
+      if (res?.data) {
+        setMatchedOrder(mapApiOrderToPlayzoneOrder(res.data));
+      } else {
+        setMatchedOrder(null);
+      }
+    } catch {
+      setMatchedOrder(null);
+    }
   };
 
   return (

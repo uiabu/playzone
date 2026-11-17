@@ -88,7 +88,10 @@ export default function BlogIndexPage() {
               key={article.slug}
               className="bg-white rounded-3xl border border-zinc-200/90 shadow-2xs overflow-hidden flex flex-col justify-between hover:shadow-md transition-all duration-300 group"
             >
-              <div className="relative w-full aspect-[16/9] bg-zinc-100 overflow-hidden">
+              <Link
+                href={`/blog/${article.slug}`}
+                className="relative w-full aspect-[16/9] bg-zinc-100 overflow-hidden block"
+              >
                 <Image
                   src={article.imageSrc}
                   alt={article.title}
@@ -99,7 +102,7 @@ export default function BlogIndexPage() {
                 <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-zinc-950 text-white text-[11px] font-bold uppercase tracking-wider shadow-sm">
                   {article.category}
                 </span>
-              </div>
+              </Link>
 
               <div className="p-6 flex-1 flex flex-col justify-between">
                 <div>
@@ -115,9 +118,11 @@ export default function BlogIndexPage() {
                     </span>
                   </div>
 
-                  <h2 className="text-lg font-black text-zinc-900 group-hover:text-[#65a30d] transition-colors leading-snug">
-                    {article.title}
-                  </h2>
+                  <Link href={`/blog/${article.slug}`}>
+                    <h2 className="text-lg font-black text-zinc-900 group-hover:text-[#65a30d] transition-colors leading-snug">
+                      {article.title}
+                    </h2>
+                  </Link>
                   <p className="text-xs sm:text-sm text-zinc-500 mt-2 leading-relaxed line-clamp-3">
                     {article.excerpt}
                   </p>
@@ -128,7 +133,7 @@ export default function BlogIndexPage() {
                     By {article.author}
                   </span>
                   <Link
-                    href="/category/shop-cricket"
+                    href={`/blog/${article.slug}`}
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-[#65a30d] group-hover:translate-x-1 transition-transform"
                   >
                     <span>Read Article</span>
