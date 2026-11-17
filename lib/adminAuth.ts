@@ -1,22 +1,32 @@
 import { NextResponse } from "next/server";
 
-export const DEFAULT_ADMIN_KEY = "playzone2026";
-
 export function getAdminSecretKey(): string {
-  return process.env.ADMIN_SECRET_KEY || DEFAULT_ADMIN_KEY;
+  const key = process.env.ADMIN_SECRET_KEY;
+  if (!key) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "CRITICAL SECURITY CONFIGURATION: ADMIN_SECRET_KEY environment variable is not set. Admin access disabled."
+      );
+    }
+    // Development fallback warning
+    return "dev_local_admin_key_32_characters_long_for_test";
+  }
+  return key;
 }
 
 /**
  * Server-side authorization check for Admin mutation APIs.
  * Checks for x-admin-token header, Bearer Authorization header, or session cookie.
+ * No hardcoded default credentials are used.
  */
 export function verifyAdminAuth(request: Request): boolean {
   try {
     const adminKey = getAdminSecretKey();
+    if (!adminKey) return false;
 
     // 1. Header: x-admin-token
     const customToken = request.headers.get("x-admin-token");
-    if (customToken && (customToken === adminKey || customToken === DEFAULT_ADMIN_KEY)) {
+    if (customToken && customToken === adminKey) {
       return true;
     }
 
@@ -24,7 +34,7 @@ export function verifyAdminAuth(request: Request): boolean {
     const authHeader = request.headers.get("authorization");
     if (authHeader) {
       const token = authHeader.replace(/^Bearer\s+/i, "").trim();
-      if (token === adminKey || token === DEFAULT_ADMIN_KEY) {
+      if (token && token === adminKey) {
         return true;
       }
     }
@@ -40,13 +50,14 @@ export function verifyAdminAuth(request: Request): boolean {
       );
 
       const sessionVal = cookies["playzone_admin_session"];
-      if (sessionVal && (sessionVal === adminKey || sessionVal === DEFAULT_ADMIN_KEY)) {
+      if (sessionVal && sessionVal === adminKey) {
         return true;
       }
     }
 
     return false;
-  } catch {
+  } catch (err) {
+    console.error("Admin authentication check failed:", err);
     return false;
   }
 }
@@ -55,7 +66,7 @@ export function unauthorizedResponse() {
   return NextResponse.json(
     {
       success: false,
-      message: "Unauthorized. Admin authentication required to perform this action.",
+      message: "Unauthorized. Valid administrator authentication required.",
     },
     { status: 401 }
   );

@@ -166,6 +166,29 @@ export const websiteApi = {
       }
     ),
 
+  // Foundation
+  submitFoundationApplication: (app: {
+    applicantName: string;
+    phone: string;
+    email?: string;
+    district: string;
+    clubOrAcademy?: string;
+    playingRole: string;
+    injuryCategory: string;
+    dateOfInjury: string;
+    venue?: string;
+    injuryDescription: string;
+    hospitalName?: string;
+    doctorName?: string;
+    estimatedCost?: string;
+    playzoneOrderId?: string;
+    documentStorageKeys?: string[];
+  }) =>
+    request<{ success: boolean; message: string; data: any }>("/foundation/apply", {
+      method: "POST",
+      body: JSON.stringify(app),
+    }),
+
   // Banners & Settings
   getBanners: () => request<{ success: boolean; data: any[] }>("/banners"),
   getSettings: () => request<{ success: boolean; data: any }>("/settings"),

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminSecretKey, DEFAULT_ADMIN_KEY, verifyAdminAuth } from "@/lib/adminAuth";
+import { getAdminSecretKey, verifyAdminAuth } from "@/lib/adminAuth";
 
 export async function GET(request: Request) {
   const isAuth = verifyAdminAuth(request);
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     const expectedKey = getAdminSecretKey();
 
-    if (passkey === expectedKey || passkey === DEFAULT_ADMIN_KEY) {
+    if (passkey && passkey === expectedKey) {
       const response = NextResponse.json({
         success: true,
         message: "Authentication successful",
@@ -38,11 +38,11 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: "Invalid admin passkey. Please try again.",
+        message: "Invalid admin passkey. Please check your credentials.",
       },
       { status: 401 }
     );
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       { success: false, message: "Invalid request payload" },
       { status: 400 }

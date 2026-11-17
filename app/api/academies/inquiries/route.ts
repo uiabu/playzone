@@ -1,8 +1,34 @@
 import { NextResponse } from "next/server";
 import { academiesStore } from "@/lib/academiesStore";
+import { prisma, isDatabaseAvailable } from "@/lib/db";
+import { InquiryStatus } from "@prisma/client";
 
-// Bangladesh phone number regex: +8801XXXXXXXXX or 01XXXXXXXXX (11 digits starting with 01)
 const BD_PHONE_REGEX = /^(?:\+?880|0)?1[3-9]\d{8}$/;
+
+function mapDisplayStatusToEnum(status: string): InquiryStatus {
+  const norm = status.toLowerCase().replace(/[\s_-]+/g, "");
+  if (norm.includes("review")) return InquiryStatus.UNDER_REVIEW;
+  if (norm.includes("contact")) return InquiryStatus.CONTACTED;
+  if (norm.includes("accept")) return InquiryStatus.ACCEPTED;
+  if (norm.includes("reject")) return InquiryStatus.REJECTED;
+  return InquiryStatus.PENDING;
+}
+
+function mapEnumToDisplayStatus(status: InquiryStatus | string): string {
+  switch (status) {
+    case InquiryStatus.UNDER_REVIEW:
+      return "Under Review";
+    case InquiryStatus.CONTACTED:
+      return "Contacted";
+    case InquiryStatus.ACCEPTED:
+      return "Accepted";
+    case InquiryStatus.REJECTED:
+      return "Rejected";
+    case InquiryStatus.PENDING:
+    default:
+      return "Pending";
+  }
+}
 
 export async function GET(request: Request) {
   try {
@@ -10,6 +36,50 @@ export async function GET(request: Request) {
     const academyId = searchParams.get("academyId") || undefined;
     const status = searchParams.get("status") || undefined;
 
+    const isDbReady = await isDatabaseAvailable();
+
+    if (isDbReady) {
+      const where: any = {};
+      if (academyId) where.academyId = academyId;
+      if (status && status !== "All") {
+        where.status = mapDisplayStatusToEnum(status);
+      }
+
+      const dbInquiries = await prisma.academyInquiry.findMany({
+        where,
+        include: { academy: true },
+        orderBy: { createdAt: "desc" },
+      });
+
+      if (dbInquiries && dbInquiries.length > 0) {
+        const formatted = dbInquiries.map((i) => ({
+          id: i.id,
+          academyId: i.academyId,
+          academyName: i.academy?.name || "Cricket Academy",
+          studentName: i.studentName,
+          dateOfBirth: i.dateOfBirth || "",
+          age: i.studentAge,
+          guardianName: i.guardianName,
+          guardianPhone: i.guardianPhone,
+          guardianEmail: i.guardianEmail || undefined,
+          district: i.address || "Dhaka",
+          preferredTrainingType: i.playingRole,
+          previousExperience: i.experienceYears || "Beginner level",
+          preferredSchedule: i.preferredBatch || "Regular Session",
+          status: mapEnumToDisplayStatus(i.status),
+          adminNotes: i.adminNotes || undefined,
+          createdAt: i.createdAt.toISOString(),
+        }));
+
+        return NextResponse.json({
+          success: true,
+          count: formatted.length,
+          data: formatted,
+        });
+      }
+    }
+
+    // In-memory fallback
     let inquiries = academiesStore.getInquiries(academyId);
 
     if (status && status !== "All") {
@@ -50,7 +120,7 @@ export async function POST(request: Request) {
       message,
     } = body;
 
-    // 1. Validation: Student Name
+    // Validation
     if (!studentName || typeof studentName !== "string" || studentName.trim().length < 2) {
       return NextResponse.json(
         { success: false, message: "Please provide a valid student name (minimum 2 characters)." },
@@ -58,7 +128,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Validation: Age / Date of Birth
     const numericAge = Number(age);
     if (!numericAge || numericAge < 5 || numericAge > 40) {
       return NextResponse.json(
@@ -67,7 +136,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Validation: Guardian phone (mandatory for applicants under 18, and standard contact)
     if (!guardianPhone || !BD_PHONE_REGEX.test(guardianPhone.replace(/[\s-]/g, ""))) {
       return NextResponse.json(
         {
@@ -79,7 +147,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // If student is under 18, guardian name is strongly required
     if (numericAge < 18 && (!guardianName || guardianName.trim().length < 2)) {
       return NextResponse.json(
         {
@@ -90,48 +157,88 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. District validation
-    if (!district || district.trim().length < 2) {
-      return NextResponse.json(
-        { success: false, message: "Please specify your district or location." },
-        { status: 400 }
-      );
-    }
-
-    // 5. Training type validation
-    if (!preferredTrainingType) {
-      return NextResponse.json(
-        { success: false, message: "Please select your preferred training focus." },
-        { status: 400 }
-      );
-    }
-
-    // 6. Prevent immediate duplicate submissions (same student, phone, and academy within 10 minutes)
-    const recent = academiesStore.getInquiries(academyId);
     const normalizedPhone = guardianPhone.replace(/[\s-]/g, "");
-    const duplicate = recent.find((i) => {
-      const sameStudent =
-        i.studentName.toLowerCase().trim() === studentName.toLowerCase().trim();
-      const samePhone = i.guardianPhone.replace(/[\s-]/g, "") === normalizedPhone;
-      const isRecent =
-        Date.now() - new Date(i.createdAt).getTime() < 10 * 60 * 1000; // 10 minutes
-      return sameStudent && samePhone && isRecent;
-    });
+    const finalAcademyId = academyId || "pubergaon-cricket-academy";
+    const isDbReady = await isDatabaseAvailable();
 
-    if (duplicate) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: `An admission inquiry for "${studentName}" was recently submitted. Application Ref: ${duplicate.id}`,
-          existingRefId: duplicate.id,
-        },
-        { status: 409 }
-      );
+    if (isDbReady) {
+      // Check if academy exists in DB
+      let targetAcademy = await prisma.academy.findUnique({
+        where: { id: finalAcademyId },
+      });
+
+      if (!targetAcademy) {
+        // Find by slug
+        targetAcademy = await prisma.academy.findUnique({
+          where: { slug: finalAcademyId },
+        });
+      }
+
+      if (targetAcademy) {
+        // Duplicate check within 10 minutes
+        const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+        const existingRecent = await prisma.academyInquiry.findFirst({
+          where: {
+            academyId: targetAcademy.id,
+            studentName: { equals: studentName.trim(), mode: "insensitive" },
+            guardianPhone: normalizedPhone,
+            createdAt: { gte: tenMinutesAgo },
+          },
+        });
+
+        if (existingRecent) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: `An admission inquiry for "${studentName}" was recently submitted. Application Ref: ${existingRecent.id}`,
+              existingRefId: existingRecent.id,
+            },
+            { status: 409 }
+          );
+        }
+
+        const randomDigits = Math.floor(100000 + Math.random() * 900000);
+        const inquiryId = `ADM-INQ-2026-${randomDigits}`;
+
+        const createdDbInquiry = await prisma.academyInquiry.create({
+          data: {
+            id: inquiryId,
+            academyId: targetAcademy.id,
+            studentName: studentName.trim(),
+            studentAge: numericAge,
+            dateOfBirth: dateOfBirth || null,
+            playingRole: preferredTrainingType || "All-rounder",
+            guardianName: guardianName ? guardianName.trim() : studentName.trim(),
+            guardianPhone: normalizedPhone,
+            guardianEmail: guardianEmail ? guardianEmail.trim() : null,
+            address: district ? district.trim() : null,
+            preferredBatch: preferredSchedule || "Regular Session",
+            experienceYears: previousExperience ? previousExperience.trim() : "Beginner",
+            status: InquiryStatus.PENDING,
+            adminNotes: message ? `Notes: ${message.trim()}` : null,
+          },
+        });
+
+        return NextResponse.json(
+          {
+            success: true,
+            message: "Admission inquiry submitted and saved to database successfully!",
+            data: {
+              referenceId: createdDbInquiry.id,
+              studentName: createdDbInquiry.studentName,
+              academyName: targetAcademy.name,
+              status: "Pending",
+              createdAt: createdDbInquiry.createdAt.toISOString(),
+            },
+          },
+          { status: 201 }
+        );
+      }
     }
 
-    // Create and save inquiry
+    // Fallback to in-memory store
     const newInquiry = academiesStore.createInquiry({
-      academyId: academyId || "pubergaon-cricket-academy",
+      academyId: finalAcademyId,
       academyName: academyName || "Cricket Academy",
       studentName: studentName.trim(),
       dateOfBirth: dateOfBirth || "",
@@ -139,8 +246,8 @@ export async function POST(request: Request) {
       guardianName: guardianName ? guardianName.trim() : undefined,
       guardianPhone: normalizedPhone,
       guardianEmail: guardianEmail ? guardianEmail.trim() : undefined,
-      district: district.trim(),
-      preferredTrainingType: preferredTrainingType,
+      district: district ? district.trim() : "Dhaka",
+      preferredTrainingType: preferredTrainingType || "All-rounder",
       previousExperience: previousExperience ? previousExperience.trim() : "Beginner level",
       preferredSchedule: preferredSchedule || "Regular Session",
       message: message ? message.trim() : undefined,

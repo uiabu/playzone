@@ -1,0 +1,599 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ==================== ENUMS ====================
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+  EXPERT
+  ACADEMY_MANAGER
+}
+
+enum ProductCondition {
+  NEW
+  PRE_OWNED
+}
+
+enum OrderStatus {
+  ORDER_PLACED
+  VERIFIED
+  PACKED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
+enum DeliveryZone {
+  INSIDE_DHAKA
+  OUTSIDE_DHAKA
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+  BKASH
+  NAGAD
+  CARD
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  PAID
+  FAILED
+  REFUNDED
+  EXPIRED
+}
+
+enum ReservationStatus {
+  RESERVED
+  COMMITTED
+  RELEASED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum InquiryStatus {
+  PENDING
+  UNDER_REVIEW
+  CONTACTED
+  ACCEPTED
+  REJECTED
+}
+
+enum FoundationAppStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  MEDICAL_VERIFICATION
+  APPROVED
+  DISBURSED
+  REJECTED
+}
+
+// ==================== 1. USERS, ROLES & ADDRESSES ====================
+
+model User {
+  id               String            @id @default(uuid())
+  email            String?           @unique
+  phone            String            @unique
+  fullName         String
+  passwordHash     String?
+  role             UserRole          @default(CUSTOMER)
+  avatarUrl        String?
+  isPhoneVerified  Boolean           @default(false)
+  
+  // Tenant-scoped associations
+  expertId         String?           @unique
+  academyId        String?           @unique
+  
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  addresses        CustomerAddress[]
+  orders           Order[]
+  reviews          ProductReview[]
+  applications     FoundationApplication[]
+  auditLogs        AuditLog[]
+
+  expertProfile    Expert?           @relation(fields: [expertId], references: [id], onDelete: SetNull)
+  academyProfile   Academy?          @relation(fields: [academyId], references: [id], onDelete: SetNull)
+
+  @@index([phone])
+  @@index([email])
+  @@index([role])
+}
+
+model CustomerAddress {
+  id           String   @id @default(uuid())
+  userId       String
+  fullName     String
+  phone        String
+  altPhone     String?
+  address      String
+  upazila      String?
+  district     String
+  division     String
+  postalCode   String?
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ==================== 2. CATALOG & INVENTORY ====================
+
+model Category {
+  id             String    @id @default(uuid())
+  slug           String    @unique
+  name           String
+  bengaliName    String?
+  description    String?
+  bannerTitle    String?
+  bannerSubtitle String?
+  image          String?
+  sortOrder      Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  products       Product[]
+
+  @@index([slug])
+}
+
+model Product {
+  id                     String             @id
+  slug                   String             @unique
+  name                   String
+  brand                  String
+  categoryId             String
+  price                  Float
+  originalPrice          Float?
+  discountPercent        Int?
+  badge                  String?
+  condition              ProductCondition   @default(NEW)
+  conditionGrade         String?
+  rating                 Float              @default(5.0)
+  reviewsCount           Int                @default(0)
+  viewsCount             Int                @default(0)
+  inStock                Boolean            @default(true)
+  stockCount             Int                @default(10)
+  shortDescription       String
+  description            String             @db.Text
+  images                 String[]           // Array of high-res image URLs
+  highlights             String[]           // Bullet points
+  specs                  Json?              // Flexible technical specs (Willow, Sweetspot, Handle)
+  extraServices          Json?              // e.g. Knocking, Toe Guard, Laser Engraving
+  sizes                  String[]           // Quick size filters
+  weights                String[]           // Quick weight filters
+  colors                 String[]
+  warranty               String?
+  deliveryDaysDhaka      String             @default("24 Hours")
+  deliveryDaysNationwide String             @default("2 - 3 Days")
+  videoUrl               String?
+  isFeatured             Boolean            @default(false)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  category               Category           @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  variants               ProductVariant[]
+  reviews                ProductReview[]
+  orderItems             OrderItem[]
+  reservations           StockReservation[]
+
+  @@index([slug])
+  @@index([categoryId, inStock])
+  @@index([brand, price])
+  @@index([condition])
+  @@index([isFeatured])
+}
+
+model ProductVariant {
+  id              String             @id @default(uuid())
+  productId       String
+  sku             String             @unique
+  size            String?
+  weight          String?
+  color           String?
+  stockCount      Int                @default(5)
+  priceAdjustment Float              @default(0.0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  product         Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  reservations    StockReservation[]
+
+  @@index([productId])
+  @@index([sku])
+}
+
+model StockReservation {
+  id           String            @id @default(uuid())
+  orderId      String
+  productId    String
+  variantId    String?
+  quantity     Int
+  expiresAt    DateTime          // now() + 15 minutes TTL
+  status       ReservationStatus @default(RESERVED)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  order        Order             @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product      Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant      ProductVariant?   @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([expiresAt, status])
+  @@index([productId])
+}
+
+model ProductReview {
+  id        String   @id @default(uuid())
+  productId String
+  userId    String?
+  author    String
+  rating    Int
+  title     String
+  comment   String   @db.Text
+  location  String?
+  verified  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([productId])
+  @@index([rating])
+}
+
+// ==================== 3. ORDERS & PAYMENTS (IMMUTABLE SNAPSHOTS) ====================
+
+model Order {
+  id              String               @id // PZ-YYYYMMDD-XXXX
+  customerId      String?
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  shippingAddress String
+  district        String
+  division        String?
+  deliveryZone    DeliveryZone         @default(INSIDE_DHAKA)
+  subtotal        Float
+  deliveryFee     Float
+  discount        Float                @default(0)
+  totalAmount     Float
+  couponCode      String?
+  status          OrderStatus          @default(ORDER_PLACED)
+  notes           String?
+  cancelReason    String?
+  cancelledAt     DateTime?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  customer        User?                @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  items           OrderItem[]
+  payments        PaymentTransaction[]
+  reservations    StockReservation[]
+
+  @@index([id])
+  @@index([customerPhone, createdAt])
+  @@index([status, createdAt])
+  @@index([customerId])
+}
+
+model OrderItem {
+  id                     String   @id @default(uuid())
+  orderId                String
+  productId              String?  // Nullable with onDelete: SetNull to preserve past invoices
+  
+  // IMMUTABLE PURCHASE SNAPSHOTS
+  productNameSnapshot    String
+  skuSnapshot            String?
+  unitPriceAtPurchase    Float
+  specificationsSnapshot Json?    // { size, weight, color, condition, selectedServices }
+  imageSnapshot          String?
+  quantity               Int
+  itemSubtotal           Float
+  vatOrTaxPercent        Float    @default(0.0)
+
+  createdAt              DateTime @default(now())
+
+  order                  Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product                Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model PaymentTransaction {
+  id                   String        @id @default(uuid())
+  orderId              String
+  method               PaymentMethod @default(CASH_ON_DELIVERY)
+  provider             String?       // "bKash", "Nagad", "SSLCommerz"
+  transactionId        String?       @unique // Gateway Transaction ID (TrxID)
+  idempotencyKey       String        @unique // UUID generated at checkout initiation
+  senderPhone          String?
+  amount               Float
+  currency             String        @default("BDT")
+  status               PaymentStatus @default(PENDING)
+  webhookSignature     String?
+  rawPayload           Json?         // Full gateway webhook payload for audit verification
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  order                Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, status])
+  @@index([transactionId])
+  @@index([idempotencyKey])
+}
+
+// ==================== 4. EXPERTS & CRICKETERS ====================
+
+model Expert {
+  id              String          @id
+  slug            String          @unique
+  name            String
+  role            String
+  expertType      String
+  hourlyRate      Float
+  matchRate       Float?
+  rating          Float           @default(5.0)
+  reviewsCount    Int             @default(0)
+  bio             String          @db.Text
+  experienceYears Int
+  location        String
+  imageSrc        String
+  isAvailable     Boolean         @default(true)
+  verified        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User?
+  bookings        ExpertBooking[]
+
+  @@index([slug])
+  @@index([expertType])
+}
+
+model ExpertBooking {
+  id              String        @id // EXP-100234
+  expertId        String
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  bookingDate     String
+  timeSlot        String
+  serviceMode     String        @default("ground")
+  locationDetails String?
+  notes           String?
+  totalFee        Float
+  status          BookingStatus @default(PENDING)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  expert          Expert        @relation(fields: [expertId], references: [id], onDelete: Restrict)
+
+  @@index([expertId, status])
+  @@index([customerPhone])
+}
+
+model Cricketer {
+  id               String             @id
+  slug             String             @unique
+  name             String
+  bengaliName      String
+  role             String
+  tier             String
+  imageSrc         String
+  shortBio         String
+  fullBio          String             @db.Text
+  specialties      String[]
+  suitableEvents   String[]
+  languages        String[]
+  statsJson        Json
+  careerHighlights String[]
+  isVerified       Boolean            @default(true)
+  isFeatured       Boolean            @default(false)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  bookings         CricketerBooking[]
+
+  @@index([slug])
+  @@index([tier])
+}
+
+model CricketerBooking {
+  id               String   @id // CRIC-REQ-100234
+  cricketerId      String?
+  cricketerName    String
+  contactName      String
+  contactPhone     String
+  contactEmail     String?
+  eventType        String
+  preferredDate    String
+  backupDate       String?
+  duration         String   @default("2-3 Hours")
+  venue            String?
+  budgetRange      String?
+  organizationName String?
+  eventDescription String?  @db.Text
+  status           String   @default("Coordination in Progress")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  cricketer        Cricketer? @relation(fields: [cricketerId], references: [id], onDelete: SetNull)
+
+  @@index([cricketerId])
+  @@index([contactPhone])
+}
+
+// ==================== 5. ACADEMIES & INQUIRIES ====================
+
+model Academy {
+  id                  String             @id
+  slug                String             @unique
+  name                String
+  shortName           String
+  tagline             String?
+  logo                String
+  coverImage          String
+  establishedYear     Int
+  isVerified          Boolean            @default(false)
+  isPublished         Boolean            @default(true)
+  admissionStatus     String             @default("Open")
+  address             String
+  upazila             String
+  district            String
+  division            String
+  phones              String[]
+  email               String?
+  website             String?
+  headCoachName       String?
+  headCoachRole       String?
+  eligibleAgeGroups   String[]
+  trainingTypes       String[]
+  facilities          String[]
+  aboutJson           Json?
+  programsJson        Json?
+  feeStructureJson    Json?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  manager             User?
+  inquiries           AcademyInquiry[]
+
+  @@index([slug])
+  @@index([division, district])
+  @@index([admissionStatus])
+}
+
+model AcademyInquiry {
+  id               String        @id // inq-100234
+  academyId        String
+  studentName      String
+  studentAge       Int
+  dateOfBirth      String?
+  playingRole      String
+  guardianName     String
+  guardianPhone    String
+  guardianEmail    String?
+  address          String?
+  preferredBatch   String?
+  experienceYears  String?
+  status           InquiryStatus @default(PENDING)
+  adminNotes       String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  academy          Academy       @relation(fields: [academyId], references: [id], onDelete: Restrict)
+
+  @@index([academyId, status])
+  @@index([guardianPhone])
+}
+
+// ==================== 6. FOUNDATION & PRIVATE MEDICAL RECORDS ====================
+
+model FoundationApplication {
+  id                   String              @id // PZF-YYYY-XXXX
+  applicantName        String
+  phone                String
+  email                String?
+  district             String
+  clubOrAcademy        String?
+  playingRole          String
+  injuryCategory       String              // "ACL Injury", "Fracture", etc.
+  dateOfInjury         String
+  venue                String?
+  injuryDescription    String              @db.Text
+  hospitalName         String?
+  doctorName           String?
+  estimatedCost        String?
+  playzoneOrderId      String?             // 1% purchase contribution linkage
+  
+  // SECURE STORAGE KEYS (Stored in Private S3/Supabase Bucket)
+  documentStorageKeys  String[]            // e.g. ["cases/2026/PZF-2026-1042/mri_scan.pdf"]
+  
+  status               FoundationAppStatus @default(SUBMITTED)
+  adminNotes           String?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  user                 User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId               String?
+
+  @@index([phone])
+  @@index([status, createdAt])
+  @@index([injuryCategory])
+}
+
+// ==================== 7. PRE-ORDERS, COUPONS & AUDIT LOGS ====================
+
+model PreOrder {
+  id                 String   @id @default(uuid())
+  preOrderReference  String   @unique
+  customerName       String
+  customerPhone      String
+  customerEmail      String?
+  deliveryAddress    String?
+  productInfo        String
+  referenceUrl       String?
+  attachedImageUrl   String?
+  isOtpVerified      Boolean  @default(false)
+  status             String   @default("Pending Review")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([customerPhone])
+  @@index([preOrderReference])
+}
+
+model Coupon {
+  id             String    @id @default(uuid())
+  code           String    @unique
+  discountType   String    // "percentage" | "fixed"
+  discountValue  Float
+  minOrderValue  Float     @default(0)
+  maxDiscount    Float?
+  expiresAt      DateTime?
+  isActive       Boolean   @default(true)
+  usageCount     Int       @default(0)
+  usageLimit     Int?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String   // e.g. "ORDER_STATUS_CHANGE", "REFUND_TRIGGERED", "PRICE_UPDATE"
+  entityType String   // "Order", "Product", "Academy", "FoundationApplication"
+  entityId   String
+  ipAddress  String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@index([userId])
+}
