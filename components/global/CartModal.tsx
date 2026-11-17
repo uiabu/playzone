@@ -31,7 +31,6 @@ export default function CartModal() {
 
   const [inputCoupon, setInputCoupon] = useState("");
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
-  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   if (!isCartOpen) return null;
 
@@ -46,24 +45,20 @@ export default function CartModal() {
     setTimeout(() => setCouponFeedback(null), 3500);
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (itemCount === 0) return;
-    setCheckoutSuccess(true);
-    setTimeout(() => {
-      setCheckoutSuccess(false);
-      clearCart();
-      closeCart();
-    }, 2500);
+    closeCart();
+    router.push("/checkout");
   };
 
   // Sample quick add for user demonstration
   const handleAddSampleItem = () => {
     addItem({
-      id: "ss-ton-gladiator",
-      name: "SS Gladiator Grade 1 English Willow",
+      id: "ss-ton-reserve-edition",
+      name: "SS TON Reserve Edition Grade 1 English Willow",
       price: 18500,
-      image: "/images/products/ss_gladiator.png",
-      category: "English Willow Bat",
+      image: "/images/products/bats/ss_ton.png",
+      category: "Cricket Bats",
     });
   };
 
@@ -292,14 +287,6 @@ export default function CartModal() {
               </span>
             </div>
           </div>
-
-          {/* Checkout Success Feedback */}
-          {checkoutSuccess && (
-            <div className="mb-2.5 p-2 bg-lime-50 border border-lime-200 rounded-xl text-xs text-[#4d8c00] font-bold text-center animate-fade-in flex items-center justify-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#74d600]" />
-              <span>{t("Order placed successfully! Thank you.", "অর্ডার সফলভাবে সম্পন্ন হয়েছে! ধন্যবাদ।")}</span>
-            </div>
-          )}
 
           {/* 5. CONTINUE / CHECKOUT ACTION BUTTON (PLAYZONE NEON LIME GREEN) */}
           <button

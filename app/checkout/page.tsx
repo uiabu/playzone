@@ -367,7 +367,7 @@ export default function CheckoutPage() {
                   <div key={idx} className="flex items-center gap-3 py-1.5 border-b border-zinc-800/60 last:border-0">
                     <div className="relative w-11 h-11 rounded-lg bg-zinc-900 border border-zinc-800 overflow-hidden shrink-0 p-1">
                       <Image
-                        src={it.image || "/images/products/ss_gladiator.png"}
+                        src={it.image || "/images/products/bats/ss_ton.png"}
                         alt={it.name}
                         fill
                         className="object-contain"
