@@ -21,6 +21,7 @@ export default function Home() {
       {/* 2. Featured Categories Section (12 Categories) */}
       <FeatureCategoiesSection />
 
+      {/* 3. Hire Cricket Experts Section */}
       {/* 3. Short Videos Section */}
       <ShortVideosSection />
 
