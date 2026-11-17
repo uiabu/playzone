@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ChevronRight,
   ChevronDown,
@@ -366,13 +366,25 @@ export default function CategoryDetailsContent({
       ? contextProducts
       : ALL_PRODUCTS;
 
-  // Normalize category slug
+  // Canonical category aliases mapping
+  const CATEGORY_ALIASES: Record<string, string> = {
+    bats: "cricket-bats",
+    "batting-gear": "batting",
+    "bowling-gear": "bowling",
+    "cricket-shoes": "shoes",
+    "shoes-bags": "shoes",
+    "kit-bags": "shoes",
+  };
+
+  // Normalize category slug with alias support
   const normalizedCat =
-    categorySlug === "bats"
-      ? "cricket-bats"
-      : categorySlug;
+    CATEGORY_ALIASES[categorySlug] ||
+    (categorySlug === "bats" ? "cricket-bats" : categorySlug);
 
   const config = CATEGORY_CONFIGS[normalizedCat] || CATEGORY_CONFIGS["cricket-bats"];
+
+  const searchParams = useSearchParams();
+  const subQuery = searchParams.get("sub");
 
   const [activeSubmenu, setActiveSubmenu] = useState<string>(subCategorySlug || "all");
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
@@ -440,10 +452,40 @@ export default function CategoryDetailsContent({
   useEffect(() => {
     if (subCategorySlug) {
       setActiveSubmenu(subCategorySlug);
+    } else if (subQuery) {
+      const cleanQ = subQuery.trim().toLowerCase();
+      // 1. Match against category submenu tabs (by id, slug, or label)
+      const matchedTab = config.submenus.find(
+        (tab) =>
+          tab.id.toLowerCase() === cleanQ ||
+          tab.slug.toLowerCase() === cleanQ ||
+          tab.label.toLowerCase() === cleanQ ||
+          cleanQ.includes(tab.label.toLowerCase()) ||
+          tab.label.toLowerCase().includes(cleanQ) ||
+          cleanQ.includes(tab.id.toLowerCase())
+      );
+
+      if (matchedTab && matchedTab.id !== "all") {
+        setActiveSubmenu(matchedTab.id);
+      } else {
+        // 2. Check if query matches an available brand in this department
+        const matchedBrand = availableBrands.find(
+          (b) =>
+            b.toLowerCase() === cleanQ ||
+            cleanQ.includes(b.toLowerCase()) ||
+            b.toLowerCase().includes(cleanQ)
+        );
+        if (matchedBrand) {
+          setSelectedBrands([matchedBrand]);
+          setActiveSubmenu("all");
+        } else {
+          setActiveSubmenu("all");
+        }
+      }
     } else {
       setActiveSubmenu("all");
     }
-  }, [subCategorySlug]);
+  }, [subCategorySlug, subQuery, config, availableBrands]);
 
   const handleSubmenuClick = (tab: SubmenuTab) => {
     setActiveSubmenu(tab.id);

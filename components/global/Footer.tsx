@@ -397,12 +397,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/category/batting-gear" className="hover:text-white transition-colors block py-0.5">
+                <Link href="/category/batting" className="hover:text-white transition-colors block py-0.5">
                   {t("Batting Gear", "ব্যাটিং সরঞ্জাম")}
                 </Link>
               </li>
               <li>
-                <Link href="/category/bowling-gear" className="hover:text-white transition-colors block py-0.5">
+                <Link href="/category/bowling" className="hover:text-white transition-colors block py-0.5">
                   {t("Bowling Gear", "বোলিং সরঞ্জাম")}
                 </Link>
               </li>
@@ -412,7 +412,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/category/cricket-shoes" className="hover:text-white transition-colors block py-0.5">
+                <Link href="/category/shoes" className="hover:text-white transition-colors block py-0.5">
                   {t("Cricket Shoes", "ক্রিকেট জুতো")}
                 </Link>
               </li>
