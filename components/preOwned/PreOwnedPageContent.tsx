@@ -7,28 +7,23 @@ import {
   ShieldCheck,
   Check,
   Star,
-  RefreshCw,
   Search,
   ShoppingCart,
-  ArrowRight,
-  Flame,
-  Award,
-  Sparkles,
   ChevronRight,
   ChevronDown,
   ChevronUp,
-  RotateCcw,
-  CheckCircle2,
   SlidersHorizontal,
   X,
-  Filter,
+  Award,
   Truck,
-  Eye,
+  RotateCcw,
+  BadgeCheck,
+  CheckCircle2,
 } from "lucide-react";
 import ProductCardMedia from "@/components/products/ProductCardMedia";
-import { Product, getProductViews } from "@/lib/productsData";
+import { Product } from "@/lib/productsData";
 import { useCart } from "@/context/CartContext";
-import TradeInModal from "./TradeInModal";
+import { useLanguage } from "@/context/LanguageContext";
 
 type GradeType = "Grade A+" | "Grade A" | "Grade B";
 
@@ -38,12 +33,12 @@ interface PreOwnedItem extends Product {
   inspectionNote: string;
 }
 
-// Dedicated Pre-Owned Catalog tailored to Bangladesh cricketers
+// Official Certified Pre-Owned Catalog curated & sold exclusively by PLAYZONE authorities
 const PRE_OWNED_CATALOG: PreOwnedItem[] = [
   {
     id: "ss-ton-reserve-edition",
     slug: "ss-ton-reserve-edition",
-    name: "SS TON Reserve Edition Cricket Bat",
+    name: "SS TON Reserve Edition Cricket Bat (Pre-Owned Grade A)",
     brand: "SS Sunridges",
     category: "Cricket Bats",
     categorySlug: "cricket-bats",
@@ -56,73 +51,73 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     inStock: true,
     stockCount: 3,
     images: ["/images/products/bats/ss_ton.png"],
-    shortDescription: "Grade A pre-owned English Willow bat. Seasoned and match-ready.",
-    description: "Inspected by PLAYZONE master bat-makers. Zero handle cracks, clean ping, newly oiled and gripped.",
-    highlights: ["Grade A Condition (9/10)", "Fully Seasoned & Match Ready", "New Grip & Toe Guard"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    shortDescription: "Grade A certified pre-owned English Willow bat. Seasoned and match-ready.",
+    description: "Inspected by PLAYZONE master bat-makers. Zero handle cracks, clean acoustic ping, newly oiled and gripped.",
+    highlights: ["Grade A Match Ready Condition", "Inspected by PLAYZONE Master Bat-Makers", "Acoustic Mallet Tested", "Free Scuff Sheet Installed"],
+    specs: [{ label: "Condition", value: "Grade A (9.0/10)" }, { label: "Authority Inspection", value: "Verified 100% Sound" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
-    conditionScore: "9.2/10 Condition",
-    inspectionNote: "Acoustic ping verified • Zero handle stress",
+    conditionScore: "9.0/10 Match-Ready",
+    inspectionNote: "Clean face • Fresh chevron grip fitted",
   },
   {
-    id: "sf-stanford-players-edition",
-    slug: "sf-stanford-players-edition",
-    name: "SF Stanford Players Edition Cricket Bat",
+    id: "sf-stanford-players",
+    slug: "sf-stanford-players",
+    name: "SF Stanford Players Edition Cricket Bat (Pre-Owned Grade A)",
     brand: "SF Stanford",
     category: "Cricket Bats",
     categorySlug: "cricket-bats",
-    price: 3600,
-    originalPrice: 6500,
-    discountPercent: 45,
+    price: 5200,
+    originalPrice: 9200,
+    discountPercent: 43,
     badge: "PRE-OWNED - GRADE A",
-    rating: 4.6,
-    reviewsCount: 52,
+    rating: 4.7,
+    reviewsCount: 56,
     inStock: true,
     stockCount: 2,
-    images: ["/images/products/bats/sf_bat.png"],
-    shortDescription: "Naturally aged English willow with outstanding rebound response.",
-    description: "Graded and prepared. Refitted with high-traction grip and fresh Extratec face sheet.",
-    highlights: ["Grade A Condition (9/10)", "Deep ping resonance", "Toe guard fitted"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    images: ["/images/products/bats/sf_stanford.png"],
+    shortDescription: "Grade A pre-owned player profile willow. Massive profile with light pick-up.",
+    description: "Thoroughly inspected for handle flex and surface delamination. 100% structural integrity guaranteed.",
+    highlights: ["Player profile edges", "Light pick-up and balance", "Master craftsman inspected"],
+    specs: [{ label: "Condition", value: "Grade A (8.8/10)" }, { label: "Authority Inspection", value: "Verified Handle Integrity" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
-    conditionScore: "9.0/10 Condition",
-    inspectionNote: "Straight grains • Sanded & re-oiled",
+    conditionScore: "8.8/10",
+    inspectionNote: "Slight toe surface wear • Solid middle",
   },
   {
-    id: "sg-savage-english-willow",
-    slug: "sg-savage-english-willow",
-    name: "SG Savage Edition English Willow (Pre-Owned)",
+    id: "sg-savage-edition",
+    slug: "sg-savage-edition",
+    name: "SG Savage Edition English Willow (Pre-Owned Grade A+)",
     brand: "SG Cricket",
     category: "Cricket Bats",
     categorySlug: "cricket-bats",
-    price: 5200,
-    originalPrice: 9500,
-    discountPercent: 45,
-    badge: "PRE-OWNED - GRADE A",
-    rating: 4.9,
-    reviewsCount: 114,
+    price: 8500,
+    originalPrice: 14000,
+    discountPercent: 39,
+    badge: "PRE-OWNED - GRADE A+",
+    rating: 4.8,
+    reviewsCount: 124,
     inStock: true,
-    stockCount: 4,
-    images: ["/images/products/bats/sg_bat.png"],
-    shortDescription: "Like-new condition. Played only 2 net sessions. Massive 40mm power edges.",
-    description: "Mint condition Grade A+ English Willow. Flawless face, perfectly balanced Sarawak cane handle.",
-    highlights: ["Grade A+ Mint Condition (9.5/10)", "Huge 40mm edges", "Ready for match play"],
-    specs: [{ label: "Condition", value: "Grade A+ (9.5/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    stockCount: 1,
+    images: ["/images/products/bats/sg_savage.png"],
+    shortDescription: "Grade A+ mint condition bat. Played only 2 net sessions. Spotless face.",
+    description: "Mint condition English Willow. Selected test cleft, full profile, virtually indistinguishable from brand new.",
+    highlights: ["Mint Grade A+ Condition", "Like-New Cleft & Face", "Fully Knocked and Extratec Protected"],
+    specs: [{ label: "Condition", value: "Grade A+ (9.5/10)" }, { label: "Authority Inspection", value: "Passed 12-Point Test" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A+",
-    conditionScore: "9.5/10 Like-New",
-    inspectionNote: "Only 2 net sessions • Flawless blade",
+    conditionScore: "9.5/10 Mint",
+    inspectionNote: "Played 2 net sessions • Pristine face",
   },
   {
     id: "kookaburra-aura-pro",
@@ -131,26 +126,26 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     brand: "Kookaburra",
     category: "Cricket Bats",
     categorySlug: "cricket-bats",
-    price: 4500,
-    originalPrice: 8200,
-    discountPercent: 45,
+    price: 7200,
+    originalPrice: 12500,
+    discountPercent: 42,
     badge: "PRE-OWNED - GRADE A",
     rating: 4.7,
-    reviewsCount: 76,
+    reviewsCount: 189,
     inStock: true,
-    stockCount: 3,
-    images: ["/images/products/bats/kookaburra_bat.png"],
-    shortDescription: "Australian profile with sweeping spine contour. Seasoned English Willow.",
-    description: "Inspected and graded. Re-oiled and fitted with new grip. Extraordinary pick-up.",
-    highlights: ["Grade A Condition (9/10)", "Lightweight feel", "Dynamic power face"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    stockCount: 2,
+    images: ["/images/products/bats/kookaburra_aura.png"],
+    shortDescription: "Grade A Kookaburra Aura Pro. High sweet spot suited for Bangladeshi wickets.",
+    description: "Inspected by PLAYZONE authorities. No edge cracks, solid rebound response across ping mallet test.",
+    highlights: ["Grade A Match Condition", "Featherlight pickup", "Pre-seasoned with anti-scuff sheet"],
+    specs: [{ label: "Condition", value: "Grade A (9.0/10)" }, { label: "Authority Inspection", value: "Acoustic Mallet Verified" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
-    conditionScore: "9.1/10 Condition",
-    inspectionNote: "Acoustic mallet tested • 100% sound",
+    conditionScore: "9.0/10",
+    inspectionNote: "Superb ping • Fresh white grip",
   },
   {
     id: "mrf-genius-grand-edition",
@@ -159,77 +154,76 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     brand: "MRF",
     category: "Cricket Bats",
     categorySlug: "cricket-bats",
-    price: 5900,
-    originalPrice: 11500,
-    discountPercent: 49,
+    price: 9800,
+    originalPrice: 17000,
+    discountPercent: 42,
     badge: "PRE-OWNED - GRADE A",
     rating: 4.9,
-    reviewsCount: 142,
+    reviewsCount: 215,
     inStock: true,
-    stockCount: 2,
-    images: ["/images/products/bats/mrf.png"],
-    shortDescription: "Player spec Grade 1 English Willow at half the price. Exceptional middle.",
-    description: "Grade A pre-owned. 9 straight grains, clean face, newly fitted rubber toe protector.",
-    highlights: ["Grade A Condition (9.3/10)", "9 Straight grains", "Superb ping"],
-    specs: [{ label: "Condition", value: "Grade A (9.3/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    stockCount: 1,
+    images: ["/images/products/bats/mrf_genius.png"],
+    shortDescription: "Grade A Virat Kohli replica shape. Grade 1 English Willow.",
+    description: "Premium MRF Genius cleft inspected by PlayZone master bat-makers. Perfect rebound, clear ping sound.",
+    highlights: ["VK replica profile", "38mm edges & massive spine", "Inspected & certified"],
+    specs: [{ label: "Condition", value: "Grade A (9.1/10)" }, { label: "Authority Inspection", value: "Master Craftsman Approved" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
-    conditionScore: "9.3/10 Condition",
-    inspectionNote: "Grade 1 English cleft • Clean rebound",
+    conditionScore: "9.1/10",
+    inspectionNote: "Natural straight grains • Zero handle twist",
   },
   {
-    id: "dsc-split-44-kashmir",
-    slug: "dsc-split-44-kashmir",
-    name: "DSC Split 44 Power Bat (Pre-Owned Grade B)",
-    brand: "DSC",
+    id: "ca-plus-15000-player",
+    slug: "ca-plus-15000-player",
+    name: "CA Plus 15000 Player Edition (Pre-Owned Grade A+)",
+    brand: "CA Sports",
     category: "Cricket Bats",
     categorySlug: "cricket-bats",
-    price: 1650,
-    originalPrice: 2800,
-    discountPercent: 41,
-    badge: "PRE-OWNED - GRADE A",
-    rating: 4.4,
-    reviewsCount: 68,
+    price: 8900,
+    originalPrice: 15500,
+    discountPercent: 43,
+    badge: "PRE-OWNED - GRADE A+",
+    rating: 4.8,
+    reviewsCount: 112,
     inStock: true,
-    stockCount: 6,
-    images: ["/images/products/bats/dsc_bat.png"],
-    shortDescription: "Budget powerhouse for tape-ball and club net practice. Solid meat behind the mid.",
-    description: "Honest surface cosmetic wear, but structurally 100% sound. Maximum power per Taka.",
-    highlights: ["Grade B Value Condition (8/10)", "Ideal for heavy practice", "New grip"],
-    specs: [{ label: "Condition", value: "Grade B (8/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    stockCount: 2,
+    images: ["/images/products/bats/ca_plus.png"],
+    shortDescription: "Grade A+ mint Pakistani English Willow bat with immense hitting power.",
+    description: "Acquired and certified by PlayZone. Outstanding rebound ping, seasoned with mallet knock-in, clean finish.",
+    highlights: ["Grade A+ Mint", "Huge 40mm edges", "Pre-knocked & ready for match play"],
+    specs: [{ label: "Condition", value: "Grade A+ (9.4/10)" }, { label: "Authority Inspection", value: "Ping Tested 100%" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
-    grade: "Grade B",
-    conditionScore: "8.0/10 Value",
-    inspectionNote: "Superb for nets • Solid handle",
+    grade: "Grade A+",
+    conditionScore: "9.4/10 Mint",
+    inspectionNote: "Only net knocked • Zero surface cracks",
   },
-  // BATTING GEAR & PROTECTION
   {
-    id: "new-balance-tc-batting-pads",
-    slug: "new-balance-tc-batting-pads",
-    name: "New Balance TC 1260 Batting Pads (Pre-Owned)",
-    brand: "New Balance",
-    category: "Batting Gear",
-    categorySlug: "batting",
-    price: 2900,
-    originalPrice: 5200,
-    discountPercent: 44,
+    id: "ss-ton-gladiator-pads",
+    slug: "ss-ton-gladiator-pads",
+    name: "SS TON Gladiator Batting Pads (Pre-Owned Grade A)",
+    brand: "SS Sunridges",
+    category: "Protection",
+    categorySlug: "protection",
+    price: 2400,
+    originalPrice: 4200,
+    discountPercent: 43,
     badge: "PRE-OWNED - GRADE A",
-    rating: 4.8,
-    reviewsCount: 86,
+    rating: 4.7,
+    reviewsCount: 82,
     inStock: true,
     stockCount: 4,
-    images: ["/images/products/batting_essentials/new_balance_pads.png"],
-    shortDescription: "Pro level vertical cane legguards with clean white facing and intact straps.",
-    description: "Pre-owned Grade A condition. Cleaned and sanitized, zero structural damage.",
-    highlights: ["Grade A Condition (9/10)", "Lightweight 820g per pad", "Sanitized"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    images: ["/images/products/batting_essentials/ss_ton_batting_pads.png"],
+    shortDescription: "Grade A pre-owned lightweight high-density foam batting leggings.",
+    description: "Sanitized and checked by PLAYZONE staff. Velcro straps in mint condition, clean PU face, zero structural tears.",
+    highlights: ["Clean sanitized PU face", "Pristine velcro grip", "Lightweight HD foam rods"],
+    specs: [{ label: "Condition", value: "Grade A (9.0/10)" }, { label: "Hygiene", value: "Antimicrobial Sanitized" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -238,68 +232,12 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     inspectionNote: "Clean white PU • Spotless velcro",
   },
   {
-    id: "gray-nicolls-elite-helmet",
-    slug: "gray-nicolls-elite-helmet",
-    name: "Gray-Nicolls Elite Cricket Helmet (Pre-Owned)",
-    brand: "Gray-Nicolls",
-    category: "Protection",
-    categorySlug: "batting",
-    price: 3600,
-    originalPrice: 6200,
-    discountPercent: 42,
-    badge: "PRE-OWNED - GRADE A",
-    rating: 4.9,
-    reviewsCount: 128,
-    inStock: true,
-    stockCount: 4,
-    images: ["/images/products/batting_essentials/gray_nicolls_helmet.png"],
-    shortDescription: "Pre-owned Grade A cricket helmet. Cleaned and sanitized; sold as-is without safety warranty.",
-    description: "Visually inspected for shell integrity and grille firmness. Cleaned and sanitized. Note: Pre-owned helmets are sold as-is without warranty; players should independently confirm sizing and condition before play.",
-    highlights: ["Grade A Cosmetic Condition", "High tensile steel grille", "Sanitized inner lining", "Sold as-is without safety warranty"],
-    specs: [{ label: "Condition", value: "Grade A (Cosmetic)" }, { label: "Important Note", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
-    deliveryDaysDhaka: "24 Hours Delivery",
-    deliveryDaysNationwide: "2 - 3 Days Nationwide",
-    reviews: [],
-    grade: "Grade A",
-    conditionScore: "9.2/10 Condition",
-    inspectionNote: "Shell and grille visually intact (sold as-is)",
-  },
-  {
-    id: "gray-nicolls-thigh-guard",
-    slug: "gray-nicolls-thigh-guard",
-    name: "Gray-Nicolls All-in-One Thigh Guard (Pre-Owned)",
-    brand: "Gray-Nicolls",
-    category: "Protection",
-    categorySlug: "batting",
-    price: 1800,
-    originalPrice: 3200,
-    discountPercent: 44,
-    badge: "PRE-OWNED - GRADE A",
-    rating: 4.6,
-    reviewsCount: 72,
-    inStock: true,
-    stockCount: 6,
-    images: ["/images/products/batting_essentials/gray_nicolls_thigh_guard_upscaled.png"],
-    shortDescription: "Dual thigh combination pad. High-density molded EVA foam with poly shell inserts.",
-    description: "Pre-owned Grade A, fully washed and sanitized with pristine velcro straps.",
-    highlights: ["Grade A Condition (9/10)", "Molded HD EVA Foam", "Sanitized & Fresh"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
-    deliveryDaysDhaka: "24 Hours Delivery",
-    deliveryDaysNationwide: "2 - 3 Days Nationwide",
-    reviews: [],
-    grade: "Grade A",
-    conditionScore: "9.0/10 Condition",
-    inspectionNote: "Elastic bands intact • Sanitized",
-  },
-  {
     id: "sg-test-batting-gloves",
     slug: "sg-test-batting-gloves",
     name: "SG Test Batting Gloves (Pre-Owned Grade A)",
     brand: "SG Cricket",
-    category: "Batting Gear",
-    categorySlug: "batting",
+    category: "Protection",
+    categorySlug: "protection",
     price: 1850,
     originalPrice: 3200,
     discountPercent: 42,
@@ -308,20 +246,19 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     reviewsCount: 64,
     inStock: true,
     stockCount: 5,
-    images: ["/images/products/batting_essentials/sg_gloves.png"],
-    shortDescription: "Soft sheep leather palm, multi-split sausage rolls. Fully sanitized with zero tears.",
-    description: "Gently used for 3 matches. Sanitized with antimicrobial leather treatment. Soft, flexible palm.",
-    highlights: ["Grade A Condition (9/10)", "Supple sheep leather", "Antimicrobial treated"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    images: ["/images/products/batting_essentials/sg_test_batting_gloves.png"],
+    shortDescription: "Grade A Pittards leather palm batting gloves. Cleaned and conditioned.",
+    description: "Inspected for finger sausage padding integrity and leather palm suppleness. Sanitized with leather-safe antimicrobial spray.",
+    highlights: ["Pittards leather palm intact", "Three-piece split thumb", "Sanitized inner lining"],
+    specs: [{ label: "Condition", value: "Grade A (8.9/10)" }, { label: "Hygiene", value: "Antimicrobial Sanitized" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
-    conditionScore: "9.0/10 Condition",
-    inspectionNote: "Treated & sanitized • Zero seam tears",
+    conditionScore: "8.9/10 Condition",
+    inspectionNote: "Leather palm soft & intact • Sanitized",
   },
-  // SHOES & KIT BAGS
   {
     id: "adidas-22yds-spikes",
     slug: "adidas-22yds-spikes",
@@ -329,104 +266,104 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
     brand: "Adidas",
     category: "Cricket Shoes",
     categorySlug: "shoes",
-    price: 4400,
-    originalPrice: 7800,
-    discountPercent: 44,
+    price: 3800,
+    originalPrice: 7200,
+    discountPercent: 47,
     badge: "PRE-OWNED - GRADE A",
-    rating: 4.7,
-    reviewsCount: 39,
+    rating: 4.8,
+    reviewsCount: 45,
     inStock: true,
-    stockCount: 3,
-    images: ["/images/products/shoes_bags/adidas_spikes.png"],
-    shortDescription: "Pro metal spikes for turf wickets. Complete set of fresh replacement spikes included.",
-    description: "Inspected for upper integrity and sole plate rigidity. Thoroughly washed and deodorized.",
-    highlights: ["Grade A Condition (8.8/10)", "Spikes wrench key included", "Sanitized"],
-    specs: [{ label: "Condition", value: "Grade A (8.8/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    stockCount: 2,
+    images: ["/images/products/cricket_shoes/adidas_22yds.png"],
+    shortDescription: "Grade A match-used cricket bowling spikes. Fresh replacement studs installed.",
+    description: "Outsole treads verified 100% sound. New replacement metal studs screwed in and torqued by PLAYZONE technicians.",
+    highlights: ["Fresh steel spikes installed", "BOOST midsole intact", "Deep steam sanitized"],
+    specs: [{ label: "Condition", value: "Grade A (9.0/10)" }, { label: "Studs", value: "Brand New Spikes Installed" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
-    conditionScore: "8.8/10 Condition",
-    inspectionNote: "Sole plate solid • New spike set",
+    conditionScore: "9.0/10",
+    inspectionNote: "Upper pristine • Outsole studs brand new",
   },
   {
-    id: "playzone-pro-wheelie-bag",
-    slug: "playzone-pro-wheelie-bag",
+    id: "playzone-pro-kit-bag",
+    slug: "playzone-pro-kit-bag",
     name: "PLAYZONE Pro Wheelie Kit Bag (Pre-Owned Grade A)",
     brand: "PLAYZONE",
     category: "Kit Bags",
     categorySlug: "accessories",
-    price: 4600,
-    originalPrice: 8500,
-    discountPercent: 46,
+    price: 3200,
+    originalPrice: 5800,
+    discountPercent: 45,
     badge: "PRE-OWNED - GRADE A",
-    rating: 4.8,
-    reviewsCount: 31,
-    inStock: true,
-    stockCount: 4,
-    images: ["/images/products/shoes_bags/playzone_wheelie_bag.png"],
-    shortDescription: "Heavy duty tractor wheelie bag. 3-bat padded compartment and separate shoe tunnel.",
-    description: "All zippers and tractor wheel bearings verified and lubricated. Clean ballistic nylon exterior.",
-    highlights: ["Grade A Condition (9/10)", "Heavy tractor wheels", "Zippers 100% smooth"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
-    deliveryDaysDhaka: "24 Hours Delivery",
-    deliveryDaysNationwide: "2 - 3 Days Nationwide",
-    reviews: [],
-    grade: "Grade A",
-    conditionScore: "9.0/10 Condition",
-    inspectionNote: "Wheels lubricated • Heavy duty 1680D",
-  },
-  {
-    id: "kookaburra-pro-keeper-gloves-preowned",
-    slug: "kookaburra-pro-keeper-gloves",
-    name: "Kookaburra Pro 500 Wicket Keeping Gloves (Pre-Owned)",
-    brand: "Kookaburra",
-    category: "Wicketkeeping",
-    categorySlug: "wicketkeeping",
-    price: 2200,
-    originalPrice: 4200,
-    discountPercent: 48,
-    badge: "PRE-OWNED - GRADE A",
-    rating: 4.8,
-    reviewsCount: 22,
+    rating: 4.9,
+    reviewsCount: 78,
     inStock: true,
     stockCount: 3,
-    images: ["/images/categories/batting_gloves.png"],
-    shortDescription: "ICC compliant octopus grip wicketkeeping gloves. Sanitized leather palm.",
-    description: "Supple sheep leather with zero webbing rips. Completely disinfected and tested for flexibility.",
-    highlights: ["Grade A Condition (9/10)", "Octopus Grip", "Clean & Sanitized"],
-    specs: [{ label: "Condition", value: "Grade A (9/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    images: ["/images/categories/kit_bags.png"],
+    shortDescription: "Grade A full equipment player wheelie bag with internal bat cave.",
+    description: "Inspected zippers, wheels, and pull-up handle. Tested to roll smoothly with full 15kg cricket equipment weight.",
+    highlights: ["All heavy-duty zippers tested", "Smooth tractor wheels", "Holds 3 full bats + pads"],
+    specs: [{ label: "Condition", value: "Grade A (9.2/10)" }, { label: "Zippers & Wheels", value: "100% Functional" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
     grade: "Grade A",
-    conditionScore: "9.1/10 Condition",
-    inspectionNote: "Intact web seam • Sanitized lining",
+    conditionScore: "9.2/10",
+    inspectionNote: "Smooth rolling wheels • Clean interior",
   },
   {
-    id: "ss-matrix-bat-preowned",
-    slug: "ss-matrix-bat-grip-pack",
+    id: "kookaburra-pro-500-wk",
+    slug: "kookaburra-pro-500-wk",
+    name: "Kookaburra Pro 500 Wicket Keeping Gloves (Pre-Owned Grade A)",
+    brand: "Kookaburra",
+    category: "Accessories",
+    categorySlug: "accessories",
+    price: 2100,
+    originalPrice: 3800,
+    discountPercent: 45,
+    badge: "PRE-OWNED - GRADE A",
+    rating: 4.6,
+    reviewsCount: 39,
+    inStock: true,
+    stockCount: 2,
+    images: ["/images/categories/wicketkeeping.png"],
+    shortDescription: "Grade A octopus rubber grip keeping gloves. Fully cleaned & sanitized.",
+    description: "Rubber cup dimples 95% intact. Flexible wrist cuff, webbed catching pouch inspected by PLAYZONE specialists.",
+    highlights: ["Octopus rubber dimples intact", "Flexible reinforced cuff", "Sanitized inner lining"],
+    specs: [{ label: "Condition", value: "Grade A (8.9/10)" }, { label: "Hygiene", value: "Antimicrobial Sanitized" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
+    deliveryDaysDhaka: "24 Hours Delivery",
+    deliveryDaysNationwide: "2 - 3 Days Nationwide",
+    reviews: [],
+    grade: "Grade A",
+    conditionScore: "8.9/10",
+    inspectionNote: "Grip intact • Sanitized inner lining",
+  },
+  {
+    id: "ss-matrix-pro-bat",
+    slug: "ss-matrix-pro-bat",
     name: "SS Matrix Pro Club Bat (Pre-Owned Grade B)",
     brand: "SS Sunridges",
     category: "Cricket Bats",
     categorySlug: "cricket-bats",
-    price: 1950,
-    originalPrice: 3500,
-    discountPercent: 44,
-    badge: "PRE-OWNED - GRADE A",
+    price: 3200,
+    originalPrice: 6500,
+    discountPercent: 51,
+    badge: "PRE-OWNED - GRADE B",
     rating: 4.5,
-    reviewsCount: 34,
+    reviewsCount: 31,
     inStock: true,
-    stockCount: 5,
+    stockCount: 3,
     images: ["/images/products/bats/ss_ton.png"],
-    shortDescription: "Tough practice bat with massive power profile. Fresh grip and Extratec sheet fitted.",
-    description: "Ideal for club practice sessions and cement net wickets. Strong cane handle with new grip.",
-    highlights: ["Grade B Value Condition (8.2/10)", "New grip fitted", "Great for practice"],
-    specs: [{ label: "Condition", value: "Grade B (8.2/10)" }, { label: "Warranty Notice", value: "Sold as-is without warranty" }],
-    warranty: "No Warranty (Sold As-Is)",
+    shortDescription: "Grade B practice and club match English Willow bat with immense sweet spot value.",
+    description: "Has surface ball marks from active league use, but handle flex and blade rebound are 100% sound. Ideal for intensive net practice.",
+    highlights: ["Budget tournament & net practice workhorse", "100% sound handle integrity", "Extratec sheet newly applied"],
+    specs: [{ label: "Condition", value: "Grade B (8.2/10)" }, { label: "Integrity", value: "Sound Handle & Blade" }],
+    warranty: "Sold Directly by PlayZone (Inspected As-Is)",
     deliveryDaysDhaka: "24 Hours Delivery",
     deliveryDaysNationwide: "2 - 3 Days Nationwide",
     reviews: [],
@@ -436,68 +373,56 @@ const PRE_OWNED_CATALOG: PreOwnedItem[] = [
   },
 ];
 
-// Department Filter Definitions
 const PRE_OWNED_CATEGORIES = [
   { id: "all", name: "All Pre-Owned Gear" },
   { id: "cricket-bats", name: "Cricket Bats" },
-  { id: "pads-gloves", name: "Batting Pads & Gloves" },
-  { id: "protection", name: "Helmets & Body Armour" },
-  { id: "shoes", name: "Footwear & Spikes" },
-  { id: "accessories", name: "Kit Bags & Gear" },
+  { id: "pads-gloves", name: "Pads & Gloves" },
+  { id: "shoes", name: "Spikes & Footwear" },
+  { id: "accessories", name: "Kit Bags & Protection" },
 ];
 
 const PRE_OWNED_GRADES = [
   { id: "all", label: "All Condition Grades" },
-  { id: "Grade A+", label: "Grade A+ (Like New • 9.5/10)", badge: "Mint" },
-  { id: "Grade A", label: "Grade A (Match Ready • 9.0/10)", badge: "Popular" },
-  { id: "Grade B", label: "Grade B (Practice Value • 8.0/10)", badge: "Value" },
-];
-
-const PRE_OWNED_BRANDS = [
-  "SS Sunridges",
-  "SG Cricket",
-  "Kookaburra",
-  "MRF",
-  "Gray-Nicolls",
-  "New Balance",
-  "Adidas",
-  "DSC",
-  "SF Stanford",
-  "PLAYZONE",
+  { id: "Grade A+", label: "Grade A+ (Mint • 9.5/10)" },
+  { id: "Grade A", label: "Grade A (Match Ready • 9.0/10)" },
+  { id: "Grade B", label: "Grade B (Practice/Club • 8.0/10)" },
 ];
 
 export default function PreOwnedPageContent() {
+  const { t } = useLanguage();
   const { addItem, openCart } = useCart();
 
-  // Filters State
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedGrade, setSelectedGrade] = useState<string>("all");
+  // Filter States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedGrade, setSelectedGrade] = useState("all");
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(15000);
+  const [maxPrice, setMaxPrice] = useState<number>(10000);
   const [minRating, setMinRating] = useState<number | null>(null);
-  const [inStockOnly, setInStockOnly] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [sortBy, setSortBy] = useState<string>("savings");
-
-  // Mobile Drawer State
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
-  const [isTradeInOpen, setIsTradeInOpen] = useState<boolean>(false);
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [sortBy, setSortBy] = useState("recommended");
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Accordion Sections State
+  // Accordion Toggles for Sidebar
   const [openSections, setOpenSections] = useState({
-    search: true,
     category: true,
     grade: true,
     brand: true,
     price: true,
-    rating: true,
+    rating: false,
   });
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
+
+  // Extract unique brands dynamically
+  const availableBrands = useMemo(() => {
+    const set = new Set<string>();
+    PRE_OWNED_CATALOG.forEach((item) => set.add(item.brand));
+    return Array.from(set).sort();
+  }, []);
 
   const handleBrandToggle = (brand: string) => {
     setSelectedBrands((prev) =>
@@ -506,97 +431,110 @@ export default function PreOwnedPageContent() {
   };
 
   const handleResetFilters = () => {
+    setSearchQuery("");
     setSelectedCategory("all");
     setSelectedGrade("all");
     setSelectedBrands([]);
-    setMinPrice(0);
-    setMaxPrice(15000);
+    setMaxPrice(10000);
     setMinRating(null);
     setInStockOnly(false);
-    setSearchQuery("");
+    setSortBy("recommended");
   };
-
-  const activeFilterCount =
-    (selectedCategory !== "all" ? 1 : 0) +
-    (selectedGrade !== "all" ? 1 : 0) +
-    selectedBrands.length +
-    (minRating !== null ? 1 : 0) +
-    (minPrice > 0 || maxPrice < 15000 ? 1 : 0) +
-    (inStockOnly ? 1 : 0) +
-    (searchQuery.trim() ? 1 : 0);
 
   // Filter & Sort Logic
   const filteredItems = useMemo(() => {
-    return PRE_OWNED_CATALOG.filter((item) => {
-      // 1. Search Query
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase().trim();
-        const matchesName = item.name.toLowerCase().includes(query);
-        const matchesBrand = item.brand.toLowerCase().includes(query);
-        const matchesGrade = item.grade.toLowerCase().includes(query);
-        if (!matchesName && !matchesBrand && !matchesGrade) return false;
+    let result = [...PRE_OWNED_CATALOG];
+
+    // 1. Search Query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      result = result.filter(
+        (item) =>
+          item.name.toLowerCase().includes(q) ||
+          item.brand.toLowerCase().includes(q) ||
+          item.category.toLowerCase().includes(q) ||
+          item.grade.toLowerCase().includes(q)
+      );
+    }
+
+    // 2. Category
+    if (selectedCategory !== "all") {
+      if (selectedCategory === "cricket-bats") {
+        result = result.filter((item) => item.categorySlug === "cricket-bats");
+      } else if (selectedCategory === "pads-gloves") {
+        result = result.filter(
+          (item) =>
+            item.categorySlug === "protection" ||
+            item.name.toLowerCase().includes("pad") ||
+            item.name.toLowerCase().includes("glove")
+        );
+      } else if (selectedCategory === "shoes") {
+        result = result.filter((item) => item.categorySlug === "shoes");
+      } else if (selectedCategory === "accessories") {
+        result = result.filter(
+          (item) =>
+            item.categorySlug === "accessories" ||
+            item.categorySlug === "kit-bags" ||
+            item.name.toLowerCase().includes("bag") ||
+            item.name.toLowerCase().includes("keeping")
+        );
       }
+    }
 
-      // 2. Category Filter
-      if (selectedCategory === "cricket-bats" && item.categorySlug !== "cricket-bats") return false;
-      if (
-        selectedCategory === "pads-gloves" &&
-        !item.name.toLowerCase().includes("pad") &&
-        !item.name.toLowerCase().includes("glove")
-      )
-        return false;
-      if (
-        selectedCategory === "protection" &&
-        !item.name.toLowerCase().includes("helmet") &&
-        !item.name.toLowerCase().includes("guard")
-      )
-        return false;
-      if (selectedCategory === "shoes" && item.categorySlug !== "shoes") return false;
-      if (
-        selectedCategory === "accessories" &&
-        item.categorySlug !== "accessories" &&
-        !item.name.toLowerCase().includes("bag")
-      )
-        return false;
+    // 3. Condition Grade
+    if (selectedGrade !== "all") {
+      result = result.filter((item) => item.grade === selectedGrade);
+    }
 
-      // 3. Condition Grade Filter
-      if (selectedGrade !== "all" && item.grade !== selectedGrade) return false;
+    // 4. Brands
+    if (selectedBrands.length > 0) {
+      result = result.filter((item) => selectedBrands.includes(item.brand));
+    }
 
-      // 4. Brand Filter
-      if (selectedBrands.length > 0 && !selectedBrands.includes(item.brand)) return false;
+    // 5. Max Price
+    result = result.filter((item) => item.price <= maxPrice);
 
-      // 5. Price Range
-      if (item.price < minPrice || item.price > maxPrice) return false;
+    // 6. Minimum Rating
+    if (minRating !== null) {
+      result = result.filter((item) => item.rating >= minRating);
+    }
 
-      // 6. Rating Filter
-      if (minRating !== null && item.rating < minRating) return false;
+    // 7. In Stock
+    if (inStockOnly) {
+      result = result.filter((item) => item.inStock);
+    }
 
-      // 7. In-Stock Only
-      if (inStockOnly && !item.inStock) return false;
+    // Sorting
+    if (sortBy === "price-low") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-high") {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "savings") {
+      result.sort((a, b) => (b.discountPercent || 0) - (a.discountPercent || 0));
+    } else if (sortBy === "rating") {
+      result.sort((a, b) => b.rating - a.rating);
+    }
 
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === "price-low") return a.price - b.price;
-      if (sortBy === "price-high") return b.price - a.price;
-      if (sortBy === "rating") return b.rating - a.rating;
-      if (sortBy === "grade-a-plus") {
-        const gradeRank: Record<GradeType, number> = { "Grade A+": 3, "Grade A": 2, "Grade B": 1 };
-        return gradeRank[b.grade] - gradeRank[a.grade];
-      }
-      // Default: Highest savings %
-      return (b.discountPercent || 0) - (a.discountPercent || 0);
-    });
+    return result;
   }, [
     searchQuery,
     selectedCategory,
     selectedGrade,
     selectedBrands,
-    minPrice,
     maxPrice,
     minRating,
     inStockOnly,
     sortBy,
   ]);
+
+  const activeFiltersCount =
+    (searchQuery.trim() ? 1 : 0) +
+    (selectedCategory !== "all" ? 1 : 0) +
+    (selectedGrade !== "all" ? 1 : 0) +
+    selectedBrands.length +
+    (maxPrice < 10000 ? 1 : 0) +
+    (minRating !== null ? 1 : 0) +
+    (inStockOnly ? 1 : 0);
 
   const handleQuickAdd = (item: PreOwnedItem, e: React.MouseEvent) => {
     e.preventDefault();
@@ -609,32 +547,32 @@ export default function PreOwnedPageContent() {
       image: item.images[0],
       category: item.category,
     });
-    setToastMessage(`Added "${item.name}" to cart at pre-owned deal price!`);
-    setTimeout(() => setToastMessage(null), 3000);
+    setToastMessage(`Added "${item.name}" to cart at certified pre-owned price!`);
+    setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Reusable Filter Sidebar Content
+  // Sidebar Controls
   const renderFilterControls = () => (
-    <div className="space-y-4">
-      {/* 1. Real-time Search */}
+    <div className="space-y-5">
+      {/* Search Input */}
       <div>
-        <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block mb-1.5">
+        <label className="text-xs font-bold text-zinc-900 uppercase tracking-wider block mb-1.5">
           Search Pre-Owned Gear
         </label>
         <div className="relative">
-          <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search bat, pad, brand..."
-            className="w-full pl-8 pr-7 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-900 placeholder-zinc-400 outline-none focus:border-[#84cc16] transition-colors"
+            placeholder="e.g. SS TON, English Willow, Pads..."
+            className="w-full pl-9 pr-3 py-2 text-xs bg-zinc-50 border border-zinc-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-[#74d600] text-zinc-900 transition-all placeholder:text-zinc-400"
           />
+          <Search className="w-4 h-4 text-zinc-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -642,7 +580,7 @@ export default function PreOwnedPageContent() {
         </div>
       </div>
 
-      {/* 2. Department / Category Accordion */}
+      {/* 1. Category */}
       <div className="pt-3 border-t border-zinc-100">
         <button
           type="button"
@@ -660,45 +598,18 @@ export default function PreOwnedPageContent() {
           <div className="space-y-1">
             {PRE_OWNED_CATEGORIES.map((cat) => {
               const isSelected = selectedCategory === cat.id;
-              // Calculate dynamic count for each category
-              const count = PRE_OWNED_CATALOG.filter((item) => {
-                if (cat.id === "all") return true;
-                if (cat.id === "cricket-bats") return item.categorySlug === "cricket-bats";
-                if (cat.id === "pads-gloves")
-                  return (
-                    item.name.toLowerCase().includes("pad") ||
-                    item.name.toLowerCase().includes("glove")
-                  );
-                if (cat.id === "protection")
-                  return (
-                    item.name.toLowerCase().includes("helmet") ||
-                    item.name.toLowerCase().includes("guard")
-                  );
-                if (cat.id === "shoes") return item.categorySlug === "shoes";
-                if (cat.id === "accessories")
-                  return item.categorySlug === "accessories" || item.name.toLowerCase().includes("bag");
-                return false;
-              }).length;
-
               return (
                 <button
                   key={cat.id}
                   type="button"
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer ${
+                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                     isSelected
                       ? "bg-zinc-950 text-white font-bold shadow-2xs"
-                      : "text-zinc-600 hover:bg-zinc-100 font-medium"
+                      : "text-zinc-600 hover:bg-zinc-100"
                   }`}
                 >
-                  <span className="truncate">{cat.name}</span>
-                  <span
-                    className={`text-[10px] ml-1 shrink-0 ${
-                      isSelected ? "text-zinc-400" : "text-zinc-400"
-                    }`}
-                  >
-                    {count}
-                  </span>
+                  <span>{cat.name}</span>
                 </button>
               );
             })}
@@ -706,14 +617,14 @@ export default function PreOwnedPageContent() {
         )}
       </div>
 
-      {/* 3. Condition / Inspection Grade */}
+      {/* 2. Condition Grade */}
       <div className="pt-3 border-t border-zinc-100">
         <button
           type="button"
           onClick={() => toggleSection("grade")}
           className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
         >
-          <span>Condition Grade</span>
+          <span>Inspection Grade</span>
           {openSections.grade ? (
             <ChevronUp className="w-4 h-4 text-zinc-400" />
           ) : (
@@ -721,34 +632,21 @@ export default function PreOwnedPageContent() {
           )}
         </button>
         {openSections.grade && (
-          <div className="space-y-1.5">
-            {PRE_OWNED_GRADES.map((gradeOption) => {
-              const isSelected = selectedGrade === gradeOption.id;
-              const count = PRE_OWNED_CATALOG.filter(
-                (item) => gradeOption.id === "all" || item.grade === gradeOption.id
-              ).length;
-
+          <div className="space-y-1">
+            {PRE_OWNED_GRADES.map((g) => {
+              const isSelected = selectedGrade === g.id;
               return (
                 <button
-                  key={gradeOption.id}
+                  key={g.id}
                   type="button"
-                  onClick={() => setSelectedGrade(gradeOption.id)}
-                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer ${
+                  onClick={() => setSelectedGrade(g.id)}
+                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                     isSelected
                       ? "bg-zinc-950 text-white font-bold shadow-2xs"
-                      : "text-zinc-600 hover:bg-zinc-100 font-medium"
+                      : "text-zinc-600 hover:bg-zinc-100"
                   }`}
                 >
-                  <div className="flex items-center gap-1.5">
-                    <span className="truncate">{gradeOption.label}</span>
-                  </div>
-                  <span
-                    className={`text-[10px] ml-1 shrink-0 ${
-                      isSelected ? "text-zinc-400" : "text-zinc-400"
-                    }`}
-                  >
-                    {count}
-                  </span>
+                  <span>{g.label}</span>
                 </button>
               );
             })}
@@ -756,14 +654,14 @@ export default function PreOwnedPageContent() {
         )}
       </div>
 
-      {/* 4. Brands Accordion */}
+      {/* 3. Brands */}
       <div className="pt-3 border-t border-zinc-100">
         <button
           type="button"
           onClick={() => toggleSection("brand")}
           className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
         >
-          <span>Brand</span>
+          <span>Brand ({availableBrands.length})</span>
           {openSections.brand ? (
             <ChevronUp className="w-4 h-4 text-zinc-400" />
           ) : (
@@ -771,27 +669,21 @@ export default function PreOwnedPageContent() {
           )}
         </button>
         {openSections.brand && (
-          <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1 scrollbar-thin">
-            {PRE_OWNED_BRANDS.map((brand) => {
+          <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
+            {availableBrands.map((brand) => {
               const isChecked = selectedBrands.includes(brand);
-              const brandCount = PRE_OWNED_CATALOG.filter((p) => p.brand === brand).length;
-              if (brandCount === 0) return null;
-
               return (
                 <label
                   key={brand}
-                  className="flex items-center justify-between text-xs text-zinc-700 hover:text-zinc-950 cursor-pointer font-medium select-none py-0.5"
+                  className="flex items-center gap-2 text-xs text-zinc-700 hover:text-zinc-950 cursor-pointer select-none"
                 >
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => handleBrandToggle(brand)}
-                      className="w-3.5 h-3.5 rounded border-zinc-300 text-[#84cc16] focus:ring-[#84cc16] accent-[#84cc16] cursor-pointer"
-                    />
-                    <span>{brand}</span>
-                  </div>
-                  <span className="text-[10px] text-zinc-400">({brandCount})</span>
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => handleBrandToggle(brand)}
+                    className="w-3.5 h-3.5 rounded border-zinc-300 text-[#74d600] focus:ring-[#74d600] accent-[#74d600] cursor-pointer"
+                  />
+                  <span>{brand}</span>
                 </label>
               );
             })}
@@ -799,14 +691,14 @@ export default function PreOwnedPageContent() {
         )}
       </div>
 
-      {/* 5. Price Range Accordion */}
+      {/* 4. Price Slider */}
       <div className="pt-3 border-t border-zinc-100">
         <button
           type="button"
           onClick={() => toggleSection("price")}
           className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
         >
-          <span>Price Range (BDT)</span>
+          <span>Max Price: ৳{maxPrice.toLocaleString()}</span>
           {openSections.price ? (
             <ChevronUp className="w-4 h-4 text-zinc-400" />
           ) : (
@@ -814,102 +706,25 @@ export default function PreOwnedPageContent() {
           )}
         </button>
         {openSections.price && (
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="flex-1">
-                <span className="text-[10px] text-zinc-400 block mb-0.5">Min (৳)</span>
-                <input
-                  type="number"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(Number(e.target.value) || 0)}
-                  className="w-full px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-bold text-zinc-800 outline-none focus:border-[#84cc16]"
-                />
-              </div>
-              <span className="text-zinc-400 pt-3">-</span>
-              <div className="flex-1">
-                <span className="text-[10px] text-zinc-400 block mb-0.5">Max (৳)</span>
-                <input
-                  type="number"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value) || 15000)}
-                  className="w-full px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-xs font-bold text-zinc-800 outline-none focus:border-[#84cc16]"
-                />
-              </div>
-            </div>
-
-            {/* Quick Price Range Chips */}
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                { label: "< ৳3,000", min: 0, max: 3000 },
-                { label: "৳3k - ৳5k", min: 3000, max: 5000 },
-                { label: "> ৳5,000", min: 5000, max: 15000 },
-              ].map((chip) => {
-                const isActive = minPrice === chip.min && maxPrice === chip.max;
-                return (
-                  <button
-                    key={chip.label}
-                    type="button"
-                    onClick={() => {
-                      setMinPrice(chip.min);
-                      setMaxPrice(chip.max);
-                    }}
-                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-colors cursor-pointer ${
-                      isActive
-                        ? "bg-zinc-950 text-white"
-                        : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-                    }`}
-                  >
-                    {chip.label}
-                  </button>
-                );
-              })}
+          <div className="space-y-2">
+            <input
+              type="range"
+              min={2000}
+              max={10000}
+              step={500}
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              className="w-full accent-[#74d600] cursor-pointer"
+            />
+            <div className="flex justify-between text-[11px] text-zinc-400">
+              <span>৳2,000</span>
+              <span>৳10,000</span>
             </div>
           </div>
         )}
       </div>
 
-      {/* 6. Customer Rating Accordion */}
-      <div className="pt-3 border-t border-zinc-100">
-        <button
-          type="button"
-          onClick={() => toggleSection("rating")}
-          className="w-full flex items-center justify-between text-xs font-bold text-zinc-900 uppercase tracking-wider mb-2 cursor-pointer"
-        >
-          <span>Customer Rating</span>
-          {openSections.rating ? (
-            <ChevronUp className="w-4 h-4 text-zinc-400" />
-          ) : (
-            <ChevronDown className="w-4 h-4 text-zinc-400" />
-          )}
-        </button>
-        {openSections.rating && (
-          <div className="space-y-1.5">
-            {[4.8, 4.6, 4.4].map((star) => {
-              const checked = minRating === star;
-              return (
-                <label
-                  key={star}
-                  className="flex items-center gap-2 text-xs text-zinc-700 cursor-pointer font-medium select-none py-0.5"
-                >
-                  <input
-                    type="radio"
-                    name="preowned-rating"
-                    checked={checked}
-                    onChange={() => setMinRating(checked ? null : star)}
-                    className="w-3.5 h-3.5 accent-[#84cc16] cursor-pointer"
-                  />
-                  <div className="flex items-center gap-0.5 text-[#84cc16]">
-                    <Star className="w-3 h-3 fill-[#84cc16]" />
-                  </div>
-                  <span>{star} & above</span>
-                </label>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* 7. In-Stock Only Toggle */}
+      {/* 5. In-Stock Only */}
       <div className="pt-3 border-t border-zinc-100">
         <label className="flex items-center justify-between text-xs text-zinc-800 font-bold cursor-pointer select-none">
           <span>In Stock Only</span>
@@ -917,47 +732,74 @@ export default function PreOwnedPageContent() {
             type="checkbox"
             checked={inStockOnly}
             onChange={(e) => setInStockOnly(e.target.checked)}
-            className="w-4 h-4 rounded border-zinc-300 text-[#84cc16] focus:ring-[#84cc16] accent-[#84cc16] cursor-pointer"
+            className="w-4 h-4 rounded border-zinc-300 text-[#74d600] focus:ring-[#74d600] accent-[#74d600] cursor-pointer"
           />
         </label>
       </div>
 
-      {/* 8. Trade-In Promo Box */}
-      <div className="mt-4 p-3.5 rounded-xl bg-gradient-to-br from-[#84cc16]/10 to-lime-100/40 border border-[#84cc16]/30 text-center space-y-2">
-        <span className="text-[11px] font-black uppercase text-[#4d7c0f] tracking-wider block">
-          UPGRADE YOUR WILLOW
-        </span>
-        <p className="text-[11px] text-zinc-600 leading-tight">
-          Trade in your old bat or equipment for instant cash discount on any pre-owned gear.
-        </p>
+      {/* Clear Filters Button */}
+      {activeFiltersCount > 0 && (
         <button
           type="button"
-          onClick={() => setIsTradeInOpen(true)}
-          className="w-full py-1.5 px-3 bg-zinc-950 hover:bg-black text-white text-xs font-bold rounded-lg transition-colors cursor-pointer"
+          onClick={handleResetFilters}
+          className="w-full py-2 px-3 text-xs font-bold text-zinc-600 hover:text-black bg-zinc-100 hover:bg-zinc-200 rounded-xl transition-colors cursor-pointer"
         >
-          Estimate Trade-In Value →
+          Reset Filters ({activeFiltersCount})
         </button>
+      )}
+
+      {/* Authority Guarantee Box */}
+      <div className="mt-4 p-4 rounded-2xl bg-zinc-900 border border-zinc-800 text-white space-y-2">
+        <div className="flex items-center gap-2 text-[#a3e635]">
+          <BadgeCheck className="w-4 h-4 shrink-0" />
+          <span className="text-xs font-bold">100% Authority Certified</span>
+        </div>
+        <p className="text-[11px] text-zinc-400 leading-relaxed">
+          Every piece is verified and sold exclusively by PLAYZONE master craftsmen. No unverified third-party sellers.
+        </p>
       </div>
     </div>
   );
 
   return (
     <main className="min-h-screen bg-white pb-20 select-none">
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-7">
-        {/* 1. Panoramic Pre-Owned CTA Banner (Matching Home Page Mockup) */}
-        <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-zinc-800/40 bg-black">
-          <Image
-            src="/pre_owned_cta_banner.png"
-            alt="Great Gear. Smarter Prices. Quality pre-owned cricket gear at unbeatable value."
-            width={2170}
-            height={725}
-            priority
-            sizes="(max-width: 1440px) 100vw, 1440px"
-            className="w-full h-auto object-cover"
-          />
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-8">
+        {/* ================= 1. PRE-OWNED HERO BANNER ================= */}
+        <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-zinc-800/60 bg-zinc-950">
+          <div className="relative w-full">
+            <Image
+              src="/images/banners/pre_owned_cta_banner.png"
+              alt="PlayZone Pre-Owned Picks - Quality Gear. Bigger Value."
+              width={2170}
+              height={725}
+              priority
+              sizes="(max-width: 1440px) 100vw, 1440px"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+
+          {/* Trust Highlights Strip */}
+          <div className="border-t border-zinc-800/80 px-4 sm:px-8 py-3 sm:py-3.5 bg-black/60 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-xs text-zinc-300">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#a3e635] shrink-0" />
+              <span className="font-medium">100% Inspected by Authorities</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Award className="w-4 h-4 text-[#a3e635] shrink-0" />
+              <span className="font-medium">12-Point Acoustic Ping Test</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Truck className="w-4 h-4 text-[#a3e635] shrink-0" />
+              <span className="font-medium">24h Dhaka & Nationwide Delivery</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <RotateCcw className="w-4 h-4 text-[#a3e635] shrink-0" />
+              <span className="font-medium">Pre-Sanitized & Fresh Grip</span>
+            </div>
+          </div>
         </div>
 
-        {/* 2. Breadcrumbs */}
+        {/* ================= 2. BREADCRUMBS ================= */}
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2 text-xs text-zinc-500 font-medium"
@@ -970,31 +812,8 @@ export default function PreOwnedPageContent() {
             Categories
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
-          <span className="text-zinc-800 font-semibold">Pre-Owned Cricket Gear</span>
+          <span className="text-zinc-900 font-bold">Pre-Owned Gear</span>
         </nav>
-
-        {/* 3. Heading & Concept Subtitle + Sell/Trade Button */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <span className="px-3 py-1 rounded-full bg-[#84cc16]/15 border border-[#84cc16]/30 text-[#4d7c0f] text-xs font-black uppercase tracking-wider">
-              PLAYZONE PRE-OWNED GEAR PROGRAM
-            </span>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-zinc-950 mt-2">
-              Great Gear. Smarter Prices.
-            </h1>
-            <p className="mt-1 text-xs sm:text-sm text-zinc-500 max-w-2xl leading-relaxed">
-              Play with premium English Willow bats and genuine cricket gear at 40% – 50% lower prices. Each piece is condition-graded (Grade A+, A, B) and sold directly by PLAYZONE as-is.
-            </p>
-          </div>
-
-          {/* Action Link to Catalog */}
-          <a
-            href="#pre-owned-catalog"
-            className="px-5 py-3 rounded-2xl bg-zinc-950 hover:bg-black active:scale-98 text-white font-black text-xs sm:text-sm flex items-center gap-2 transition-all shadow-md shrink-0 cursor-pointer self-start md:self-auto"
-          >
-            <span>Browse Pre-Owned Gear ↓</span>
-          </a>
-        </div>
 
         {/* Toast Alert */}
         {toastMessage && (
@@ -1013,563 +832,245 @@ export default function PreOwnedPageContent() {
           </div>
         )}
 
-        {/* 4. The 3 Condition Grades Explainer */}
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm sm:text-base font-black text-zinc-900 uppercase tracking-wider flex items-center gap-2">
-              <Award className="w-4 h-4 text-[#84cc16]" />
-              <span>Our Inspection & Grading Standards</span>
-            </h2>
-            <span className="text-xs text-zinc-400">100% Genuine English Willow Verified</span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Grade A+ */}
-            <div className="bg-white rounded-2xl p-4.5 border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase tracking-wider">
-                  MINT CONDITION • 9.5/10
-                </span>
-                <span className="text-xs font-bold text-zinc-500">Save 35% - 45%</span>
-              </div>
-              <h3 className="text-base font-black text-zinc-950">Grade A+ (Like New)</h3>
-              <p className="text-xs text-zinc-600 leading-relaxed">
-                Played only 1–2 friendly matches or net sessions. Spotless face, zero blade stress or edge bruises, fitted with a fresh factory grip.
+        {/* ================= MAIN PRE-OWNED PRODUCTS CATALOG & FILTERS ================= */}
+        <div id="pre-owned-catalog" className="pt-2 scroll-mt-20">
+          {/* Header & Controls Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-zinc-200">
+            <div>
+              <h2 className="text-xl sm:text-2xl font-black text-zinc-950">
+                Certified Pre-Owned Gear ({filteredItems.length})
+              </h2>
+              <p className="text-xs text-zinc-500 mt-0.5">
+                Every bat and gear item listed here is condition-checked, sanitized, and stored at Dhaka dispatch hub.
               </p>
-              <div className="pt-2 border-t border-zinc-100 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700">
-                <Check className="w-3.5 h-3.5" />
-                <span>Indistinguishable from brand-new</span>
-              </div>
             </div>
 
-            {/* Grade A */}
-            <div className="bg-white rounded-2xl p-4.5 border-2 border-[#84cc16]/50 shadow-xs hover:shadow-md transition-all space-y-2 relative">
-              <span className="absolute -top-2.5 right-4 px-2 py-0.5 rounded-full bg-[#84cc16] text-black text-[9px] font-black uppercase tracking-wider shadow-2xs">
-                MOST POPULAR
-              </span>
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full bg-lime-100 text-[#4d7c0f] text-[10px] font-black uppercase tracking-wider">
-                  MATCH READY • 9.0/10
-                </span>
-                <span className="text-xs font-bold text-zinc-500">Save 40% - 50%</span>
-              </div>
-              <h3 className="text-base font-black text-zinc-950">Grade A (Seasoned Pro)</h3>
-              <p className="text-xs text-zinc-600 leading-relaxed">
-                Naturally seasoned and fully knocked-in by master bat-makers. Re-oiled with English linseed oil, new rubber toe-guard, and clean ping.
-              </p>
-              <div className="pt-2 border-t border-zinc-100 flex items-center gap-1.5 text-[11px] font-semibold text-[#4d7c0f]">
-                <Check className="w-3.5 h-3.5" />
-                <span>Ready for league matches immediately</span>
-              </div>
-            </div>
-
-            {/* Grade B */}
-            <div className="bg-white rounded-2xl p-4.5 border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-black uppercase tracking-wider">
-                  BUDGET VALUE • 8.0/10
-                </span>
-                <span className="text-xs font-bold text-zinc-500">Save 50% - 60%</span>
-              </div>
-              <h3 className="text-base font-black text-zinc-950">Grade B (Practice Value)</h3>
-              <p className="text-xs text-zinc-600 leading-relaxed">
-                Normal cosmetic seam marks or surface blemishes, but 100% structurally sound handle and core. Ideal for heavy academy and net drills.
-              </p>
-              <div className="pt-2 border-t border-zinc-100 flex items-center gap-1.5 text-[11px] font-semibold text-amber-700">
-                <Check className="w-3.5 h-3.5" />
-                <span>Maximum power and savings per Taka</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 5. Trust Pillars Bar */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-zinc-200/90 shadow-2xs grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-lime-50 text-[#65a30d] flex items-center justify-center shrink-0">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">Condition Graded</strong>
-              <span className="text-zinc-500 text-[11px]">Grade A+, A, B standard</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-lime-50 text-[#65a30d] flex items-center justify-center shrink-0">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">Seasoned Willow</strong>
-              <span className="text-zinc-500 text-[11px]">Match ready performance</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-lime-50 text-[#65a30d] flex items-center justify-center shrink-0">
-              <RotateCcw className="w-5 h-5" />
-            </div>
-            <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">Direct Retailer</strong>
-              <span className="text-zinc-500 text-[11px]">Sold direct by PLAYZONE</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
-              <Award className="w-5 h-5" />
-            </div>
-            <div className="text-xs leading-tight">
-              <strong className="block text-zinc-900 font-bold">Sold As-Is</strong>
-              <span className="text-zinc-500 text-[11px]">Unbeatable value • No warranty</span>
-            </div>
-          </div>
-        </div>
-
-        {/* 6. MAIN CATALOG SECTION WITH LEFT SIDEBAR FILTERS */}
-        <div className="flex flex-col lg:flex-row gap-6 items-start pt-2">
-          {/* Desktop Left Sticky Filter Sidebar */}
-          <aside className="hidden lg:block w-[280px] shrink-0 sticky top-24 bg-white rounded-2xl border border-zinc-200/90 p-5 shadow-xs max-h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin">
-            {/* Sidebar Header */}
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-zinc-100">
-              <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-[#84cc16]" />
-                <h3 className="text-sm font-black text-zinc-950 uppercase tracking-wider">
-                  Filters
-                </h3>
-                {activeFilterCount > 0 && (
-                  <span className="w-5 h-5 rounded-full bg-[#84cc16] text-white text-[10px] font-bold flex items-center justify-center">
-                    {activeFilterCount}
+            <div className="flex items-center gap-2.5 self-start sm:self-auto">
+              {/* Mobile Filter Button */}
+              <button
+                type="button"
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="lg:hidden px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-900 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <span>Filters</span>
+                {activeFiltersCount > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-zinc-950 text-white text-[10px] flex items-center justify-center font-bold">
+                    {activeFiltersCount}
                   </span>
                 )}
-              </div>
-              {activeFilterCount > 0 && (
-                <button
-                  type="button"
-                  onClick={handleResetFilters}
-                  className="text-xs font-bold text-rose-600 hover:text-rose-700 transition-colors cursor-pointer flex items-center gap-1"
-                >
-                  <RotateCcw className="w-3 h-3" />
-                  <span>Reset</span>
-                </button>
-              )}
+              </button>
+
+              {/* Sort Dropdown */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-900 text-xs font-bold focus:outline-hidden cursor-pointer"
+              >
+                <option value="recommended">Featured / Highest Savings</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="savings">Discount %</option>
+                <option value="rating">Top Rated</option>
+              </select>
             </div>
+          </div>
 
-            {/* Reusable Filter Controls */}
-            {renderFilterControls()}
-          </aside>
-
-          {/* Right Main Catalog Content */}
-          <div className="flex-1 w-full min-w-0">
-            {/* Active Filters Bar & Top Bar */}
-            <div className="bg-white rounded-2xl border border-zinc-200/90 p-3.5 sm:p-4 mb-4 shadow-2xs space-y-3">
-              <div className="flex items-center justify-between gap-3 flex-wrap">
-                <div className="flex items-center gap-2.5">
-                  {/* Mobile Filter Toggle Button */}
-                  <button
-                    type="button"
-                    onClick={() => setIsMobileFilterOpen(true)}
-                    className="lg:hidden flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950 text-white font-bold text-xs shadow-xs active:scale-95 cursor-pointer"
-                  >
-                    <SlidersHorizontal className="w-3.5 h-3.5 text-[#84cc16]" />
-                    <span>Filters</span>
-                    {activeFilterCount > 0 && (
-                      <span className="w-4 h-4 rounded-full bg-[#84cc16] text-black text-[9px] font-extrabold flex items-center justify-center">
-                        {activeFilterCount}
-                      </span>
-                    )}
-                  </button>
-
-                  <span className="text-xs font-bold text-zinc-900">
-                    Showing <span className="text-[#65a30d] font-black">{filteredItems.length}</span> Pre-Owned Items
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Desktop Filters Sidebar */}
+            <aside className="hidden lg:block lg:col-span-1">
+              <div className="sticky top-24 bg-white rounded-2xl border border-zinc-200 p-5 shadow-2xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-zinc-100">
+                  <span className="text-xs font-black uppercase text-zinc-900 tracking-wider">
+                    Filters
                   </span>
-                </div>
-
-                {/* Sort Dropdown */}
-                <div className="flex items-center gap-2 ml-auto">
-                  <span className="text-xs text-zinc-400 font-medium hidden sm:inline">Sort:</span>
-                  <div className="relative">
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="appearance-none bg-zinc-50 border border-zinc-200 text-xs font-bold text-zinc-800 rounded-xl px-3 py-1.5 pr-8 hover:border-zinc-300 focus:outline-none cursor-pointer shadow-2xs"
+                  {activeFiltersCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleResetFilters}
+                      className="text-xs font-bold text-[#549900] hover:underline cursor-pointer"
                     >
-                      <option value="savings">Biggest Savings %</option>
-                      <option value="price-low">Price: Low to High</option>
-                      <option value="price-high">Price: High to Low</option>
-                      <option value="rating">Highest Rated</option>
-                      <option value="grade-a-plus">Condition: Grade A+ First</option>
-                    </select>
-                    <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    </div>
+                      Clear All
+                    </button>
+                  )}
+                </div>
+                {renderFilterControls()}
+              </div>
+            </aside>
+
+            {/* Products Grid */}
+            <div className="lg:col-span-3">
+              {filteredItems.length === 0 ? (
+                <div className="p-12 rounded-3xl bg-zinc-50 border border-zinc-200 text-center space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center mx-auto">
+                    <Search className="w-6 h-6" />
                   </div>
-                </div>
-              </div>
-
-              {/* Active Filter Pill Tags */}
-              {activeFilterCount > 0 && (
-                <div className="flex items-center flex-wrap gap-2 pt-2 border-t border-zinc-100">
-                  <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
-                    Active:
-                  </span>
-                  {selectedCategory !== "all" && (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCategory("all")}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
-                    >
-                      <span>
-                        {PRE_OWNED_CATEGORIES.find((c) => c.id === selectedCategory)?.name || selectedCategory}
-                      </span>
-                      <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
-                    </button>
-                  )}
-                  {selectedGrade !== "all" && (
-                    <button
-                      type="button"
-                      onClick={() => setSelectedGrade("all")}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
-                    >
-                      <span>{selectedGrade}</span>
-                      <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
-                    </button>
-                  )}
-                  {selectedBrands.map((b) => (
-                    <button
-                      key={b}
-                      type="button"
-                      onClick={() => handleBrandToggle(b)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
-                    >
-                      <span>{b}</span>
-                      <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
-                    </button>
-                  ))}
-                  {minRating !== null && (
-                    <button
-                      type="button"
-                      onClick={() => setMinRating(null)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
-                    >
-                      <span>★ {minRating}+</span>
-                      <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
-                    </button>
-                  )}
-                  {(minPrice > 0 || maxPrice < 15000) && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setMinPrice(0);
-                        setMaxPrice(15000);
-                      }}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
-                    >
-                      <span>৳{minPrice.toLocaleString()} - ৳{maxPrice.toLocaleString()}</span>
-                      <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
-                    </button>
-                  )}
-                  {inStockOnly && (
-                    <button
-                      type="button"
-                      onClick={() => setInStockOnly(false)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
-                    >
-                      <span>In Stock</span>
-                      <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
-                    </button>
-                  )}
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchQuery("")}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-100 border border-zinc-200 text-xs font-bold text-zinc-800 hover:border-zinc-400 cursor-pointer shadow-2xs"
-                    >
-                      <span>"{searchQuery}"</span>
-                      <X className="w-3 h-3 text-zinc-400 hover:text-zinc-700" />
-                    </button>
-                  )}
+                  <h3 className="text-base font-black text-zinc-900">No Pre-Owned Gear Matched Your Filters</h3>
+                  <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                    Try expanding your price range or clearing brand selections to view available certified equipment.
+                  </p>
                   <button
                     type="button"
                     onClick={handleResetFilters}
-                    className="text-xs font-bold text-rose-600 hover:underline cursor-pointer ml-auto"
+                    className="px-5 py-2 rounded-full bg-zinc-900 text-white text-xs font-bold hover:bg-black transition-colors cursor-pointer"
                   >
-                    Clear All
+                    Clear All Filters
                   </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4.5">
+                  {filteredItems.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={`/product/${item.slug || item.id}`}
+                      className="group bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-lg transition-all duration-300 p-3.5 flex flex-col justify-between hover:-translate-y-1 select-none"
+                    >
+                      <div>
+                        {/* Media Display */}
+                        <ProductCardMedia
+                          src={item.images[0]}
+                          alt={item.name}
+                          badge={item.badge}
+                          className="mb-2.5"
+                        />
+
+                        {/* Condition Note Pill */}
+                        <div className="mb-2">
+                          <span className="inline-block px-2 py-0.5 rounded-md bg-zinc-100 text-[10px] font-bold text-zinc-700">
+                            {item.inspectionNote}
+                          </span>
+                        </div>
+
+                        {/* Title */}
+                        <h3 className="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#549900] transition-colors line-clamp-2 leading-snug min-h-[34px]">
+                          {item.name}
+                        </h3>
+
+                        {/* Ratings & Hub */}
+                        <div className="flex items-center justify-between gap-1 mt-1.5 text-[11px] text-zinc-500">
+                          <div className="flex items-center gap-1">
+                            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                            <span className="font-bold text-zinc-800">{item.rating}</span>
+                            <span className="text-zinc-400">({item.reviewsCount})</span>
+                          </div>
+                          <span className="text-[10px] text-zinc-400">Dhaka Hub</span>
+                        </div>
+                      </div>
+
+                      {/* Pricing & Add to Cart */}
+                      <div className="mt-3 pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-1">
+                        <div>
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-sm sm:text-base font-black text-zinc-950">
+                              ৳{item.price.toLocaleString()}
+                            </span>
+                            {item.originalPrice && (
+                              <span className="text-[11px] text-zinc-400 line-through">
+                                ৳{item.originalPrice.toLocaleString()}
+                              </span>
+                            )}
+                          </div>
+                          {item.discountPercent && (
+                            <span className="text-[10px] font-extrabold text-[#549900]">
+                              Save {item.discountPercent}%
+                            </span>
+                          )}
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={(e) => handleQuickAdd(item, e)}
+                          title="Add to Cart"
+                          className="w-8 h-8 rounded-full bg-zinc-900 hover:bg-[#74d600] hover:text-black text-white flex items-center justify-center transition-all cursor-pointer shrink-0 shadow-2xs"
+                        >
+                          <ShoppingCart className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
-
-            {/* Product Cards Grid (Matching Concept Mockup) */}
-            {filteredItems.length === 0 ? (
-              <div className="bg-white rounded-3xl p-12 text-center border border-zinc-200/90 shadow-xs space-y-4">
-                <div className="w-16 h-16 rounded-full bg-zinc-100 flex items-center justify-center mx-auto text-zinc-400">
-                  <Filter className="w-7 h-7" />
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-base font-black text-zinc-950">No Pre-Owned Items Found</h3>
-                  <p className="text-xs text-zinc-500 max-w-sm mx-auto">
-                    No verified gear matches your active filter combination. Try adjusting price range, condition grade, or brand.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleResetFilters}
-                  className="px-5 py-2.5 rounded-xl bg-zinc-950 text-white font-bold text-xs hover:bg-zinc-800 transition-colors shadow-xs cursor-pointer"
-                >
-                  Reset All Filters
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4.5">
-                {filteredItems.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={`/product/${item.slug}`}
-                    className="group bg-white rounded-2xl border border-zinc-200/90 shadow-2xs hover:shadow-md transition-all duration-300 p-3 sm:p-4 flex flex-col justify-between hover:-translate-y-1 select-none"
-                  >
-                    {/* Media area with Video on Hover */}
-                    <ProductCardMedia
-                      src={item.images && item.images[0] ? item.images[0] : "/images/products/bats/sg_bat.png"}
-                      alt={item.name}
-                      videoUrl={(item as any).videoUrl}
-                      badge={`PRE-OWNED • ${item.grade.toUpperCase()}`}
-                      className="mb-3"
-                    />
-
-                    {/* Product Info */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between text-[10px]">
-                        <span className="font-bold text-zinc-400 uppercase tracking-wider">
-                          {item.brand}
-                        </span>
-                        <span className="font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
-                          {item.conditionScore}
-                        </span>
-                      </div>
-
-                      <h3 className="text-xs sm:text-sm font-bold text-zinc-900 group-hover:text-[#65a30d] transition-colors line-clamp-2 leading-snug min-h-[34px] mt-0.5">
-                        {item.name}
-                      </h3>
-
-                      {/* Ratings & Views */}
-                      <div className="flex items-center justify-between gap-1 pt-0.5">
-                        <div className="flex items-center gap-1 min-w-0">
-                          <div className="flex items-center gap-0.5 text-[#84cc16] shrink-0">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`w-3 h-3 ${
-                                  i < Math.floor(item.rating)
-                                    ? "fill-[#84cc16] text-[#84cc16]"
-                                    : "text-zinc-300"
-                                }`}
-                              />
-                            ))}
-                          </div>
-                          <span className="text-[11px] font-semibold text-zinc-700">
-                            {item.rating}
-                          </span>
-                          <span className="text-[11px] text-zinc-400">
-                            ({item.reviewsCount})
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1 text-[11px] text-zinc-400 font-medium shrink-0" title="Views">
-                          <Eye className="w-3.5 h-3.5 text-zinc-400" />
-                          <span>{getProductViews(item)}</span>
-                        </div>
-                      </div>
-
-                      {/* Inspection Note */}
-                      <p className="text-[11px] text-zinc-500 truncate pt-1 flex items-center gap-1">
-                        <CheckCircle2 className="w-3 h-3 text-[#84cc16] shrink-0" />
-                        <span>{item.inspectionNote}</span>
-                      </p>
-                    </div>
-
-                    {/* Price & Action Button */}
-                    <div className="mt-3.5 pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-2">
-                      <div>
-                        <span className="text-sm sm:text-base font-black text-zinc-950 tracking-tight block">
-                          ৳ {item.price.toLocaleString()}
-                        </span>
-                        {item.originalPrice && (
-                          <span className="text-[11px] text-zinc-400 line-through">
-                            New: ৳ {item.originalPrice.toLocaleString()}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Quick Add Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => handleQuickAdd(item, e)}
-                        className="py-1.5 px-3 rounded-lg bg-[#84cc16] hover:bg-[#73b512] active:bg-[#65a30d] text-black font-extrabold text-xs flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer shrink-0"
-                      >
-                        <ShoppingCart className="w-3.5 h-3.5" />
-                        <span>Buy</span>
-                      </button>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
-        {/* 7. PLAYZONE Condition Grading Standards & Pre-Owned Policy */}
-        <div id="pre-owned-catalog" className="bg-white rounded-3xl p-6 sm:p-8 border border-zinc-200/90 shadow-sm space-y-6">
-          <div>
-            <span className="text-[11px] font-black uppercase text-[#4d7c0f] tracking-wider">
-              TRANSPARENT QUALITY GRADING
+        {/* ================= 5. THE PLAYZONE AUTHORITY GUARANTEE ================= */}
+        <div className="p-6 sm:p-10 rounded-3xl bg-zinc-950 text-white space-y-6">
+          <div className="text-center max-w-xl mx-auto space-y-2">
+            <span className="text-xs font-bold text-[#a3e635] uppercase tracking-wider">
+              AUTHORITY CERTIFIED ONLY
             </span>
-            <h2 className="text-xl sm:text-2xl font-black text-zinc-950 tracking-tight mt-1">
-              PLAYZONE Pre-Owned Condition Grading Standards
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
+              The PlayZone Pre-Owned Standard
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-500 mt-1 max-w-2xl">
-              Every pre-owned product on PLAYZONE is sold directly by us. Items are physically inspected and graded with full disclosure of wear so you know exactly what you are purchasing.
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Unlike unverified peer-to-peer marketplaces, every item in PlayZone Pre-Owned is acquired, inspected, and guaranteed directly by our master bat-makers.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2">
-              <span className="w-7 h-7 rounded-full bg-zinc-950 text-white font-bold text-xs flex items-center justify-center">
-                A+
-              </span>
-              <h4 className="font-bold text-sm text-zinc-900">
-                Grade A+ (Like New)
-              </h4>
-              <p className="text-xs text-zinc-600 leading-relaxed">
-                Played only 1-2 friendly sessions. Immaculate surface, zero handle stress, pristine edges, and fresh grip.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2">
-              <span className="w-7 h-7 rounded-full bg-zinc-950 text-white font-bold text-xs flex items-center justify-center">
-                A
-              </span>
-              <h4 className="font-bold text-sm text-zinc-900">
-                Grade A (Seasoned Pro)
-              </h4>
-              <p className="text-xs text-zinc-600 leading-relaxed">
-                Light cosmetic markings from net practice. Fully intact handle, re-oiled face, and explosive acoustic rebound.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-zinc-50 border border-zinc-200/80 space-y-2">
-              <span className="w-7 h-7 rounded-full bg-zinc-950 text-white font-bold text-xs flex items-center justify-center">
-                B
-              </span>
-              <h4 className="font-bold text-sm text-zinc-900">
-                Grade B (Practice Value)
-              </h4>
-              <p className="text-xs text-zinc-600 leading-relaxed">
-                Visible cosmetic battle wear, but structurally 100% sound. Superb budget value for heavy net sessions and academy drills.
-              </p>
-            </div>
-          </div>
-
-          {/* Explicit Pre-Owned Policy Notice */}
-          <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 space-y-1">
-            <div className="font-bold flex items-center gap-1.5 text-amber-950">
-              <span>⚠️ Pre-Owned Equipment Policy</span>
-            </div>
-            <p className="leading-relaxed">
-              All pre-owned cricket equipment is sold directly by PLAYZONE <strong>as-is without store or manufacturer warranty</strong>. Condition grades reflect physical inspection at intake. Helmets and protective equipment must be independently inspected by the player for proper sizing, fit, and suitability prior to match use.
-            </p>
-          </div>
-        </div>
-
-        {/* 8. Callout Banner: Direct Retail Value */}
-        <div className="rounded-3xl bg-gradient-to-r from-zinc-950 via-zinc-900 to-black p-6 sm:p-8 text-white border border-zinc-800 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-1.5 text-center md:text-left">
-            <span className="text-[#a3e635] text-[11px] font-black uppercase tracking-wider">
-              DIRECT CRICKET RETAILER IN BANGLADESH
-            </span>
-            <h3 className="text-xl sm:text-2xl font-black">
-              Authentic Pre-Owned Gear at Unbeatable Value
-            </h3>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-xl">
-              Get international match-grade English Willow and equipment at 40% – 50% off retail, delivered straight to your doorstep across Bangladesh with Cash on Delivery.
-            </p>
-          </div>
-          <Link
-            href="/category/cricket-bats"
-            className="px-6 py-3 rounded-xl bg-[#84cc16] hover:bg-[#73b512] text-black font-black text-xs sm:text-sm shrink-0 whitespace-nowrap shadow-md cursor-pointer"
-          >
-            Explore All Cricket Gear →
-          </Link>
-        </div>
-      </div>
-
-      {/* Mobile Filters Slide-Over Drawer */}
-      {isMobileFilterOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden flex">
-          {/* Backdrop */}
-          <div
-            onClick={() => setIsMobileFilterOpen(false)}
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity animate-in fade-in"
-          />
-
-          {/* Drawer Panel */}
-          <div className="relative w-full max-w-xs bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-300">
-            {/* Drawer Header */}
-            <div className="flex items-center justify-between p-4 border-b border-zinc-100">
-              <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-[#84cc16]" />
-                <h3 className="text-sm font-black text-zinc-950 uppercase tracking-wider">
-                  Filters
-                </h3>
-                {activeFilterCount > 0 && (
-                  <span className="w-5 h-5 rounded-full bg-[#84cc16] text-white text-[10px] font-bold flex items-center justify-center">
-                    {activeFilterCount}
-                  </span>
-                )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2.5">
+              <div className="w-10 h-10 rounded-xl bg-[#74d600]/15 text-[#a3e635] flex items-center justify-center">
+                <CheckCircle2 className="w-5 h-5" />
               </div>
-              <div className="flex items-center gap-2">
-                {activeFilterCount > 0 && (
-                  <button
-                    type="button"
-                    onClick={handleResetFilters}
-                    className="text-xs font-bold text-rose-600 hover:text-rose-700"
-                  >
-                    Reset
-                  </button>
-                )}
+              <h3 className="text-sm font-black text-white">12-Point Acoustic Ping Test</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Each cleft is tested using hardwood acoustic mallets across toe, edges, and sweet spot to ensure peak compression and sound rebound.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2.5">
+              <div className="w-10 h-10 rounded-xl bg-[#74d600]/15 text-[#a3e635] flex items-center justify-center">
+                <RotateCcw className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-black text-white">Antimicrobial Sanitization</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                All leather gear, batting pads, and gloves are thoroughly sanitized with specialized leather antimicrobial solutions before cataloging.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-zinc-900/90 border border-zinc-800 space-y-2.5">
+              <div className="w-10 h-10 rounded-xl bg-[#74d600]/15 text-[#a3e635] flex items-center justify-center">
+                <Truck className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-black text-white">Dhaka Dispatch & Inspection</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Stored in climate-controlled Dhaka warehouse. Available with 24-hour delivery and Cash on Delivery across Bangladesh.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ================= 6. MOBILE FILTER DRAWER ================= */}
+        {isMobileFilterOpen && (
+          <div className="fixed inset-0 z-50 flex lg:hidden bg-black/60 backdrop-blur-xs">
+            <div className="relative ml-auto w-full max-w-xs h-full bg-white p-5 overflow-y-auto space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-zinc-200">
+                <span className="text-xs font-black uppercase text-zinc-900 tracking-wider">
+                  Filter Pre-Owned Gear
+                </span>
                 <button
                   type="button"
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 flex items-center justify-center text-zinc-600"
+                  className="p-1 text-zinc-500 hover:text-zinc-900"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-            </div>
 
-            {/* Drawer Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-4 scrollbar-thin">
               {renderFilterControls()}
-            </div>
 
-            {/* Drawer Sticky Footer */}
-            <div className="p-4 border-t border-zinc-100 bg-zinc-50">
               <button
                 type="button"
                 onClick={() => setIsMobileFilterOpen(false)}
-                className="w-full py-2.5 bg-zinc-950 hover:bg-zinc-800 text-white font-black text-xs rounded-xl shadow-xs cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-2.5 rounded-full bg-zinc-900 text-white font-bold text-xs"
               >
-                <span>View {filteredItems.length} Pre-Owned Items</span>
+                Apply Filters ({filteredItems.length} items)
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Trade In Modal */}
-      <TradeInModal
-        isOpen={isTradeInOpen}
-        onClose={() => setIsTradeInOpen(false)}
-      />
+        )}
+      </div>
     </main>
   );
 }
