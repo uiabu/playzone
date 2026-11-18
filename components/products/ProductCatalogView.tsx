@@ -77,7 +77,7 @@ export default function ProductCatalogView({
   isDealsPage = false,
   pageTitle,
   pageSubtitle,
-  bannerImage = "/images/banners/pre_owned_cta_banner.png",
+  bannerImage = "/images/breadcrumb/breadcrumb-old-products.png",
   bannerAlt = "Shop Authentic Cricket Gear in Bangladesh",
 }: ProductCatalogViewProps) {
   const { t, language } = useLanguage();

@@ -14,7 +14,6 @@ import {
   ChevronUp,
   SlidersHorizontal,
   X,
-  Award,
   Truck,
   RotateCcw,
   BadgeCheck,
@@ -765,38 +764,16 @@ export default function PreOwnedPageContent() {
     <main className="min-h-screen bg-white pb-20 select-none">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-8">
         {/* ================= 1. PRE-OWNED HERO BANNER ================= */}
-        <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-zinc-800/60 bg-zinc-950">
-          <div className="relative w-full">
-            <Image
-              src="/images/banners/pre_owned_cta_banner.png"
-              alt="PlayZone Pre-Owned Picks - Quality Gear. Bigger Value."
-              width={2170}
-              height={725}
-              priority
-              sizes="(max-width: 1440px) 100vw, 1440px"
-              className="w-full h-auto object-cover"
-            />
-          </div>
-
-          {/* Trust Highlights Strip */}
-          <div className="border-t border-zinc-800/80 px-4 sm:px-8 py-3 sm:py-3.5 bg-black/60 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-xs text-zinc-300">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#a3e635] shrink-0" />
-              <span className="font-medium">100% Inspected by Authorities</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-[#a3e635] shrink-0" />
-              <span className="font-medium">12-Point Acoustic Ping Test</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Truck className="w-4 h-4 text-[#a3e635] shrink-0" />
-              <span className="font-medium">24h Dhaka & Nationwide Delivery</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <RotateCcw className="w-4 h-4 text-[#a3e635] shrink-0" />
-              <span className="font-medium">Pre-Sanitized & Fresh Grip</span>
-            </div>
-          </div>
+        <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-zinc-800/40 bg-black">
+          <Image
+            src="/images/breadcrumb/breadcrumb-old-products.png"
+            alt="PlayZone Pre-Owned Picks - Quality Gear. Bigger Value."
+            width={2170}
+            height={725}
+            priority
+            sizes="(max-width: 1440px) 100vw, 1440px"
+            className="w-full h-auto object-cover"
+          />
         </div>
 
         {/* ================= 2. BREADCRUMBS ================= */}
