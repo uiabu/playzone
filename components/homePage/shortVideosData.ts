@@ -32,6 +32,8 @@ export interface ShortVideo {
   duration: string;
   thumbnail: string;
   channelName: string;
+  views: string;
+  hasHd?: boolean;
   product: ShortVideoProduct;
 }
 
@@ -68,7 +70,8 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagTopBn: "প্লেজোন",
     tagBottom: "BAT REVIEW",
     tagBottomBn: "ব্যাট রিভিউ",
-    duration: "0:58",
+    duration: "0:49",
+    views: "5,206",
     thumbnail: "https://i.ytimg.com/vi/pe-sBpdLGBw/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -93,7 +96,9 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagTopBn: "কোন বল",
     tagBottom: "TO CHOOSE?",
     tagBottomBn: "বেছে নেবেন?",
-    duration: "0:52",
+    duration: "0:36",
+    hasHd: true,
+    views: "4,806",
     thumbnail: "https://i.ytimg.com/vi/gcIYjdiniF4/hqdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -118,7 +123,8 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagTopBn: "গ্লাভস",
     tagBottom: "FEATURES",
     tagBottomBn: "ফিচার ও সুরক্ষা",
-    duration: "0:52",
+    duration: "0:54",
+    views: "3,250",
     thumbnail: "https://i.ytimg.com/vi/qRu3905EdxM/hqdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -143,7 +149,8 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagTopBn: "হেলমেট",
     tagBottom: "SAFETY TEST",
     tagBottomBn: "সেফটি টেস্ট",
-    duration: "0:49",
+    duration: "0:41",
+    views: "3,693",
     thumbnail: "https://i.ytimg.com/vi/huC1bmS0TU4/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -168,7 +175,8 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagTopBn: "ক্রিকেট",
     tagBottom: "SHOE REVIEW",
     tagBottomBn: "জুতো রিভিউ",
-    duration: "0:56",
+    duration: "0:48",
+    views: "4,823",
     thumbnail: "https://i.ytimg.com/vi/YPa3NAgVvw0/hqdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -193,7 +201,8 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagTopBn: "ব্যাটিং",
     tagBottom: "TIPS & TRICKS",
     tagBottomBn: "টিপস ও ট্রিকস",
-    duration: "0:43",
+    duration: "0:38",
+    views: "3,917",
     thumbnail: "https://i.ytimg.com/vi/G3jnTEL-2GQ/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -219,6 +228,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagBottom: "BAT SHOWCASE",
     tagBottomBn: "ব্যাট শোকেস",
     duration: "0:52",
+    views: "6,140",
     thumbnail: "https://i.ytimg.com/vi/EXv39G4Mg2I/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -244,6 +254,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagBottom: "BLU MIRAGE",
     tagBottomBn: "ব্লু মিরাজ",
     duration: "0:45",
+    views: "4,320",
     thumbnail: "https://i.ytimg.com/vi/wc386gFjhgQ/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -269,6 +280,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagBottom: "PAD PROTECTION",
     tagBottomBn: "প্যাড প্রটেকশন",
     duration: "0:48",
+    views: "5,890",
     thumbnail: "https://i.ytimg.com/vi/WUTnIjxsIpo/hqdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
@@ -294,6 +306,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagBottom: "VIRAT KOHLI",
     tagBottomBn: "বিরাট কোহলি",
     duration: "0:50",
+    views: "7,450",
     thumbnail: "https://i.ytimg.com/vi/0K9Xgu-2Uvc/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
