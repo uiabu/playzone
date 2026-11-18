@@ -5,7 +5,6 @@ import Image from "next/image";
 import {
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
   Heart,
   X,
   ExternalLink,
@@ -15,7 +14,6 @@ import { useLanguage } from "@/context/LanguageContext";
 import {
   SHORT_VIDEOS,
   SHORT_CATEGORIES,
-  MORE_CATEGORIES,
   ShortVideo,
   ShortCategory,
 } from "./shortVideosData";
@@ -23,12 +21,10 @@ import {
 export default function ShortVideosSection() {
   const { language, t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<ShortCategory>("all");
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<ShortVideo | null>(null);
   const [likedVideos, setLikedVideos] = useState<Record<string, boolean>>({});
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const moreDropdownRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -48,22 +44,6 @@ export default function ShortVideosSection() {
       [id]: !prev[id],
     }));
   };
-
-  // Close "More" dropdown on outside click
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (
-        moreDropdownRef.current &&
-        !moreDropdownRef.current.contains(e.target as Node)
-      ) {
-        setIsMoreOpen(false);
-      }
-    };
-    if (isMoreOpen) {
-      document.addEventListener("mousedown", handleOutsideClick);
-      return () => document.removeEventListener("mousedown", handleOutsideClick);
-    }
-  }, [isMoreOpen]);
 
   // Scroll position monitor
   const updateScrollState = useCallback(() => {
@@ -112,7 +92,6 @@ export default function ShortVideosSection() {
   // Switch category and scroll container back to start
   const handleSelectCategory = (cat: ShortCategory) => {
     setActiveCategory(cat);
-    setIsMoreOpen(false);
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({ left: 0, behavior: "smooth" });
     }
@@ -193,46 +172,6 @@ export default function ShortVideosSection() {
                 );
               })}
 
-              {/* "More ∨" Dropdown */}
-              <div className="relative shrink-0" ref={moreDropdownRef}>
-                <button
-                  type="button"
-                  onClick={() => setIsMoreOpen(!isMoreOpen)}
-                  className={`inline-flex items-center gap-1 px-3 sm:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap active:scale-95 ${
-                    isMoreOpen || activeCategory === "tips"
-                      ? "bg-[#84cc16] text-zinc-950 shadow-xs font-bold"
-                      : "bg-white border border-zinc-200/90 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950 shadow-2xs"
-                  }`}
-                >
-                  <span>{t("More", "আরও")}</span>
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                      isMoreOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {/* More Menu Flyout */}
-                {isMoreOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-zinc-100 py-1.5 z-30 animate-in fade-in zoom-in-95 duration-150">
-                    {MORE_CATEGORIES.map((cat) => (
-                      <button
-                        key={cat.id}
-                        type="button"
-                        onClick={() => handleSelectCategory(cat.id)}
-                        className={`w-full flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm text-left hover:bg-zinc-50 cursor-pointer font-medium transition-colors ${
-                          activeCategory === cat.id
-                            ? "text-[#84cc16] font-bold bg-[#f3f9eb]"
-                            : "text-zinc-800"
-                        }`}
-                      >
-                        {cat.icon && <span>{cat.icon}</span>}
-                        <span>{language === "bn" ? cat.labelBn : cat.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
             </div>
 
             {/* Carousel Arrow Buttons */}
