@@ -55,6 +55,46 @@ export interface Expert {
   certifications: string[];
   availableDays: string[];
   profileViews?: number;
+  youtubeVideoId?: string;
+  videoTitle?: string;
+}
+
+export function getExpertVideo(expert: Expert): { youtubeVideoId: string; videoTitle: string } {
+  if (expert.youtubeVideoId) {
+    return {
+      youtubeVideoId: expert.youtubeVideoId,
+      videoTitle: expert.videoTitle || `@playzone.cricket • ${expert.name} Coaching & Drills`,
+    };
+  }
+  const role = (expert.expertType || expert.role).toLowerCase();
+  if (role.includes("bowling") || role.includes("bowler")) {
+    return {
+      youtubeVideoId: "gcIYjdiniF4",
+      videoTitle: `@playzone.cricket • ${expert.name} - Fast Bowling Mechanics & Seam Control`,
+    };
+  }
+  if (role.includes("sidearm") || role.includes("thrower")) {
+    return {
+      youtubeVideoId: "huC1bmS0TU4",
+      videoTitle: `@playzone.cricket • ${expert.name} - 140+ KPH Sidearm Throwdown Practice`,
+    };
+  }
+  if (role.includes("umpire") || role.includes("official") || role.includes("scorer")) {
+    return {
+      youtubeVideoId: "qRu3905EdxM",
+      videoTitle: `@playzone.cricket • ${expert.name} - Professional Match Law & Decision Protocols`,
+    };
+  }
+  if (role.includes("bat") || role.includes("repair")) {
+    return {
+      youtubeVideoId: "pe-sBpdLGBw",
+      videoTitle: `@playzone.cricket • ${expert.name} - Cricket Bat Knocking & Restoration Guide`,
+    };
+  }
+  return {
+    youtubeVideoId: "G3jnTEL-2GQ",
+    videoTitle: `@playzone.cricket • ${expert.name} - Modern Batting Masterclass & Net Session`,
+  };
 }
 
 export function getExpertType(expert: Expert): ExpertType {
@@ -112,6 +152,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Former first-class cricketer with over 12 years of premier level coaching experience. Level 3 BCB certified coach specializing in team strategy, mental toughness, and technical batting/bowling masterclasses for aspiring youth and academy players.",
     certifications: ["BCB Level 3 Certified Coach", "ICC High Performance Coaching Accreditation", "First Aid & CPR Certified"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "pe-sBpdLGBw",
+    videoTitle: "@playzone.cricket • Coach Shafikul Islam - Youth Development & Cricket Masterclass",
   },
   {
     id: "batting-coach-chittagong",
@@ -134,6 +176,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Expert specialist batting trainer emphasizing bat speed, stance alignment, back-foot mastery against pace, and spin tackling strategies. Proven track record preparing division players for national draft leagues.",
     certifications: ["BCB Level 2 Specialist Batting Coach", "Biomechanics in Cricket Batting Cert"],
     availableDays: ["This week", "Weekends"],
+    youtubeVideoId: "G3jnTEL-2GQ",
+    videoTitle: "@playzone.cricket • Coach Faisal Mahmud - Advanced Batting Techniques & Net Session",
   },
   {
     id: "fast-bowling-coach-dhaka",
@@ -156,6 +200,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Dedicated pace and swing bowling mentor. Focuses on run-up momentum, wrist alignment, reverse swing mechanics, yorker perfection, and lower-back workload management for fast bowlers.",
     certifications: ["BCB Fast Bowling Workshop Certified", "Cricket Australia Fast Bowling Module"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "gcIYjdiniF4",
+    videoTitle: "@playzone.cricket • Coach Enamul Haque - Fast Bowling Mechanics & Seam Control",
   },
   {
     id: "sidearm-thrower-dhaka",
@@ -178,6 +224,8 @@ export const EXPERTS_DATA: Expert[] = [
       "High-speed throwdown specialist utilizing RoboArm and sidearm tools. Delivers consistent speeds up to 140+ km/h with precision swinging trajectories for elite batsman match preparation.",
     certifications: ["National Academy Certified Thrower", "Elite Batting Prep Specialist"],
     availableDays: ["Today", "Weekends"],
+    youtubeVideoId: "huC1bmS0TU4",
+    videoTitle: "@playzone.cricket • Kamrul Hasan - 140+ KPH Sidearm Throwdown Practice Session",
   },
   {
     id: "cricket-umpire-bangladesh",
@@ -200,6 +248,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Certified Bangladesh Cricket Board match official with extensive experience officiating first-division leagues, corporate tournaments, and youth championships. Impartial, authoritative, and rules-perfect.",
     certifications: ["BCB Panel Grade A Umpire", "MCC Laws of Cricket Certified (2017 Code)"],
     availableDays: ["Weekends", "This week"],
+    youtubeVideoId: "qRu3905EdxM",
+    videoTitle: "@playzone.cricket • Masudur Rahman - Cricket Umpiring & Match Law Protocols",
   },
   {
     id: "fitness-trainer-dhaka",

@@ -25,6 +25,7 @@ import HireExpertsSidebar, {
 import BookingModal from "@/components/hireExperts/BookingModal";
 import ProfileModal from "@/components/hireExperts/ProfileModal";
 import JoinExpertModal from "@/components/hireExperts/JoinExpertModal";
+import ExpertVideoModal from "@/components/hireExperts/ExpertVideoModal";
 import { useLanguage } from "@/context/LanguageContext";
 
 const INITIAL_FILTERS: FilterState = {
@@ -52,6 +53,8 @@ function HireExpertsContent() {
   const [selectedProfileExpert, setSelectedProfileExpert] =
     useState<Expert | null>(null);
   const [selectedBookingExpert, setSelectedBookingExpert] =
+    useState<Expert | null>(null);
+  const [selectedVideoExpert, setSelectedVideoExpert] =
     useState<Expert | null>(null);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState<boolean>(false);
 
@@ -343,6 +346,7 @@ function HireExpertsContent() {
                     expert={expert}
                     onViewProfile={(exp) => setSelectedProfileExpert(exp)}
                     onBook={(exp) => setSelectedBookingExpert(exp)}
+                    onWatchVideo={(exp) => setSelectedVideoExpert(exp)}
                   />
                 ))}
               </div>
@@ -462,6 +466,17 @@ function HireExpertsContent() {
         expert={selectedBookingExpert}
         isOpen={Boolean(selectedBookingExpert)}
         onClose={() => setSelectedBookingExpert(null)}
+      />
+
+      {/* Expert Session Video Modal */}
+      <ExpertVideoModal
+        expert={selectedVideoExpert}
+        isOpen={Boolean(selectedVideoExpert)}
+        onClose={() => setSelectedVideoExpert(null)}
+        onBook={(expert) => {
+          setSelectedVideoExpert(null);
+          setSelectedBookingExpert(expert);
+        }}
       />
 
       {/* Join as Expert Application Modal */}

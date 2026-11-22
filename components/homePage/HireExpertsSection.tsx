@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Users, Sparkles, UserPlus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, Sparkles, UserPlus, Star } from "lucide-react";
 import {
   EXPERTS_DATA,
   Expert,
@@ -14,6 +14,7 @@ import ExpertCard from "@/components/hireExperts/ExpertCard";
 import ProfileModal from "@/components/hireExperts/ProfileModal";
 import BookingModal from "@/components/hireExperts/BookingModal";
 import JoinExpertModal from "@/components/hireExperts/JoinExpertModal";
+import ExpertVideoModal from "@/components/hireExperts/ExpertVideoModal";
 import { useLanguage } from "@/context/LanguageContext";
 
 type ExpertFilterId =
@@ -71,6 +72,7 @@ export default function HireExpertsSection() {
   // Modals state
   const [selectedProfileExpert, setSelectedProfileExpert] = useState<Expert | null>(null);
   const [selectedBookingExpert, setSelectedBookingExpert] = useState<Expert | null>(null);
+  const [selectedVideoExpert, setSelectedVideoExpert] = useState<Expert | null>(null);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
   const activeTabItem = EXPERT_TABS.find((t) => t.id === activeFilter);
@@ -145,20 +147,34 @@ export default function HireExpertsSection() {
   return (
     <section className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       {/* 1. SECTION HEADER: "Hire Cricket Experts" + Action & Carousel Controls */}
-      <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
-        <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight inline-flex items-center gap-2">
-          <span className="text-zinc-950">{t("Hire", "ভাড়া করুন")}</span>
-          <span className="text-[#84cc16]">{t("Cricket Experts", "ক্রিকেট এক্সপার্ট")}</span>
-        </h2>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5">
+        <div>
+          {/* EXPERT NETWORK BADGE */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[11px] font-black uppercase tracking-wider mb-2 shadow-2xs">
+            <Star className="w-3.5 h-3.5 fill-emerald-600 text-emerald-600" />
+            <span>{t("EXPERT NETWORK", "এক্সপার্ট নেটওয়ার্ক")}</span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl md:text-[34px] font-black tracking-tight leading-tight">
+            <span className="text-zinc-950">{t("Hire", "ভাড়া করুন")}</span>{" "}
+            <span className="text-[#84cc16]">{t("Cricket Experts", "ক্রিকেট এক্সপার্ট")}</span>
+          </h2>
+          <p className="text-xs sm:text-sm text-zinc-500 mt-1 font-normal max-w-xl">
+            {t(
+              "Get trained, coached and game-ready with verified cricket professionals.",
+              "ভেরিফাইড ক্রিকেট প্রফেশনালদের সাথে ট্রেনিং নিন এবং নিজেকে প্রস্তুত করুন।"
+            )}
+          </p>
+        </div>
 
         {/* Action: Join as Expert Button + Carousel Controls */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button
             type="button"
             onClick={() => setIsJoinModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs font-black bg-[#84cc16] hover:bg-[#74d600] active:scale-95 text-zinc-950 transition-all duration-200 shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-black bg-[#84cc16] hover:bg-[#74be10] active:scale-95 text-zinc-950 transition-all duration-200 shadow-xs cursor-pointer"
           >
-            <UserPlus className="w-3.5 h-3.5" />
+            <UserPlus className="w-4 h-4" />
             <span>{t("Join as Expert", "এক্সপার্ট হিসেবে যোগ দিন")}</span>
           </button>
 
@@ -201,18 +217,22 @@ export default function HireExpertsSection() {
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none mb-6">
         {EXPERT_TABS.map((tab) => {
           const isActive = activeFilter === tab.id;
+          const isTopPicks = tab.id === "all";
           return (
             <button
               key={tab.id}
               type="button"
               onClick={() => handleFilterChange(tab.id)}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                 isActive
-                  ? "bg-zinc-950 text-white shadow-xs"
-                  : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 hover:text-zinc-900 font-medium"
+                  ? isTopPicks
+                    ? "bg-[#0b1f12] text-[#84cc16] border border-[#84cc16] shadow-xs"
+                    : "bg-zinc-950 text-white shadow-xs"
+                  : "bg-zinc-100/90 text-zinc-700 hover:bg-zinc-200/80 hover:text-zinc-900 font-medium"
               }`}
             >
-              {t(tab.label)}
+              {isTopPicks && <Star className="w-3.5 h-3.5 fill-[#84cc16] text-[#84cc16]" />}
+              <span>{t(tab.label)}</span>
             </button>
           );
         })}
@@ -220,10 +240,10 @@ export default function HireExpertsSection() {
         {/* View All Link */}
         <Link
           href="/hire-experts"
-          className="inline-flex items-center gap-1 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap bg-zinc-100 text-zinc-700 hover:bg-zinc-900 hover:text-white transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ml-1"
+          className="inline-flex items-center gap-1 px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap bg-white text-zinc-800 hover:bg-zinc-50 border border-zinc-200/90 transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ml-1"
         >
           <span>{t("View All", "সবগুলো দেখুন")}</span>
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-3.5 h-3.5" />
         </Link>
       </div>
 
@@ -261,6 +281,7 @@ export default function HireExpertsSection() {
                 expert={expert}
                 onViewProfile={(exp) => setSelectedProfileExpert(exp)}
                 onBook={(exp) => setSelectedBookingExpert(exp)}
+                onWatchVideo={(exp) => setSelectedVideoExpert(exp)}
               />
             </div>
           ))}
@@ -301,6 +322,17 @@ export default function HireExpertsSection() {
         expert={selectedBookingExpert}
         isOpen={!!selectedBookingExpert}
         onClose={() => setSelectedBookingExpert(null)}
+      />
+
+      {/* Expert Session Video Modal */}
+      <ExpertVideoModal
+        expert={selectedVideoExpert}
+        isOpen={!!selectedVideoExpert}
+        onClose={() => setSelectedVideoExpert(null)}
+        onBook={(exp) => {
+          setSelectedVideoExpert(null);
+          setSelectedBookingExpert(exp);
+        }}
       />
 
       {/* Join as Expert Application Modal */}
