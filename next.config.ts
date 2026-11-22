@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     agentFeedback: true,
     agentUpgrade: "security",
+    optimizePackageImports: ["lucide-react"],
   },
   cacheComponents: true,
   partialPrefetching: true,

@@ -46,16 +46,16 @@ export interface CategoryFilter {
 
 export const SHORT_CATEGORIES: CategoryFilter[] = [
   { id: "all", label: "All", labelBn: "সবগুলো" },
-  { id: "bat", label: "Bat", labelBn: "ব্যাট", icon: "🏏" },
-  { id: "ball", label: "Ball", labelBn: "বল", icon: "🔴" },
-  { id: "gloves", label: "Gloves", labelBn: "গ্লাভস", icon: "🧤" },
-  { id: "helmet", label: "Helmet", labelBn: "হেলমেট", icon: "⛑️" },
-  { id: "pad", label: "Pad", labelBn: "প্যাড", icon: "🛡️" },
-  { id: "shoe", label: "Shoe", labelBn: "জুতো", icon: "👟" },
+  { id: "bat", label: "Bat", labelBn: "ব্যাট" },
+  { id: "ball", label: "Ball", labelBn: "বল" },
+  { id: "gloves", label: "Gloves", labelBn: "গ্লাভস" },
+  { id: "helmet", label: "Helmet", labelBn: "হেলমেট" },
+  { id: "pad", label: "Pad", labelBn: "প্যাড" },
+  { id: "shoe", label: "Shoe", labelBn: "জুতো" },
 ];
 
 export const MORE_CATEGORIES: CategoryFilter[] = [
-  { id: "tips", label: "Tips & Tricks", labelBn: "টিপস ও ট্রিকস", icon: "💡" },
+  { id: "tips", label: "Tips & Tricks", labelBn: "টিপস ও ট্রিকস" },
 ];
 
 export const SHORT_VIDEOS: ShortVideo[] = [
@@ -99,7 +99,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     duration: "0:36",
     hasHd: true,
     views: "4,806",
-    thumbnail: "https://i.ytimg.com/vi/gcIYjdiniF4/hqdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/gcIYjdiniF4/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
       id: "leather-match-balls-pack-6",
@@ -125,7 +125,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagBottomBn: "ফিচার ও সুরক্ষা",
     duration: "0:54",
     views: "3,250",
-    thumbnail: "https://i.ytimg.com/vi/qRu3905EdxM/hqdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/qRu3905EdxM/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
       id: "sg-test-batting-gloves",
@@ -177,7 +177,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagBottomBn: "জুতো রিভিউ",
     duration: "0:48",
     views: "4,823",
-    thumbnail: "https://i.ytimg.com/vi/YPa3NAgVvw0/hqdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/YPa3NAgVvw0/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
       id: "asics-gel-peake-bowling-shoes",
@@ -281,7 +281,7 @@ export const SHORT_VIDEOS: ShortVideo[] = [
     tagBottomBn: "প্যাড প্রটেকশন",
     duration: "0:48",
     views: "5,890",
-    thumbnail: "https://i.ytimg.com/vi/WUTnIjxsIpo/hqdefault.jpg",
+    thumbnail: "https://i.ytimg.com/vi/WUTnIjxsIpo/maxresdefault.jpg",
     channelName: "@playzone.cricket",
     product: {
       id: "dsc-split-batting-pads",

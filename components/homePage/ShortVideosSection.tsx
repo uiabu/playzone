@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
-  Heart,
   X,
   ExternalLink,
   ShoppingBag,
@@ -27,7 +26,6 @@ export default function ShortVideosSection() {
   const { addItem } = useCart();
   const [activeCategory, setActiveCategory] = useState<ShortCategory>("all");
   const [selectedVideo, setSelectedVideo] = useState<ShortVideo | null>(null);
-  const [likedVideos, setLikedVideos] = useState<Record<string, boolean>>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -41,15 +39,6 @@ export default function ShortVideosSection() {
     }
     return SHORT_VIDEOS.filter((video) => video.category === activeCategory);
   }, [activeCategory]);
-
-  // Handle like toggle
-  const toggleLike = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    setLikedVideos((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
 
   // Add to cart from modal
   const handleAddToCart = (e: React.MouseEvent, product: ShortVideoProduct) => {
@@ -224,13 +213,12 @@ export default function ShortVideosSection() {
                     key={category.id}
                     type="button"
                     onClick={() => handleSelectCategory(category.id)}
-                    className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap active:scale-95 ${
+                    className={`inline-flex items-center px-3.5 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap active:scale-95 ${
                       isActive
                         ? "bg-[#84cc16] text-zinc-950 shadow-xs font-bold ring-2 ring-[#84cc16]/40"
                         : "bg-white border border-zinc-200/90 text-zinc-700 hover:bg-zinc-50 hover:text-zinc-950 shadow-2xs"
                     }`}
                   >
-                    {category.icon && <span className="text-xs">{category.icon}</span>}
                     <span>{language === "bn" ? category.labelBn : category.label}</span>
                   </button>
                 );
@@ -245,13 +233,13 @@ export default function ShortVideosSection() {
                 onClick={() => handleScroll("left")}
                 disabled={!canScrollLeft}
                 aria-label="Previous Videos"
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 ${
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 ${
                   canScrollLeft
-                    ? "border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-100 cursor-pointer"
-                    : "border border-zinc-200 bg-white/60 text-zinc-300 cursor-not-allowed"
+                    ? "bg-zinc-950 text-white hover:bg-zinc-800 cursor-pointer"
+                    : "border border-zinc-200 bg-white text-zinc-400 cursor-not-allowed"
                 }`}
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
 
               {/* Next (>) */}
@@ -260,13 +248,13 @@ export default function ShortVideosSection() {
                 onClick={() => handleScroll("right")}
                 disabled={!canScrollRight}
                 aria-label="Next Videos"
-                className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 ${
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-xs active:scale-95 ${
                   canScrollRight
                     ? "bg-zinc-950 text-white hover:bg-zinc-800 cursor-pointer"
-                    : "border border-zinc-200 bg-white/60 text-zinc-300 cursor-not-allowed"
+                    : "border border-zinc-200 bg-white text-zinc-400 cursor-not-allowed"
                 }`}
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -279,7 +267,6 @@ export default function ShortVideosSection() {
           style={{ scrollSnapType: "x mandatory" }}
         >
           {filteredVideos.map((video) => {
-            const isLiked = !!likedVideos[video.id];
             const tagTop = language === "bn" ? video.tagTopBn : video.tagTop;
             const tagBottom = language === "bn" ? video.tagBottomBn : video.tagBottom;
 
@@ -290,22 +277,23 @@ export default function ShortVideosSection() {
                 style={{ scrollSnapAlign: "start" }}
                 className="group relative w-[172px] sm:w-[190px] md:w-[208px] lg:w-[218px] aspect-[9/15] shrink-0 rounded-2xl overflow-hidden cursor-pointer bg-zinc-950 border border-zinc-900 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 select-none flex flex-col justify-between"
               >
-                {/* Video Thumbnail Background */}
+                {/* Video Thumbnail Background - Crisp High Resolution */}
                 <Image
                   src={video.thumbnail}
                   alt={video.title}
                   fill
-                  sizes="(max-width: 640px) 180px, (max-width: 1024px) 210px, 220px"
-                  className="object-cover group-hover:scale-108 transition-transform duration-500"
+                  unoptimized
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
-                {/* Top Shadow Gradient */}
-                <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/80 via-black/30 to-transparent pointer-events-none" />
+                {/* Subtle Top Shadow Gradient */}
+                <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/60 via-black/20 to-transparent pointer-events-none" />
 
-                {/* Bottom Shadow Gradient */}
-                <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none" />
+                {/* Subtle Bottom Shadow Gradient */}
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
 
-                {/* Top Bar: Camera Icon + Duration Badge & Heart/Like Button */}
+                {/* Top Bar: Camera Icon + Duration Badge */}
                 <div className="relative z-10 p-2.5 flex items-center justify-between">
                   {/* Duration Badge with Video Camera icon */}
                   <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-black/65 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-bold">
@@ -319,20 +307,6 @@ export default function ShortVideosSection() {
                       </span>
                     )}
                   </div>
-
-                  {/* Heart / Wishlist Button */}
-                  <button
-                    type="button"
-                    onClick={(e) => toggleLike(e, video.id)}
-                    aria-label={isLiked ? "Unlike video" : "Like video"}
-                    className="w-6.5 h-6.5 rounded-full bg-black/40 backdrop-blur-xs flex items-center justify-center text-white hover:bg-black/60 active:scale-90 transition-all cursor-pointer"
-                  >
-                    <Heart
-                      className={`w-3.5 h-3.5 transition-colors ${
-                        isLiked ? "fill-red-500 text-red-500" : "text-white"
-                      }`}
-                    />
-                  </button>
                 </div>
 
                 {/* Center: Red YouTube Play Button Icon */}
@@ -347,36 +321,27 @@ export default function ShortVideosSection() {
                   </div>
                 </div>
 
-                {/* Bottom Content: Titles + Playzone Cricket Channel Strip */}
-                <div className="relative z-10 p-2.5 sm:p-3 space-y-1.5">
-                  <div>
-                    <p className="text-[11px] sm:text-xs font-black tracking-wide text-white uppercase leading-tight drop-shadow-sm">
+                {/* Bottom Content: Titles + Compact Product Link Tag */}
+                <div className="relative z-10 p-2.5 sm:p-3 flex items-end justify-between gap-1.5">
+                  <div className="min-w-0">
+                    <p className="text-[11px] sm:text-xs font-black tracking-wide text-white uppercase leading-tight drop-shadow-sm truncate">
                       {tagTop}
                     </p>
-                    <p className="text-xs sm:text-[13px] font-black tracking-wide text-[#84cc16] uppercase leading-tight drop-shadow-sm">
+                    <p className="text-xs sm:text-[13px] font-black tracking-wide text-[#84cc16] uppercase leading-tight drop-shadow-sm truncate">
                       {tagBottom}
                     </p>
                   </div>
 
-                  {/* Channel Strip with Logo + Views count matching design mockup */}
-                  <div className="w-full flex items-center justify-between px-2 py-1 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 text-white shadow-xs">
-                    {/* Left: Avatar 'P' + Playzone Cricket */}
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <div className="w-4 h-4 rounded-full bg-white text-zinc-950 font-black text-[9px] flex items-center justify-center shrink-0">
-                        P
-                      </div>
-                      <span className="text-[10px] font-semibold text-zinc-200 truncate">
-                        Playzone Cricket
-                      </span>
-                    </div>
-
-                    {/* Separator | & Views count */}
-                    <div className="flex items-center gap-1.5 shrink-0 pl-1 text-[10px] font-bold text-[#84cc16]">
-                      <span className="text-zinc-600 font-normal">|</span>
-                      <span className="text-[8px] leading-none">▶</span>
-                      <span>{video.views}</span>
-                    </div>
-                  </div>
+                  {/* Compact Lime Product Tag */}
+                  <Link
+                    href={`/product/${video.product.slug}`}
+                    onClick={(e) => e.stopPropagation()}
+                    title={`${video.product.name} - ৳${video.product.price.toLocaleString()}`}
+                    className="shrink-0 flex items-center gap-1 px-2 py-1 rounded-lg bg-[#84cc16] hover:bg-[#74be10] active:scale-95 text-zinc-950 font-black text-[10px] sm:text-[11px] shadow-md transition-all group/prod cursor-pointer"
+                  >
+                    <ShoppingBag className="w-3 h-3 shrink-0" />
+                    <span>৳{video.product.price.toLocaleString()}</span>
+                  </Link>
                 </div>
               </div>
             );
