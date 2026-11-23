@@ -86,10 +86,10 @@ export default function ExpertVideoModal({
           </button>
         </div>
 
-        {/* 16:9 Widescreen YouTube Embed Screen */}
-        <div className="relative w-full aspect-video bg-black shrink-0">
+        {/* 16:9 Standard YouTube Embed Screen */}
+        <div className="relative w-full aspect-video bg-black shrink-0 overflow-hidden">
           <iframe
-            src={`https://www.youtube-nocookie.com/embed/${videoInfo.youtubeVideoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+            src={`https://www.youtube.com/embed/${videoInfo.youtubeVideoId}?autoplay=1&rel=0`}
             title={videoInfo.videoTitle}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

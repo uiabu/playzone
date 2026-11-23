@@ -67,33 +67,51 @@ export function getExpertVideo(expert: Expert): { youtubeVideoId: string; videoT
     };
   }
   const role = (expert.expertType || expert.role).toLowerCase();
-  if (role.includes("bowling") || role.includes("bowler")) {
+  if (role.includes("batting")) {
     return {
-      youtubeVideoId: "gcIYjdiniF4",
-      videoTitle: `@playzone.cricket • ${expert.name} - Fast Bowling Mechanics & Seam Control`,
+      youtubeVideoId: "UxX4IQL03UU",
+      videoTitle: `@playzone.cricket • ${expert.name} - Modern Batting Masterclass & Net Session`,
     };
   }
-  if (role.includes("sidearm") || role.includes("thrower")) {
+  if (role.includes("bowling") || role.includes("bowler")) {
     return {
-      youtubeVideoId: "huC1bmS0TU4",
-      videoTitle: `@playzone.cricket • ${expert.name} - 140+ KPH Sidearm Throwdown Practice`,
+      youtubeVideoId: "2H2rC_5-43E",
+      videoTitle: `@playzone.cricket • ${expert.name} - Bowling Mechanics & Seam Control`,
+    };
+  }
+  if (role.includes("keeping") || role.includes("wicket")) {
+    return {
+      youtubeVideoId: "Guz4ZtqoiG0",
+      videoTitle: `@playzone.cricket • ${expert.name} - Wicketkeeping Technique & Reflex Drills`,
+    };
+  }
+  if (role.includes("fielding") || role.includes("sidearm") || role.includes("thrower")) {
+    return {
+      youtubeVideoId: "pyjZ-9eO5FI",
+      videoTitle: `@playzone.cricket • ${expert.name} - Fielding & Throwdown Drills`,
     };
   }
   if (role.includes("umpire") || role.includes("official") || role.includes("scorer")) {
     return {
-      youtubeVideoId: "qRu3905EdxM",
+      youtubeVideoId: "wAPx0cApL9M",
       videoTitle: `@playzone.cricket • ${expert.name} - Professional Match Law & Decision Protocols`,
     };
   }
-  if (role.includes("bat") || role.includes("repair")) {
+  if (role.includes("fitness") || role.includes("physio") || role.includes("trainer")) {
     return {
-      youtubeVideoId: "pe-sBpdLGBw",
-      videoTitle: `@playzone.cricket • ${expert.name} - Cricket Bat Knocking & Restoration Guide`,
+      youtubeVideoId: "x2yois9bzEE",
+      videoTitle: `@playzone.cricket • ${expert.name} - Cricket Fitness & Conditioning Drills`,
+    };
+  }
+  if (role.includes("media") || role.includes("video") || role.includes("commentator") || role.includes("photo")) {
+    return {
+      youtubeVideoId: "t8tN72nuADM",
+      videoTitle: `@playzone.cricket • ${expert.name} - Match Broadcast & Video Production`,
     };
   }
   return {
-    youtubeVideoId: "G3jnTEL-2GQ",
-    videoTitle: `@playzone.cricket • ${expert.name} - Modern Batting Masterclass & Net Session`,
+    youtubeVideoId: "17KVK42XVy8",
+    videoTitle: `@playzone.cricket • ${expert.name} - Cricket Coaching Masterclass`,
   };
 }
 
@@ -152,7 +170,7 @@ export const EXPERTS_DATA: Expert[] = [
       "Former first-class cricketer with over 12 years of premier level coaching experience. Level 3 BCB certified coach specializing in team strategy, mental toughness, and technical batting/bowling masterclasses for aspiring youth and academy players.",
     certifications: ["BCB Level 3 Certified Coach", "ICC High Performance Coaching Accreditation", "First Aid & CPR Certified"],
     availableDays: ["Today", "This week", "Weekends"],
-    youtubeVideoId: "pe-sBpdLGBw",
+    youtubeVideoId: "17KVK42XVy8",
     videoTitle: "@playzone.cricket • Coach Shafikul Islam - Youth Development & Cricket Masterclass",
   },
   {
@@ -176,7 +194,7 @@ export const EXPERTS_DATA: Expert[] = [
       "Expert specialist batting trainer emphasizing bat speed, stance alignment, back-foot mastery against pace, and spin tackling strategies. Proven track record preparing division players for national draft leagues.",
     certifications: ["BCB Level 2 Specialist Batting Coach", "Biomechanics in Cricket Batting Cert"],
     availableDays: ["This week", "Weekends"],
-    youtubeVideoId: "G3jnTEL-2GQ",
+    youtubeVideoId: "UxX4IQL03UU",
     videoTitle: "@playzone.cricket • Coach Faisal Mahmud - Advanced Batting Techniques & Net Session",
   },
   {
@@ -200,7 +218,7 @@ export const EXPERTS_DATA: Expert[] = [
       "Dedicated pace and swing bowling mentor. Focuses on run-up momentum, wrist alignment, reverse swing mechanics, yorker perfection, and lower-back workload management for fast bowlers.",
     certifications: ["BCB Fast Bowling Workshop Certified", "Cricket Australia Fast Bowling Module"],
     availableDays: ["Today", "This week", "Weekends"],
-    youtubeVideoId: "gcIYjdiniF4",
+    youtubeVideoId: "2H2rC_5-43E",
     videoTitle: "@playzone.cricket • Coach Enamul Haque - Fast Bowling Mechanics & Seam Control",
   },
   {
@@ -224,7 +242,7 @@ export const EXPERTS_DATA: Expert[] = [
       "High-speed throwdown specialist utilizing RoboArm and sidearm tools. Delivers consistent speeds up to 140+ km/h with precision swinging trajectories for elite batsman match preparation.",
     certifications: ["National Academy Certified Thrower", "Elite Batting Prep Specialist"],
     availableDays: ["Today", "Weekends"],
-    youtubeVideoId: "huC1bmS0TU4",
+    youtubeVideoId: "pyjZ-9eO5FI",
     videoTitle: "@playzone.cricket • Kamrul Hasan - 140+ KPH Sidearm Throwdown Practice Session",
   },
   {
@@ -248,7 +266,7 @@ export const EXPERTS_DATA: Expert[] = [
       "Certified Bangladesh Cricket Board match official with extensive experience officiating first-division leagues, corporate tournaments, and youth championships. Impartial, authoritative, and rules-perfect.",
     certifications: ["BCB Panel Grade A Umpire", "MCC Laws of Cricket Certified (2017 Code)"],
     availableDays: ["Weekends", "This week"],
-    youtubeVideoId: "qRu3905EdxM",
+    youtubeVideoId: "wAPx0cApL9M",
     videoTitle: "@playzone.cricket • Masudur Rahman - Cricket Umpiring & Match Law Protocols",
   },
   {
@@ -272,6 +290,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Certified strength and conditioning coach focused exclusively on cricketers. Designs bespoke periodization regimens, rotational core power routines, and speed/endurance testing protocols.",
     certifications: ["NSCA Certified Strength & Conditioning Specialist", "Cricket Sports Nutrition Diploma"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "x2yois9bzEE",
+    videoTitle: "@playzone.cricket • Sazzad Hossain - Strength, Agility & Fitness Drills",
   },
   {
     id: "video-analysis-specialist-dhaka",
@@ -294,6 +314,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Advanced cricket video analyst using Dartfish and Siliconcoach software. Provides frame-by-frame bowling action breakdown, batting flaw diagnosis, and comprehensive tactical reports.",
     certifications: ["ICC Cricket Video Analysis Level 2", "Dartfish Certified Performance Analyst"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "t8tN72nuADM",
+    videoTitle: "@playzone.cricket • Tanvir Ahmed - Video Analysis & Match Breakdown",
   },
   {
     id: "pitch-curator-khulna",
@@ -316,6 +338,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Veteran stadium and club ground curator. Specializes in clay compaction, grass density management, moisture balance, bounce optimization, and rapid wet-ground recovery.",
     certifications: ["Asian Cricket Council Groundsman Certification", "Turf Grass Management Diploma"],
     availableDays: ["This week", "Weekends"],
+    youtubeVideoId: "17KVK42XVy8",
+    videoTitle: "@playzone.cricket • Abdul Matin - Pitch Preparation & Ground Maintenance",
   },
   {
     id: "cricket-photographer-dhaka",
@@ -338,6 +362,8 @@ export const EXPERTS_DATA: Expert[] = [
       "High-speed sports action photographer with professional telephoto lenses. Captures dramatic bowling releases, dynamic six-hitting frames, wicket celebrations, and team award ceremonies.",
     certifications: ["Professional Sports Photographers Guild Member", "Canon Sports Imaging Accredited"],
     availableDays: ["This week", "Weekends"],
+    youtubeVideoId: "t8tN72nuADM",
+    videoTitle: "@playzone.cricket • Jahidul Islam - Sports Photography & Match Highlights",
   },
   {
     id: "bowling-machine-operator-dhaka",
@@ -360,6 +386,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Expert operator for MasterPitch, BOLA, and Lever machines. Calibrates swing, seam, bounce, spin variations, and speed sequences tailored to batting training targets.",
     certifications: ["BOLA Machine Certified Operator", "Cricket Technical Equipment Specialist"],
     availableDays: ["Today", "This week"],
+    youtubeVideoId: "2H2rC_5-43E",
+    videoTitle: "@playzone.cricket • Robiul Islam - Bowling Machine Setup & Practice",
   },
   {
     id: "spin-bowling-coach-rajshahi",
@@ -382,6 +410,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Specialist in off-spin, leg-spin, and wrist-spin artistry. Teaches arm-ball releases, doosra grips, drift mastery, dip control, and mental chess against attacking batsmen.",
     certifications: ["BCB Level 2 Spin Bowling Coach", "National Academy Spin Masterclass"],
     availableDays: ["Today", "Weekends"],
+    youtubeVideoId: "2H2rC_5-43E",
+    videoTitle: "@playzone.cricket • Coach Ziaur Rahman - Spin Bowling Mastery & Variations",
   },
   {
     id: "wicketkeeping-coach-dhaka",
@@ -404,6 +434,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Dedicated wicketkeeping trainer focusing on posture, glove softness, stance mobility, stumping reflex drills, standing up to fast bowling, and clean leg-side gathering.",
     certifications: ["BCB Level 2 Wicketkeeping Coach", "Reflex & Hand-Eye Coordination Specialist"],
     availableDays: ["This week", "Weekends"],
+    youtubeVideoId: "Guz4ZtqoiG0",
+    videoTitle: "@playzone.cricket • Coach Nurul Amin - Wicketkeeping Reflex & Glovework Drills",
   },
   {
     id: "net-bowler-dhaka",
@@ -427,6 +459,8 @@ export const EXPERTS_DATA: Expert[] = [
       "First-division league fast bowler available for club, academy, and individual batsman practice sessions. Consistent yorker length, bouncers, and seam movement under pressure.",
     certifications: ["First Division League Player", "Pace Academy Certified"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "2H2rC_5-43E",
+    videoTitle: "@playzone.cricket • Tariqul Islam - 135+ KPH Express Net Bowling Session",
   },
   {
     id: "sports-physio-dhaka",
@@ -450,6 +484,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Licensed sports physiotherapist with extensive work supporting premier league cricket clubs. Specializes in rotator cuff rehabilitation, hamstring recovery, lumbar spine care, and match-day strapping.",
     certifications: ["BPT Sports Physiotherapy", "Dry Needling & Kinesiology Taping Certified"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "x2yois9bzEE",
+    videoTitle: "@playzone.cricket • Dr. Ariful Haque - Sports Physio & Injury Prevention",
   },
   {
     id: "bat-repairer-dhaka",
@@ -473,6 +509,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Master bat repair craftsman with over 15 years servicing bats for Bangladesh national and premier league players. Specializes in toe repairs, handle re-cording, surface cleaving fixes, oiling, and customized balance tuning.",
     certifications: ["Master Craftsman Certified", "Willow Engineering Specialist"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "UxX4IQL03UU",
+    videoTitle: "@playzone.cricket • Master Kabir Hossain - Bat Knocking & Willow Restoration",
   },
   {
     id: "gear-repairer-dhaka",
@@ -496,6 +534,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Specialist in restoring cricket protective equipment. Premium sheepskin/pittards leather palm replacements for batting gloves, velcro buckle renewals on leg guards, and helmet foam restorations.",
     certifications: ["Leather Craftsmanship Diploma", "Protective Equipment Specialist"],
     availableDays: ["This week", "Weekends"],
+    youtubeVideoId: "UxX4IQL03UU",
+    videoTitle: "@playzone.cricket • Mizanur Rahman - Protective Gear & Padding Repairs",
   },
   {
     id: "cricket-scorer-dhaka",
@@ -519,6 +559,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Official match scorer certified with BCB and Asian scoring systems. Accurate real-time ball-by-ball recording on CricHQ, CricHeroes, and traditional MCC scorebooks for tournaments and club fixtures.",
     certifications: ["BCB Certified Match Scorer", "CricHeroes Elite Scorer Badge"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "wAPx0cApL9M",
+    videoTitle: "@playzone.cricket • Shakil Ahmed - Digital Match Scoring & Protocols",
   },
   {
     id: "commentator-dhaka",
@@ -542,6 +584,8 @@ export const EXPERTS_DATA: Expert[] = [
       "Dynamic cricket broadcaster and commentator with tournament coverage experience across corporate leagues, division matches, and livestream broadcast productions. Eloquent analysis, voice modulation, and rich cricket trivia.",
     certifications: ["Sports Broadcasting Accreditation", "Radio & Livestream Media Certified"],
     availableDays: ["Today", "This week", "Weekends"],
+    youtubeVideoId: "t8tN72nuADM",
+    videoTitle: "@playzone.cricket • Mahfuzur Rahman - Bilingual Match Commentary & Broadcast",
   },
   {
     id: "match-videographer-dhaka",
@@ -565,5 +609,7 @@ export const EXPERTS_DATA: Expert[] = [
       "Professional cricket videographer equipped with high-FPS action cameras, telephoto rigs, and certified aerial drones. Delivers complete match recordings, broadcast graphics, and highlight packages.",
     certifications: ["Sports Videography Guild Member", "Certified Drone Pilot (CAAB)"],
     availableDays: ["This week", "Weekends"],
+    youtubeVideoId: "t8tN72nuADM",
+    videoTitle: "@playzone.cricket • Tanvir Ahmed - 4K Match Recording & Drone Coverage",
   },
 ];

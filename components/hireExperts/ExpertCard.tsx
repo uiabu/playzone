@@ -164,18 +164,6 @@ export default function ExpertCard({
           <p className="mt-2.5 text-xs text-zinc-500 leading-relaxed line-clamp-2 min-h-[34px]">
             {expert.bio}
           </p>
-
-          {/* Category / Skill Tags */}
-          <div className="flex flex-wrap gap-1.5 mt-3">
-            {expert.tags.slice(0, 2).map((tag, idx) => (
-              <span
-                key={idx}
-                className="inline-block px-2.5 py-0.5 rounded-md bg-zinc-100 text-zinc-600 text-[11px] font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
         </div>
 
         <div>

@@ -15,6 +15,7 @@ import {
   FileText,
   ShieldCheck,
   Send,
+  ChevronDown,
 } from "lucide-react";
 import { ExpertType, EXPERT_TYPES } from "./expertsData";
 
@@ -167,7 +168,7 @@ export default function JoinExpertModal({
       onClick={handleResetAndClose}
     >
       <div
-        className="bg-white rounded-3xl max-w-xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-zinc-100 overflow-hidden relative my-auto animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-3xl max-w-3xl lg:max-w-4xl w-full max-h-[95vh] flex flex-col shadow-2xl border border-zinc-100 overflow-hidden relative my-auto animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Close Button */}
@@ -236,310 +237,322 @@ export default function JoinExpertModal({
           /* ================= FORM BODY ================= */
           <>
             {/* Modal Header */}
-            <div className="p-6 pb-4 border-b border-zinc-100 bg-gradient-to-b from-zinc-50 to-white">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black bg-[#84cc16]/20 text-[#549900] uppercase tracking-wider mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
+            <div className="px-6 py-4 border-b border-zinc-100 bg-gradient-to-b from-zinc-50 to-white">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#84cc16]/20 text-[#549900] uppercase tracking-wider mb-1">
+                <Sparkles className="w-3 h-3" />
                 <span>Playzone Expert Network</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-zinc-950 tracking-tight">
                 Join as a Cricket Expert
               </h2>
-              <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+              <p className="text-xs text-zinc-500 mt-0.5 leading-relaxed">
                 Offer your coaching, practice, technical, or officiating services to players & academies across Bangladesh.
               </p>
             </div>
 
-            {/* Scrollable Form */}
-            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 p-6 space-y-4">
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4">
               {formError && (
                 <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
                   {formError}
                 </div>
               )}
 
-              {/* 1. Full Name & Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    Full Name <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Coach Rafiqul Islam"
-                      value={formData.fullName}
-                      onChange={(e) =>
-                        setFormData({ ...formData, fullName: e.target.value })
-                      }
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
-                    />
+              {/* 2-Column Responsive Layout */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                {/* Column 1: Personal, Contact & Rates */}
+                <div className="space-y-3">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-800 mb-1">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <User className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Coach Rafiqul Islam"
+                        value={formData.fullName}
+                        onChange={(e) =>
+                          setFormData({ ...formData, fullName: e.target.value })
+                        }
+                        className="w-full pl-10 pr-3.5 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* WhatsApp / Phone & Email in 2 columns */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1">
+                        WhatsApp / Phone <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Phone className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="tel"
+                          required
+                          placeholder="e.g. +880 1711-XXXXXX"
+                          value={formData.phone}
+                          onChange={(e) =>
+                            setFormData({ ...formData, phone: e.target.value })
+                          }
+                          className="w-full pl-9 pr-2.5 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1">
+                        Email <span className="text-zinc-400 font-normal">(Optional)</span>
+                      </label>
+                      <div className="relative">
+                        <Mail className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="email"
+                          placeholder="coach@example.com"
+                          value={formData.email}
+                          onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                          }
+                          className="w-full pl-9 pr-2.5 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Location & Experience in 2 columns */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1">
+                        Primary Location / Base <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <MapPin className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <select
+                          value={formData.district}
+                          onChange={(e) =>
+                            setFormData({ ...formData, district: e.target.value })
+                          }
+                          className="w-full appearance-none pl-9 pr-8 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold cursor-pointer"
+                        >
+                          {DISTRICTS.map((dist) => (
+                            <option key={dist} value={dist}>
+                              {dist}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="w-3.5 h-3.5 text-zinc-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1">
+                        Years of Experience <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Award className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <select
+                          value={formData.experience}
+                          onChange={(e) =>
+                            setFormData({ ...formData, experience: e.target.value })
+                          }
+                          className="w-full appearance-none pl-9 pr-8 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold cursor-pointer"
+                        >
+                          {EXPERIENCE_OPTIONS.map((exp) => (
+                            <option key={exp} value={exp}>
+                              {exp}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="w-3.5 h-3.5 text-zinc-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expected Rate & Rate Structure in 2 columns */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1">
+                        Expected Rate (৳ BDT) <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <DollarSign className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="number"
+                          min={200}
+                          max={50000}
+                          step={50}
+                          required
+                          placeholder="1500"
+                          value={formData.expectedRate}
+                          onChange={(e) =>
+                            setFormData({ ...formData, expectedRate: e.target.value })
+                          }
+                          className="w-full pl-9 pr-2.5 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-bold"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1">
+                        Rate Structure
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={formData.rateUnit}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              rateUnit: e.target.value as any,
+                            })
+                          }
+                          className="w-full appearance-none px-3 pr-8 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold cursor-pointer"
+                        >
+                          {RATE_UNITS.map((unit) => (
+                            <option key={unit.value} value={unit.value}>
+                              {unit.label}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="w-3.5 h-3.5 text-zinc-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    WhatsApp / Phone <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <Phone className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="tel"
-                      required
-                      placeholder="e.g. +880 1711-XXXXXX"
-                      value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 2. Email & Expert Type */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    Email Address <span className="text-zinc-400 font-normal">(Optional)</span>
-                  </label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="email"
-                      placeholder="coach@example.com"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    Expert Type <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <Briefcase className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <select
-                      value={formData.expertType}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          expertType: e.target.value as ExpertType,
-                        })
-                      }
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold"
-                    >
-                      {EXPERT_TYPES.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* 3. Location & Experience */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    Primary Location / Base <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <MapPin className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <select
-                      value={formData.district}
-                      onChange={(e) =>
-                        setFormData({ ...formData, district: e.target.value })
-                      }
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold"
-                    >
-                      {DISTRICTS.map((dist) => (
-                        <option key={dist} value={dist}>
-                          {dist}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    Years of Experience <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <Award className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <select
-                      value={formData.experience}
-                      onChange={(e) =>
-                        setFormData({ ...formData, experience: e.target.value })
-                      }
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold"
-                    >
-                      {EXPERIENCE_OPTIONS.map((exp) => (
-                        <option key={exp} value={exp}>
-                          {exp}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* 4. Expected Fee / Rate */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    Expected Rate (৳ BDT) <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <DollarSign className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="number"
-                      min={200}
-                      max={50000}
-                      step={50}
-                      required
-                      placeholder="1500"
-                      value={formData.expectedRate}
-                      onChange={(e) =>
-                        setFormData({ ...formData, expectedRate: e.target.value })
-                      }
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-bold"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                    Rate Structure
-                  </label>
-                  <select
-                    value={formData.rateUnit}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        rateUnit: e.target.value as any,
-                      })
-                    }
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold"
-                  >
-                    {RATE_UNITS.map((unit) => (
-                      <option key={unit.value} value={unit.value}>
-                        {unit.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* 5. Service Modes */}
-              <div>
-                <label className="block text-xs font-bold text-zinc-800 mb-2">
-                  Service Delivery Modes <span className="text-red-500">*</span>
-                </label>
-                <div className="grid grid-cols-3 gap-2 text-xs">
-                  {[
-                    { id: "ground", label: "Ground / Field" },
-                    { id: "home", label: "Home Visit" },
-                    { id: "online", label: "Online / Video" },
-                  ].map((mode) => {
-                    const isChecked = formData.serviceModes.includes(mode.id);
-                    return (
-                      <button
-                        key={mode.id}
-                        type="button"
-                        onClick={() => handleModeToggle(mode.id)}
-                        className={`py-2 px-3 rounded-xl border text-center font-bold transition-all cursor-pointer ${
-                          isChecked
-                            ? "bg-[#84cc16]/15 border-[#84cc16] text-zinc-950 shadow-2xs"
-                            : "bg-zinc-50 border-zinc-200 text-zinc-600 hover:bg-zinc-100"
-                        }`}
+                {/* Column 2: Expert Category, Delivery & Profile Details */}
+                <div className="space-y-3">
+                  {/* Expert Type */}
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-800 mb-1">
+                      Expert Type <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Briefcase className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <select
+                        value={formData.expertType}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            expertType: e.target.value as ExpertType,
+                          })
+                        }
+                        className="w-full appearance-none pl-10 pr-10 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all font-semibold cursor-pointer"
                       >
-                        {mode.label}
-                      </button>
-                    );
-                  })}
+                        {EXPERT_TYPES.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="w-3.5 h-3.5 text-zinc-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
+                  </div>
+
+                  {/* Service Delivery Modes */}
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-800 mb-1">
+                      Service Delivery Modes <span className="text-red-500">*</span>
+                    </label>
+                    <div className="grid grid-cols-3 gap-1.5 text-xs">
+                      {[
+                        { id: "ground", label: "Ground / Field" },
+                        { id: "home", label: "Home Visit" },
+                        { id: "online", label: "Online / Video" },
+                      ].map((mode) => {
+                        const isChecked = formData.serviceModes.includes(mode.id);
+                        return (
+                          <button
+                            key={mode.id}
+                            type="button"
+                            onClick={() => handleModeToggle(mode.id)}
+                            className={`py-1.5 px-2 rounded-xl border text-center font-bold text-[11px] transition-all cursor-pointer ${
+                              isChecked
+                                ? "bg-[#84cc16]/15 border-[#84cc16] text-zinc-950 shadow-2xs"
+                                : "bg-zinc-50 border-zinc-200 text-zinc-600 hover:bg-zinc-100"
+                            }`}
+                          >
+                            {mode.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Bio & Background */}
+                  <div>
+                    <label className="block text-xs font-bold text-zinc-800 mb-1">
+                      Bio, Achievements & Background <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      rows={2}
+                      required
+                      placeholder="Describe your cricket playing history, coaching accreditations, club representations..."
+                      value={formData.bio}
+                      onChange={(e) =>
+                        setFormData({ ...formData, bio: e.target.value })
+                      }
+                      className="w-full p-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all resize-none leading-relaxed"
+                    />
+                  </div>
+
+                  {/* Certifications & Profile Link in 2 columns */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1 truncate">
+                        Certifications / Accreditations
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. BCB Level 2"
+                        value={formData.certifications}
+                        onChange={(e) =>
+                          setFormData({ ...formData, certifications: e.target.value })
+                        }
+                        className="w-full px-3 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-zinc-800 mb-1 truncate">
+                        Profile Link / Reel <span className="text-zinc-400 font-normal">(Optional)</span>
+                      </label>
+                      <input
+                        type="url"
+                        placeholder="https://facebook.com/..."
+                        value={formData.socialProfile}
+                        onChange={(e) =>
+                          setFormData({ ...formData, socialProfile: e.target.value })
+                        }
+                        className="w-full px-3 py-2 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* 6. Bio & Background */}
-              <div>
-                <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                  Bio, Achievements & Background <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  rows={3}
-                  required
-                  placeholder="Describe your cricket playing history, coaching accreditations, club representations, or special expertise..."
-                  value={formData.bio}
-                  onChange={(e) =>
-                    setFormData({ ...formData, bio: e.target.value })
-                  }
-                  className="w-full p-3 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all resize-none leading-relaxed"
-                />
-              </div>
+              {/* Bottom Footer: Trust Badge & Submit Button Side-by-Side */}
+              <div className="pt-2 border-t border-zinc-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-xs text-zinc-500 bg-zinc-50 px-3 py-2 rounded-xl border border-zinc-100 flex-1 w-full">
+                  <ShieldCheck className="w-4 h-4 text-[#84cc16] shrink-0" />
+                  <span className="text-[11px] leading-tight">
+                    Joining the PLAYZONE Expert Directory is completely free. We connect you directly with cricketers & academies.
+                  </span>
+                </div>
 
-              {/* 7. Certifications */}
-              <div>
-                <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                  Certifications / Accreditations{" "}
-                  <span className="text-zinc-400 font-normal">(e.g. BCB Level 1/2, ICC, Physiotherapy Degree)</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. BCB Level 2 Certified, First Aid Certified"
-                  value={formData.certifications}
-                  onChange={(e) =>
-                    setFormData({ ...formData, certifications: e.target.value })
-                  }
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
-                />
-              </div>
-
-              {/* 8. Profile Link */}
-              <div>
-                <label className="block text-xs font-bold text-zinc-800 mb-1.5">
-                  Profile Link / Video Reel / Social Link{" "}
-                  <span className="text-zinc-400 font-normal">(Optional)</span>
-                </label>
-                <input
-                  type="url"
-                  placeholder="https://facebook.com/... or YouTube channel"
-                  value={formData.socialProfile}
-                  onChange={(e) =>
-                    setFormData({ ...formData, socialProfile: e.target.value })
-                  }
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-200 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#84cc16] focus:border-transparent transition-all"
-                />
-              </div>
-
-              {/* Trust Badge */}
-              <div className="flex items-center gap-2 text-xs text-zinc-500 bg-zinc-50 p-3 rounded-xl border border-zinc-100">
-                <ShieldCheck className="w-4 h-4 text-[#84cc16] shrink-0" />
-                <span>
-                  Joining the PLAYZONE Expert Directory is completely free. We connect you directly with cricketers & academies.
-                </span>
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 px-6 rounded-2xl bg-[#84cc16] hover:bg-[#74d600] active:scale-[0.99] text-zinc-950 font-black text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="w-full sm:w-auto px-7 py-2.5 rounded-xl bg-[#84cc16] hover:bg-[#74d600] active:scale-[0.99] text-zinc-950 font-black text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 shrink-0"
                 >
                   {isSubmitting ? (
-                    <div className="w-5 h-5 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span>Submit Expert Application</span>
+                      <span>Submit Application</span>
                     </>
                   )}
                 </button>

@@ -310,7 +310,7 @@ export default function ExclusiveProductsSection() {
       {/* 3. PRODUCT CARDS SLIDER (5 Cards Visible Row on Desktop) */}
       <div
         ref={scrollContainerRef}
-        className="flex gap-3.5 sm:gap-4.5 overflow-x-auto scroll-smooth scrollbar-none pb-2 snap-x snap-mandatory"
+        className="flex gap-3.5 sm:gap-4.5 overflow-x-auto scroll-smooth scrollbar-none pt-2 pb-2.5 px-1 -mx-1 snap-x snap-mandatory"
       >
         {displayedProducts.map((bat) => {
           const liveProduct = getProductBySlugOrId(bat.id);
